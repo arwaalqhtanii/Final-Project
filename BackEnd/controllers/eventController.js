@@ -102,7 +102,16 @@ export const deleteEvent = async (req, res) => {
 //update the number of gold-silver -standard 
 export const updateEvent = async (req, res) => {
     const eventId = req.params.eventId;
-    const { totalTicketsGold, totalTicketsSilver, totalTicketsStandard } = req.body;
+    const {
+        name,
+        image,
+        location,
+        details,
+        totalTicketsGold,
+        totalTicketsSilver,
+        totalTicketsStandard,
+        googleMapLink,
+    } = req.body;
 
     try {
         const event = await Event.findById(eventId);
@@ -110,11 +119,19 @@ export const updateEvent = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
+        // Update event fields
+        if (name) event.name = name;
+        if (image) event.image = image;
+        if (location) event.location = location;
+        if (details) event.details = details;
+        if (googleMapLink) event.googleMapLink = googleMapLink;
+
+
         // Update total tickets for each type and calculate the overall total
-        event.totalTicketsGold = totalTicketsGold;
-        event.totalTicketsSilver = totalTicketsSilver;
-        event.totalTicketsStandard = totalTicketsStandard;
-        event.totalTickets = totalTicketsGold + totalTicketsSilver + totalTicketsStandard;
+        if (totalTicketsGold !== undefined) event.totalTicketsGold = totalTicketsGold;
+        if (totalTicketsSilver !== undefined) event.totalTicketsSilver = totalTicketsSilver;
+        if (totalTicketsStandard !== undefined) event.totalTicketsStandard = totalTicketsStandard;
+        event.totalTickets = (totalTicketsGold || 0) + (totalTicketsSilver || 0) + (totalTicketsStandard || 0);
 
         await event.save();
 

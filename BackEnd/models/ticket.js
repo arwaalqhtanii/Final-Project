@@ -6,6 +6,7 @@ const TicketSchema = new mongoose.Schema({
     ticketType: { type: String, required: true },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
+    totalPrice: { type: Number, required: true },
     visitDate: { type: Date, required: true },
     uniqueCode: { type: String, required: true },
     purchaseDate: { type: Date, default: Date.now },

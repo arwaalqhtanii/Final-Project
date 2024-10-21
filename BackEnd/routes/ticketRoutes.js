@@ -1,5 +1,5 @@
 import express from 'express';
-import {purchaseTicket,getTicketCountsByDate,getUserTickets} from '../controllers/ticketController.js';
+import {purchaseTicket,getTicketCountsByDate,getUserTickets,getTicketsByIdNumber,updateTicketIdNumber,getticketbyID, TicketfindbyCode} from '../controllers/ticketController.js';
 import { authenticateToken } from '../middleware/authMiddleware.js'; // Check the path and export name
 
 
@@ -14,7 +14,19 @@ router.get('/event/:eventId/ticket-counts', getTicketCountsByDate);
 //get all user Ticket
 router.get('/Usertickets', authenticateToken, getUserTickets);
 
+//get user ticket depends on the IDNumber 
+router.get('/ticketsUserId/:idNumber', authenticateToken, getTicketsByIdNumber);
 
+
+///update ticket
+router.put('/tickets/update/:ticketId', authenticateToken, updateTicketIdNumber);
+
+
+//GeT ticket bt id of ticket 
+router.get('/tickets/id/:ticketId',getticketbyID);
+
+//TicketfindbyCode
+router.get('/tickets/unique-code/:uniqueCode', TicketfindbyCode);
 
 // Get all tickets for an event
 // router.get('/:eventId', getAllTickets);

@@ -14,17 +14,14 @@ if (!isHex) {
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // Use a strong key stored in your environment variables
 const IV_LENGTH = 16; // For AES, this is typically 16 bytes
 
-const encrypt = (text) => {
-    const iv = crypto.randomBytes(16); // Generate a random IV
-    const keyBuffer = Buffer.from(ENCRYPTION_KEY.trim(), 'hex');
+function encrypt(text) {
+    let iv = crypto.randomBytes(IV_LENGTH);
+    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return iv.toString('hex') + ':' + encrypted.toString('hex');
+}
 
-    let cipher = crypto.createCipheriv('aes-256-cbc', keyBuffer, iv);
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-
-    // Return IV and encrypted text as a string
-    return `${iv.toString('hex')}:${encrypted}`;
-};
 
 // console.log("Key length:", Buffer.from(ENCRYPTION_KEY, 'hex').length); // Should be 32
 // console.log("IV length:", IV_LENGTH); // Should be 16
@@ -84,16 +81,8 @@ export const registerUser = async (req, res) => {
     }
 };
 
-//Get-all-User
-export const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find(); // Fetch all users
-        res.status(200).json(users); // Send users in the response
-    } catch (error) {
-        console.error(error); // Log the error for debugging
-        res.status(500).json({ message: 'Server error' });
-    }
-};
+
+
 
 const decrypt = (text) => {
     // console.log('decripted ID Number:', text);
@@ -115,6 +104,39 @@ const decrypt = (text) => {
 
     return decrypted;
 };
+
+//Get-all-User
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find(); // Fetch all users
+
+        const userDetails = users.map(user => {
+            let decryptedIDNumber = null; // Initialize decryptedIDNumber as null
+
+            // Attempt to decrypt the IDNumber and handle potential errors
+            try {
+                decryptedIDNumber = decrypt(user.idNumber); // Decrypt IDNumber
+            } catch (error) {
+                console.error('Decryption failed for IDNumber:', user.idNumber, error);
+                decryptedIDNumber = 'Invalid ID Format'; // Fallback message if decryption fails
+            }
+
+            return {
+                userId: user._id,
+                IDNumber: decryptedIDNumber, // Show decrypted IDNumber or error message
+                email: user.email,           // Include email
+                encryption: user.idNumber     // Original encrypted IDNumber
+            };
+        });
+
+        res.status(200).json(userDetails); // Send users in the response
+    } catch (error) {
+        console.error('Error fetching users:', error); // Log the error for debugging
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+
 
 const JWT_SECRET = process.env.JWT_SECRET; // Use a secure key, store it safely
 
@@ -167,5 +189,23 @@ export const loginUser = async (req, res) => {
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Server error' });
+    }
+};
+
+//delete user by id 
+export const deleteuserbyId =async (req, res) => {
+    const { userId } = req.params; // Get user ID from request parameters
+
+    try {
+        // Find the user and delete
+        const user = await User.findByIdAndDelete(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Server error', error });
     }
 };
