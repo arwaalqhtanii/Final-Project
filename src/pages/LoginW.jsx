@@ -51,12 +51,12 @@ function LoginW() {
           </div>
         </div>
 
-        {/* زر تسجيل الدخول */}
+       
         <button className="btn w-full mb-4 bg-[#78006e] text-white hover:bg-[#be008d] focus:outline-none focus:ring-4 focus:ring-[#be008d] transition-all duration-300">
           تسجيل الدخول
         </button>
 
-        {/* ليس لديك حساب؟ */}
+     
         <div className="text-center">
           <p className="text-sm">
             ليس لديك حساب؟ 
