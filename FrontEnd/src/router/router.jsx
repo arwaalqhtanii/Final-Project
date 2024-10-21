@@ -1,27 +1,31 @@
 
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
-import Admin from "../pages/Admin";
 import LoginW from "../pages/LoginW";
 import SignupW from "../pages/SignupW";
 import Home from "../pages/Home";
+import ErrorPage from "../pages/ErrorPage";  
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Admin></Admin>
-    },
+
     {
         path: "/LoginW",
-        element: <LoginW/>
+        element: <LoginW />,
+        errorElement: <ErrorPage />
     },
     {
         path: "/SignupW",
-        element: <SignupW/>
-        // element: <Navigate to="/Home" replace /> 
+        element: <SignupW />,
+  
+        errorElement: <ErrorPage />
     },
     {
         path: "/Home",
-        element: <Home/>
+        element: <Home />,
+        errorElement: <ErrorPage />
+    },
+    {
+        path: "*",  
+        element: <ErrorPage />
     },
 ]);
 
