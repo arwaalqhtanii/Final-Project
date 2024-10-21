@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
                     <p className="text-xl">{event.location}</p>
                 </div>
                 <p className="text-gray-300 font-semibold mb-4">التاريخ: {event.startDate} - {event.endDate}</p>
-                <button className="bg-white text-purple-800 py-2 px-4 rounded-full border-2 border-purple-800 hover:bg-purple-800 hover:text-white transition duration-300">
+                <button className="bg-white text-purple-800 py-2 px-4 rounded-full border-2 border-purple-800 hover:bg-purple-200 hover:text-white transition duration-300">
                     احجز الآن
                 </button>
             </div>
