@@ -77,27 +77,7 @@ export const deleteEvent = async (req, res) => {
 };
 
 
-//update  the event to take the number of axceed (peoole in day )
-// export const updateEvent = async (req, res) => {
-//     const eventId = req.params.eventId;
-//     const { totalTickets } = req.body;
 
-//     try {
-//         const event = await Event.findById(eventId);
-//         if (!event) {
-//             return res.status(404).json({ message: 'Event not found' });
-//         }
-
-//         // Update the totalTickets field
-//         event.totalTickets = totalTickets;
-//         await event.save();
-
-//         res.status(200).json({ message: 'Event updated successfully', event });
-//     } catch (error) {
-//         console.error('Error updating event:', error);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// };
 
 //update the number of gold-silver -standard 
 export const updateEvent = async (req, res) => {

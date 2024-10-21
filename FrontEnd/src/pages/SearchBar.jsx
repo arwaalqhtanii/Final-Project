@@ -8,6 +8,11 @@ const SearchBar = ({ onSearch }) => {
         onSearch(searchTerm); 
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
     return (
         <div className="container mx-auto py-10 flex gap-9 flex-col-reverse md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex  items-center w-full md:w-3/5 lg:w-2/5 bg-gray-100 p-4 rounded-full shadow-md">
@@ -17,6 +22,7 @@ const SearchBar = ({ onSearch }) => {
                     className="w-full bg-transparent focus:outline-none text-gray-700 px-4 text-right"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)} 
+                    onKeyDown={handleKeyDown} // Add this line
                 />
                 <button className="text-purple-800" onClick={handleSearch}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

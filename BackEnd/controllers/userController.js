@@ -11,15 +11,21 @@ const isHex = /^[0-9a-fA-F]+$/.test(process.env.ENCRYPTION_KEY);
 if (!isHex) {
     throw new Error("ENCRYPTION_KEY must be a valid hexadecimal string.");
 }
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // Use a strong key stored in your environment variables
+
+const ENCRYPTION_KEY = Buffer.from(process.env.ENCRYPTION_KEY, 'hex'); // Your 64-character hex string
 const IV_LENGTH = 16; // For AES, this is typically 16 bytes
 
+
+// console.log("Encryption Key:", ENCRYPTION_KEY);
+// console.log("Key length:", ENCRYPTION_KEY.length); // Should be 32
+// console.log("IV length:", IV_LENGTH); // Should be 16
+
 function encrypt(text) {
-    let iv = crypto.randomBytes(IV_LENGTH);
-    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
+    const iv = crypto.randomBytes(IV_LENGTH);
+    const cipher = crypto.createCipheriv('aes-256-cbc', ENCRYPTION_KEY, iv); // Use the buffer directly
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + ':' + encrypted; // Return IV and encrypted data
 }
 
 
@@ -83,27 +89,19 @@ export const registerUser = async (req, res) => {
 
 
 
+function decrypt(encryptedText) {
+    const parts = encryptedText.split(':');
+    const iv = Buffer.from(parts.shift(), 'hex'); // Get the IV from the string
+    const encryptedTextBuffer = Buffer.from(parts.join(':'), 'hex'); // Get the encrypted text
 
-const decrypt = (text) => {
-    // console.log('decripted ID Number:', text);
-
-    const parts = text.split(':');
-    if (parts.length !== 2) {
-        throw new Error('Invalid encrypted data format');
-    }
-
-    const [ivHex, encryptedText] = parts;
-
-    // Ensure IV is a valid hex string
-    const iv = Buffer.from(ivHex, 'hex');
-    const keyBuffer = Buffer.from(ENCRYPTION_KEY.trim(), 'hex');
-
-    let decipher = crypto.createDecipheriv('aes-256-cbc', keyBuffer, iv);
-    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    const decipher = crypto.createDecipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
+    let decrypted = decipher.update(encryptedTextBuffer, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
 
-    return decrypted;
-};
+    return decrypted; // Return the decrypted text
+}
+
+
 
 //Get-all-User
 export const getAllUsers = async (req, res) => {

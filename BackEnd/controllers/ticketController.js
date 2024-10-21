@@ -335,12 +335,12 @@ export const getTicketsByIdNumber = async (req, res) => {
 export const updateTicketIdNumber = async (req, res) => {
     const { ticketId } = req.params; // Get ticket ID from request parameters
     const { newIdNumber } = req.body; // Get new ID number from request body
-    console.log("enter Id : "+newIdNumber);
+    // console.log("enter Id : "+newIdNumber);
  
     try {
         // Fetch the ticket to be updated
         const ticket = await Ticket.findById(ticketId);
-        console.log(ticket);
+        // console.log(ticket);
         
         if (!ticket) {
             return res.status(404).json({ message: 'Ticket not found' });
@@ -357,10 +357,10 @@ export const updateTicketIdNumber = async (req, res) => {
 
         // Loop through users to find a match
         for (let user of users) {
-            console.log("encription "+user.idNumber);
+            // console.log("encription "+user.idNumber);
 
             let decryptedIDNumber = decrypt(user.idNumber); // Decrypt the ID number
-            console.log("decryptedIDNumber"+decryptedIDNumber);
+            // console.log("decryptedIDNumber"+decryptedIDNumber);
             if (decryptedIDNumber === newIdNumber) {
                 foundUser = user; // Store the found user
                 break; // Exit loop once we find a match
@@ -376,6 +376,10 @@ export const updateTicketIdNumber = async (req, res) => {
         ticket.userId = foundUser._id;
         ticket.updateStatus = 1; // Mark ticket as updated
         ticket.idNumber=foundUser.idNumber;
+
+        // Generate a new unique code
+        const newUniqueCode = await generateUniqueCode(foundUser._id, ticket.eventId);
+        ticket.uniqueCode = newUniqueCode; // Assuming your Ticket model has a uniqueCode field
 
         // Save the updated ticket
         await ticket.save();
