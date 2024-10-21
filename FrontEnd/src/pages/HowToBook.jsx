@@ -7,7 +7,7 @@ const HowToBook = () => {
     return (
         <div className="container mx-auto py-10">
             {/* قسم كيف أحجز تذكرتي */}
-            <h2 className="text-2xl text-center font-bold mb-6 pr-6 pb-9">كيف احجز تذكرتي؟</h2>
+            <h2 className="text-2xl text-center font-bold mb-6 pr-6 pb-9 text-purple-900">كيف احجز تذكرتي؟</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
                 <div>
                     <img src="https://cdn.grintahub.com/public/assets/web/images/waiting-room.webp" alt="أيقونة الدخول" className="w-12 h-12 mx-auto mb-2"/>
@@ -32,7 +32,7 @@ const HowToBook = () => {
 
             {/* قسم من نحن؟ */}
             <div className="mt-12 text-right  bg-slate-100 py-10">
-                <h2 className="text-3xl text-center font-bold mb-6 pr-6 pb-4">من نحن؟</h2>
+                <h2 className="text-2xl text-center font-bold mb-6 pr-6 pb-9 text-purple-900">من نحن؟</h2>
                 <p className="text-lg px-6 lg:px-24 leading-relaxed text-gray-700">
                     في سيف تيك، نسعى لتوفير منصة آمنة وموثوقة لبيع وشراء التذاكر. نهدف إلى مكافحة الاحتيال ومنع تداول التذاكر المستخدمة في السوق السوداء، لضمان تجربة شراء شفافة وآمنة لجميع المستخدمين.
                 </p>
@@ -40,7 +40,7 @@ const HowToBook = () => {
             {/* <hr className="my-12 border-t-1 border-gray-300" /> */}
             {/* قسم لماذا نحن؟ */}
             <div className="mt-12 text-center ">
-                <h2 className="text-2xl text-center font-bold mb-6 pr-6 pb-9">لماذا نحن؟</h2>
+                <h2 className="text-2xl text-center font-bold mb-6 pr-6 pb-9 text-purple-900">لماذا نحن؟</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                     {/* بطاقة الأمان الكامل */}
                     <div>
