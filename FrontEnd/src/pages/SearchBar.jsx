@@ -9,8 +9,8 @@ const SearchBar = ({ onSearch }) => {
     };
 
     return (
-        <div className="container mx-auto py-10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="flex items-center w-full md:w-3/5 lg:w-2/5 bg-gray-100 p-4 rounded-full shadow-md">
+        <div className="container mx-auto py-10 flex gap-9 flex-col-reverse md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex  items-center w-full md:w-3/5 lg:w-2/5 bg-gray-100 p-4 rounded-full shadow-md">
                 <input
                     type="text"
                     placeholder="ابحث عن فعاليات موسم الرياض"
@@ -24,7 +24,7 @@ const SearchBar = ({ onSearch }) => {
                     </svg>
                 </button>
             </div>
-            <h2 className="text-3xl font-bold text-right">فعاليات الشهر الحالي</h2>
+            <h2 className="text-3xl text-right mr-5">فعاليات الشهر الحالي</h2>
         </div>
     );
 };
