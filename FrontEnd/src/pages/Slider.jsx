@@ -24,7 +24,7 @@ const Slider = () => {
 
     return (
 
-        <div className="relative w-full h-screen pt-16">
+        <div className="">
 
             <div className="relative h-full overflow-hidden">
                 <div className="flex transition-transform duration-700 ease-in-out"
