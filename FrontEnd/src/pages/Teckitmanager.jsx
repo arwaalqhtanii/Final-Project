@@ -4,6 +4,8 @@ import { CiSearch } from "react-icons/ci";
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
 import { AiOutlineFileSearch } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 function Teckitmanager() {
 
@@ -20,7 +22,9 @@ function Teckitmanager() {
         document.body.style.overflow = 'auto';
     };
     return (
+        
         <div className='relative'>
+            <Navbar/>
             {sellPop && (
                 <div className='fixed inset-0 flex items-center justify-center z-[9999]'>
                     <div className='fixed inset-0 bg-black opacity-80'></div>
@@ -42,7 +46,7 @@ function Teckitmanager() {
             )}
 
 
-            <div className='w-[100%] h-[10vh] bg-[#78006E]'>
+            <div className=''>
 
             </div>
             <div className='w-[100%] h-[40vh] relative  shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
@@ -87,6 +91,7 @@ function Teckitmanager() {
                 ></MyTicket>
 
             </div>
+      <Footer/>
         </div>
     )
 }
