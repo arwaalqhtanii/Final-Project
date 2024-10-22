@@ -1,12 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Admin from "../pages/Admin";
-
+import Checkteckit from "../pages/Checkteckit";
+import Teckitmanager from "../pages/Teckitmanager";
 const router = createBrowserRouter([
 
+
     {
-        path: "/admin",
-        element: <Admin></Admin>
+        path: "/teckitmanager",
+        element: <Teckitmanager></Teckitmanager>
+    },
+    {
+        path: "/checkteckit",
+        element: <Checkteckit></Checkteckit>
     }
     
 ]);
