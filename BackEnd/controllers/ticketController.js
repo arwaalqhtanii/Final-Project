@@ -129,20 +129,36 @@ export const purchaseTicket = async (req, res) => {
 
 
 // Generate unique code function
+// const generateUniqueCode = async (userId, eventId) => {
+//     let uniqueCode;
+//     let isDuplicate = true;
+
+//     while (isDuplicate) {
+//         const baseString = `${userId}${eventId}${Date.now()}`;
+//         uniqueCode = CryptoJS.SHA256(baseString).toString().slice(0, 6);
+//         const existingTicket = await Ticket.findOne({ uniqueCode });
+//         isDuplicate = !!existingTicket;
+//     }
+
+//     // console.log('Generated unique code:', uniqueCode);
+//     return uniqueCode;
+// };
 const generateUniqueCode = async (userId, eventId) => {
     let uniqueCode;
-    let isDuplicate = true;
+    let isDuplicate;
 
-    while (isDuplicate) {
-        const baseString = `${userId}${eventId}${Date.now()}`;
-        uniqueCode = CryptoJS.SHA256(baseString).toString().slice(0, 6);
-        const existingTicket = await Ticket.findOne({ uniqueCode });
-        isDuplicate = !!existingTicket;
-    }
+    do {
+        const randomSuffix = Math.random().toString(36).substring(2, 8); // Random string for more uniqueness
+        const baseString = `${userId}${eventId}${Date.now()}${randomSuffix}`; // Use random suffix
+        uniqueCode = CryptoJS.SHA256(baseString).toString().slice(0, 6); // Generate a new code
+        const existingTicket = await Ticket.findOne({ uniqueCode }); // Check for duplicates
+        isDuplicate = !!existingTicket; // Set to true if a ticket with the same code exists
+    } while (isDuplicate); // Repeat until a unique code is generated
 
-    // console.log('Generated unique code:', uniqueCode);
-    return uniqueCode;
+    return uniqueCode; // Return the unique code
 };
+
+
 
 // Price calculation function
 const calculatePrice = (ticketType, quantity) => {
@@ -332,16 +348,160 @@ export const getTicketsByIdNumber = async (req, res) => {
 //------------//---------------------------------
 
 // update the ticket with new user 
+// export const updateTicketIdNumber = async (req, res) => {
+//     const { ticketId } = req.params; // Get ticket ID from request parameters
+//     const { newIdNumber } = req.body; // Get new ID number from request body
+//     // console.log("enter Id : "+newIdNumber);
+ 
+//     try {
+//         // Fetch the ticket to be updated
+//         const ticket = await Ticket.findById(ticketId);
+//         // console.log(ticket);
+        
+//         if (!ticket) {
+//             return res.status(404).json({ message: 'Ticket not found' });
+//         }
+
+//         // Check if the ticket's updateStatus is 0
+//         if (ticket.updateStatus !== 0) {
+//             return res.status(403).json({ message: 'You are not allowed to update this ticket' });
+//         }
+
+//         // Fetch all users from the database
+//         const users = await User.find();
+//         let foundUser = null;
+
+//         // Loop through users to find a match
+//         for (let user of users) {
+//             // console.log("encription "+user.idNumber);
+
+//             let decryptedIDNumber = decrypt(user.idNumber); // Decrypt the ID number
+//             // console.log("decryptedIDNumber"+decryptedIDNumber);
+//             if (decryptedIDNumber === newIdNumber) {
+//                 foundUser = user; // Store the found user
+//                 break; // Exit loop once we find a match
+//             }
+//         }
+
+//         // If no user found
+//         if (!foundUser) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         // Update the ticket's userId and set updateStatus to 1
+//         ticket.userId = foundUser._id;
+//         ticket.updateStatus = 1; // Mark ticket as updated
+//         ticket.idNumber=foundUser.idNumber;
+
+//         // Generate a new unique code
+//         const newUniqueCode = await generateUniqueCode(foundUser._id, ticket.eventId);
+//         ticket.uniqueCode = newUniqueCode; // Assuming your Ticket model has a uniqueCode field
+
+//         // Save the updated ticket
+//         await ticket.save();
+
+//         res.status(200).json({
+//             message: 'Ticket updated successfully',
+//             ticket: {
+//                 ...ticket.toObject(),
+//                 user: {
+//                     IDNumber: newIdNumber, // Original ID number
+//                     email: foundUser.email,
+//                     userId: foundUser._id.toString(),
+//                 },
+//             },
+//         });
+//     } catch (error) {
+//         console.error('Error updating ticket:', error);
+//         res.status(500).json({ message: 'Error updating ticket', error });
+//     }
+// };
+
+// Update ticket ID number function
+// export const updateTicketIdNumber = async (req, res) => {
+//     const { ticketId } = req.params; // Get ticket ID from request parameters
+//     const { newIdNumber } = req.body; // New ID number
+//     const { _id: userId, IDNumber, email } = req.user; // Extract user details
+
+
+//     try {
+//         // Fetch the ticket to be updated
+//         const ticket = await Ticket.findById(ticketId);
+//         if (!ticket) {
+//             return res.status(404).json({ message: 'Ticket not found' });
+//         }
+
+//         // Check if the ticket's updateStatus is 0
+//         if (ticket.updateStatus !== 0) {
+//             return res.status(403).json({ message: 'You are not allowed to update this ticket' });
+//         }
+
+//         // Fetch user based on the newIdNumber
+//         const users = await User.find();
+//         let foundUser = null;
+
+//         for (let user of users) {
+//             let decryptedIDNumber = decrypt(user.idNumber); // Assume you have a decrypt function
+//             if (decryptedIDNumber === newIdNumber) {
+//                 foundUser = user; // Store the found user
+//                 break; // Exit loop once we find a match
+//             }
+//         }
+
+//         // If no user found
+//         if (!foundUser) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         // Update the ticket's updateStatus to 1
+//         ticket.updateStatus = 1; // Mark ticket as updated
+
+//         // Generate a new unique code for the new ticket
+//         const newUniqueCode = await generateUniqueCode(foundUser._id, ticket.eventId);
+
+//         // Create a new ticket with the same information but a different userId
+//         const newTicket = new Ticket({
+//             eventId: ticket.eventId,
+//             userId: foundUser._id, // New user ID
+//             ticketType: ticket.ticketType,
+//             quantity: ticket.quantity,
+//             price: ticket.price,
+//             visitDate: ticket.visitDate,
+//             uniqueCode: newUniqueCode, // New unique code
+//             updateStatus: 0, // New ticket status is not updated
+//             purchaseDate: new Date(), // Set the current date
+//         });
+
+//         // Save the updated ticket and the new ticket
+//         await ticket.save();
+//         await newTicket.save();
+
+//         res.status(200).json({
+//             message: 'Ticket updated successfully and a new ticket created',
+//             updatedTicket: ticket,
+//             newTicket: {
+//                 ...newTicket.toObject(),
+//                 user: {
+//                     IDNumber: foundUser.idNumber, // Include the original ID number
+//                     email: foundUser.email,
+//                     userId: foundUser._id.toString(),
+//                 },
+//             },
+//         });
+//     } catch (error) {
+//         console.error('Error updating ticket:', error);
+//         res.status(500).json({ message: 'Error updating ticket', error });
+//     }
+// };
+
 export const updateTicketIdNumber = async (req, res) => {
     const { ticketId } = req.params; // Get ticket ID from request parameters
-    const { newIdNumber } = req.body; // Get new ID number from request body
-    // console.log("enter Id : "+newIdNumber);
- 
+    const { newIdNumber } = req.body; // New ID number
+    // const { _id: userId, IDNumber, email } = req.user; // Extract user details from the token
+
     try {
         // Fetch the ticket to be updated
         const ticket = await Ticket.findById(ticketId);
-        // console.log(ticket);
-        
         if (!ticket) {
             return res.status(404).json({ message: 'Ticket not found' });
         }
@@ -351,47 +511,45 @@ export const updateTicketIdNumber = async (req, res) => {
             return res.status(403).json({ message: 'You are not allowed to update this ticket' });
         }
 
-        // Fetch all users from the database
-        const users = await User.find();
-        let foundUser = null;
-
-        // Loop through users to find a match
-        for (let user of users) {
-            // console.log("encription "+user.idNumber);
-
-            let decryptedIDNumber = decrypt(user.idNumber); // Decrypt the ID number
-            // console.log("decryptedIDNumber"+decryptedIDNumber);
-            if (decryptedIDNumber === newIdNumber) {
-                foundUser = user; // Store the found user
-                break; // Exit loop once we find a match
-            }
+        // Check if the new ID number matches the authenticated user
+        let decryptedIDNumber = decrypt(IDNumber); // Decrypt the user's ID number from the token
+        if (decryptedIDNumber !== newIdNumber) {
+            return res.status(403).json({ message: 'You are not allowed to update this ticket with a different ID number' });
         }
 
-        // If no user found
-        if (!foundUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Update the ticket's userId and set updateStatus to 1
-        ticket.userId = foundUser._id;
+        // Update the ticket's updateStatus to 1
         ticket.updateStatus = 1; // Mark ticket as updated
-        ticket.idNumber=foundUser.idNumber;
 
-        // Generate a new unique code
-        const newUniqueCode = await generateUniqueCode(foundUser._id, ticket.eventId);
-        ticket.uniqueCode = newUniqueCode; // Assuming your Ticket model has a uniqueCode field
+        // Generate a new unique code for the new ticket
+        const newUniqueCode = await generateUniqueCode(userId, ticket.eventId);
 
-        // Save the updated ticket
+        // Create a new ticket with the same information but a different userId
+        const newTicket = new Ticket({
+            eventId: ticket.eventId,
+            userId: userId, // Use the user ID from the token
+            ticketType: ticket.ticketType,
+            quantity: ticket.quantity,
+            price: ticket.price,
+            visitDate: ticket.visitDate,
+            uniqueCode: newUniqueCode, // New unique code
+            updateStatus: 0, // New ticket status is not updated
+            purchaseDate: new Date(), // Set the current date
+        });
+
+        // Save the updated ticket and the new ticket
         await ticket.save();
+        await newTicket.save();
 
         res.status(200).json({
-            message: 'Ticket updated successfully',
-            ticket: {
-                ...ticket.toObject(),
+            message: 'Ticket updated successfully and a new ticket created',
+            updatedTicket: ticket,
+            newTicket: {
+                ...newTicket.toObject(),
                 user: {
-                    IDNumber: newIdNumber, // Original ID number
-                    email: foundUser.email,
-                    userId: foundUser._id.toString(),
+                    IDNumber: newIdNumber
+                    //, // Include the user's ID number
+                    // email: email,
+                    // userId: userId,
                 },
             },
         });
@@ -400,6 +558,7 @@ export const updateTicketIdNumber = async (req, res) => {
         res.status(500).json({ message: 'Error updating ticket', error });
     }
 };
+
 
 
 //get ticket by id of ticket 
@@ -440,13 +599,23 @@ export const TicketfindbyCode = async (req, res) => {
 
         res.status(200).json({
             message: 'Ticket retrieved successfully',
-            ticket,
+            ticket: {
+                ...ticket.toObject(),
+                user: {
+                    // IDNumber: user.userId.idNumber, // Assuming userId has an idNumber field
+                    // email: ticket.userId.email,
+                    userId: ticket.userId._id.toString(),
+                },
+            },
         });
     } catch (error) {
         console.error('Error retrieving ticket:', error);
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+
+
 
 
 

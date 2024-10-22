@@ -158,7 +158,7 @@ useEffect(() => {
     };
 
     return (
-        <div>
+        <div className=''>
             <Slider />
 
             <SearchBar onSearch={handleSearch} />
