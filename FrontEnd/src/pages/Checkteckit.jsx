@@ -3,6 +3,8 @@ import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
 import ticketIcon from '/ticket.png'
 import MyTicket from '../components/MyTicket'
 import { AiOutlineFileSearch } from "react-icons/ai";
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 
 function Checkteckit() {
@@ -13,7 +15,8 @@ function Checkteckit() {
     }
     return (
         <div>
-            <div className='w-[100%] h-[10vh] bg-[#78006E]'>
+            <Navbar/>
+            <div className=''>
 
             </div>
             <div className='w-[100%] h-[100vh] relative'>
@@ -45,6 +48,7 @@ function Checkteckit() {
 
                 </div>
             </div>
+            <Footer/>
         </div>
     )
 }

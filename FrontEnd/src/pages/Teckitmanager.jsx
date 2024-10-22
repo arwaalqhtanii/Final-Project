@@ -3,6 +3,8 @@ import MyTicket from '../components/MyTicket'
 import { CiSearch } from "react-icons/ci";
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
 import { AiOutlineFileSearch } from "react-icons/ai";
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function Teckitmanager() {
 
@@ -17,6 +19,7 @@ function Teckitmanager() {
     };
     return (
         <div>
+            <Navbar/>
             <div className='w-[100%] h-[10vh] bg-[#78006E]'>
 
             </div>
@@ -60,6 +63,7 @@ function Teckitmanager() {
                 ></MyTicket>
 
             </div>
+            <Footer/>
         </div>
     )
 }

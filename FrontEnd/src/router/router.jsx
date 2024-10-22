@@ -5,6 +5,8 @@ import SignupW from "../pages/SignupW";
 import Home from "../pages/Home";
 import ErrorPage from "../pages/ErrorPage";  
 import Profile from "../pages/Profile";
+import Teckitmanager from "../pages/Teckitmanager";
+import Checkteckit from "../pages/Checkteckit";
 
 const router = createBrowserRouter([
 
@@ -26,13 +28,21 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />
     },
     {
-        path: "/Home",
+        path: "/",
         element: <Home />,
         errorElement: <ErrorPage />
     },
     {
         path: "*",  
         element: <ErrorPage />
+    },
+    {
+        path: "/Teckitmanager",  
+        element: <Teckitmanager />
+    },
+    {
+        path: "/Checkteckit",  
+        element: <Checkteckit />
     },
 ]);
 
