@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { FaApplePay, FaCreditCard, FaTimes } from 'react-icons/fa'; // Importing FaTimes for the "X" icon
-import "react-datepicker/dist/react-datepicker.css"; // Importing react-datepicker styles
+import { FaApplePay, FaCreditCard, FaTimes, FaTicketAlt } from 'react-icons/fa'; // استيراد الأيقونات
+import "react-datepicker/dist/react-datepicker.css"; // استيراد أنماط react-datepicker
 
 const BookingModal = ({ isOpen, onClose, event }) => {
     const [selectedTicket, setSelectedTicket] = useState(null);
@@ -20,21 +21,21 @@ const BookingModal = ({ isOpen, onClose, event }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setShowConfirmation(true); // Show confirmation modal
+        setShowConfirmation(true); // عرض تأكيد الحجز
     };
 
     const handleConfirm = () => {
         setShowConfirmation(false);
-        setShowSuccessMessage(true); // Show success message
+        setShowSuccessMessage(true); // عرض رسالة نجاح الحجز
     };
 
     const handleCancel = () => {
-        setShowConfirmation(false); // Just close the confirmation modal
+        setShowConfirmation(false); // إغلاق نافذة التأكيد
     };
 
     const handleSuccessOk = () => {
-        setShowSuccessMessage(false); // Close success message modal
-        onClose(); // Close the booking modal
+        setShowSuccessMessage(false); // إغلاق رسالة النجاح
+        onClose(); // إغلاق نافذة الحجز
     };
 
     return (
@@ -42,13 +43,13 @@ const BookingModal = ({ isOpen, onClose, event }) => {
             {/* Booking Modal */}
             <div className={`fixed inset-0 flex items-center justify-center z-50 ${isOpen ? '' : 'hidden'}`}>
                 <div className="fixed inset-0 bg-black opacity-75" onClick={onClose}></div>
-                <div className="relative bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] h-auto">
+                <div className="relative bg-white rounded-lg p-8 z-10 shadow-lg max-w-lg mx-auto w-[95%] h-auto">
                     {/* X Close Icon */}
                     <button className="absolute top-3 right-3 text-gray-600 hover:text-gray-800" onClick={onClose}>
                         <FaTimes className="text-2xl" />
                     </button>
 
-                    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">{event.name}</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">{event.name}</h2>
 
                     {/* Event Date */}
                     <p className="text-gray-600 mb-6 text-center">Date: {event.startDate} - {event.endDate}</p>
@@ -68,22 +69,48 @@ const BookingModal = ({ isOpen, onClose, event }) => {
                             />
                         </div>
 
-                        {/* Ticket Type Selection */}
+                        {/* Ticket Type Selection with Icons */}
                         <div className="mb-6">
                             <label className="block mb-2 font-semibold text-left">Ticket type:</label>
                             <div className="flex flex-col items-start">
-                                {['Gold - 150 SAR', 'Silver - 100 SAR', 'Bronze - 50 SAR'].map((option) => (
-                                    <label key={option} className="flex items-center mb-2 cursor-pointer">
-                                        <input 
-                                            type="radio" 
-                                            value={option.split(' - ')[0]} 
-                                            checked={selectedTicket === option.split(' - ')[0]} 
-                                            onChange={handleTicketChange} 
-                                            className="radio radio-primary mr-2"
-                                        />
-                                        <span>{option}</span>
-                                    </label>
-                                ))}
+                                {/* Gold */}
+                                <label className="flex items-center mb-2 cursor-pointer">
+                                    <input 
+                                        type="radio" 
+                                        value="Gold" 
+                                        checked={selectedTicket === 'Gold'} 
+                                        onChange={handleTicketChange} 
+                                        className="radio radio-primary mr-2"
+                                    />
+                                    <FaTicketAlt className="mr-2 text-yellow-500 text-2xl" />
+                                    <span>150 SAR</span>
+                                </label>
+
+                                {/* Silver */}
+                                <label className="flex items-center mb-2 cursor-pointer">
+                                    <input 
+                                        type="radio" 
+                                        value="Silver" 
+                                        checked={selectedTicket === 'Silver'} 
+                                        onChange={handleTicketChange} 
+                                        className="radio radio-primary mr-2"
+                                    />
+                                    <FaTicketAlt className="mr-2 text-gray-400 text-2xl" />
+                                    <span>100 SAR</span>
+                                </label>
+
+                                {/* Bronze */}
+                                <label className="flex items-center mb-2 cursor-pointer">
+                                    <input 
+                                        type="radio" 
+                                        value="Bronze" 
+                                        checked={selectedTicket === 'Bronze'} 
+                                        onChange={handleTicketChange} 
+                                        className="radio radio-primary mr-2"
+                                    />
+                                    <FaTicketAlt className="mr-2 text-orange-500 text-2xl" />
+                                    <span>50 SAR</span>
+                                </label>
                             </div>
                         </div>
 
@@ -120,7 +147,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
                         <div className="flex justify-center mt-4">
                             <button 
                                 type="submit" 
-                                className="py-2 px-6 rounded-lg bg-[#be008d] hover:bg-[#78006e] w-44 text-white font-semibold text-lg"
+                                className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-3 px-6 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out"
                             >
                                 Book Now
                             </button>
@@ -133,13 +160,13 @@ const BookingModal = ({ isOpen, onClose, event }) => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="fixed inset-0 bg-black opacity-75"></div>
-                    <div className="relative bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] h-auto">
-                        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Confirm Booking</h2>
+                    <div className="relative bg-white rounded-lg p-8 z-10 shadow-lg max-w-lg mx-auto w-[95%] h-auto">
+                        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Confirm Booking</h2>
                         <p className="text-center text-gray-600 mb-6">You are about to book <strong>{event.name}</strong> on <strong>{date?.toLocaleDateString()}</strong>. Are you sure you want to proceed?</p>
 
                         <div className="flex justify-center space-x-4">
                             <button 
-                                className="py-2 px-6 rounded-lg bg-[#be008d] hover:bg-[#78006e] text-white font-semibold text-lg"
+                                className="py-2 px-6 rounded-lg bg-gradient-to-r from-purple-600 to-purple-800 text-white font-semibold text-lg"
                                 onClick={handleConfirm}
                             >
                                 Confirm
@@ -159,13 +186,13 @@ const BookingModal = ({ isOpen, onClose, event }) => {
             {showSuccessMessage && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="fixed inset-0 bg-black opacity-75"></div>
-                    <div className="relative bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] h-auto">
-                        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Booking Successful!</h2>
+                    <div className="relative bg-white rounded-lg p-8 z-10 shadow-lg max-w-lg mx-auto w-[95%] h-auto">
+                        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Booking Successful!</h2>
                         <p className="text-center text-gray-600 mb-6">Your booking for <strong>{event.name}</strong> has been confirmed.</p>
 
                         <div className="flex justify-center">
                             <button 
-                                className="py-2 px-6 rounded-lg bg-[#be008d] hover:bg-[#78006e] text-white font-semibold text-lg"
+                                className="py-2 px-6 rounded-lg bg-gradient-to-r from-purple-600 to-purple-800 text-white font-semibold text-lg"
                                 onClick={handleSuccessOk}
                             >
                                 Ok

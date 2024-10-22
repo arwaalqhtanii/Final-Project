@@ -17,7 +17,7 @@ function FormBookTicket() {
   return (
     <div className="relative flex flex-col items-center min-h-screen bg-white overflow-hidden">
       
-      {/* تصميم التذكرة الفعلي */}
+     
       <div className="relative bg-white rounded-lg shadow-xl max-w-3xl mx-auto p-0 overflow-hidden my-6">
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-[#78006e] to-[#be008d] pointer-events-none opacity-20"></div>
 
@@ -61,7 +61,7 @@ function FormBookTicket() {
             </div>
           </div>
 
-          {/* اختيار نوع التذكرة */}
+         
           <div className="mb-6">
             <label className="block text-right mb-2 text-gray-700">:نوع التذكرة</label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
