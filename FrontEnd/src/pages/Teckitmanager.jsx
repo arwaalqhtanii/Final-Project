@@ -3,20 +3,45 @@ import MyTicket from '../components/MyTicket'
 import { CiSearch } from "react-icons/ci";
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
 import { AiOutlineFileSearch } from "react-icons/ai";
+import { IoClose } from "react-icons/io5";
 
 function Teckitmanager() {
 
     const [sellPop, setSellPop] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState()
-    const handleSell = () => {
+    const handleSell = (ticketCode) => {
+        setSelectedTicket(ticketCode);
         setSellPop(true);
+        document.body.style.overflow = 'hidden';
     };
 
     const handleCloseSellPopup = () => {
         setSellPop(false);
+        document.body.style.overflow = 'auto';
     };
     return (
-        <div>
+        <div className='relative'>
+            {sellPop && (
+                <div className='fixed inset-0 flex items-center justify-center z-[9999]'>
+                    <div className='fixed inset-0 bg-black opacity-80'></div>
+                    <div className='flex flex-col items-center justify-evenly w-[40%] h-[40vh] bg-white rounded-[10px] z-[9999999] p-[20px]'>
+                        <div className='w-[100%] text-[1.5rem] font-bold flex justify-between'>
+                            <div>Sell your Ticket</div>
+                            <button onClick={handleCloseSellPopup}>
+                                <IoClose className='text-[2rem]' />
+                            </button>
+                        </div>
+                        <div className='font-bold text-[1.5rem]'>Ticket Code: {selectedTicket}</div>
+                        <div className='font-bold text-[1.2rem]'>TO</div>
+                        <input className='px-[10px] w-[60%] h-[50px] rounded-[10px] border-[1px] border-[#78006E]' placeholder="Buyer's Email" />
+                        <button className='px-[23px] py-[5px] rounded-[5px] text-white bg-[#78006e] hover:bg-[#be008d]'>
+                            Sell
+                        </button>
+                    </div>
+                </div>
+            )}
+
+
             <div className='w-[100%] h-[10vh] bg-[#78006E]'>
 
             </div>
@@ -48,6 +73,7 @@ function Teckitmanager() {
                     type='GOLD'
                     code='265'
                     status='Available'
+                    popSellForm={() => handleSell('265')}
                 ></MyTicket>
                 <MyTicket
                     title='WWE RAW'
@@ -55,8 +81,9 @@ function Teckitmanager() {
                     date='17 - 04'
                     time='7:30 PM'
                     type='GOLD'
-                    code='265'
+                    code='266'
                     status='Available'
+                    popSellForm={() => handleSell('266')}
                 ></MyTicket>
 
             </div>
