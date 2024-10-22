@@ -4,6 +4,8 @@ import Slider from './Slider';
 import SearchBar from './SearchBar';
 import EventsGrid from './EventsGrid';
 import HowToBook from './HowToBook';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 // const eventsData = [
 //     // بيانات الفعاليات
@@ -159,6 +161,7 @@ useEffect(() => {
 
     return (
         <div className=''>
+            <Navbar/>
             <Slider />
 
             <SearchBar onSearch={handleSearch} />
@@ -170,14 +173,16 @@ useEffect(() => {
                 <div className="text-center mt-6">
                     <button
                         onClick={handleShowMore}
-                        className="bg-purple-700 text-white py-2 px-4 rounded-full hover:bg-purple-800 transition duration-300"
+                        className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-3 px-6 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out"
                     >
-                        عرض المزيد
+                        Show More
                     </button>
+
                 </div>
             )}
 
             <HowToBook />
+            <Footer/>
         </div>
     );
 };

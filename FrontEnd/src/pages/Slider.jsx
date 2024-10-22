@@ -47,16 +47,20 @@ const Slider = () => {
 
    
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white z-10">
-                <h1 className="text-6xl font-bold mb-4" >اكتشف سحر موسم الرياض</h1>
-                <p className="text-lg mb-6">عيش تجربة لا مثيل لها في قلب العاصمة. احجز تذكرتك الآن واستعد لأيام مليئة بالفعاليات الترفيهية والعروض الرائعة التي تنتظرك 
+                <h1 className="text-5xl font-bold mb-4" >  Discover the Magic of Riyadh Season </h1>
+                <br />
+                <p className="text-m mb-6">  Experience an unforgettable journey in the heart of the capital. Book your ticket now and get ready for days filled with  <br /> entertainment events and amazing shows waiting for you.
+            
                 </p>
-                <button className="px-6 py-3 border border-white text-white font-semibold rounded-lg hover:bg-[#78006D] hover:text-white transition-all duration-300">
-                    التحقق من التذكرة
-                </button>
+                <br />
+                <button className="px-8 py-4 bg-gradient-to-r from-[#9b27b0] to-[#ff4081] text-white font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out">
+  Check Ticket
+</button>
                 <p className="absolute bottom-8 text-sm">
-                لا تفوت الفرصة لتكون جزءًا من هذا الحدث الضخم الذي يجمع بين المتعة، الفن، والثقافة في موسم واحد.
+                Don't miss the chance to be part of this grand event that brings together fun, art, and culture in one season.
                 </p>
             </div>
+            
 
             <div className="absolute inset-0 bg-black opacity-40"></div>
         </div>
