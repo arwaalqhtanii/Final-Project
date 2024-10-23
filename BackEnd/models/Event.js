@@ -7,6 +7,7 @@ const EventSchema = new mongoose.Schema({
     googleMapLink: String, 
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
+    Time: { type: String, required: true }, // Time in HH:mm format
     details: { type: String, required: true },
     totalTickets: { type: Number, required: true }, // Total tickets available
     totalTicketsGold: { type: Number, required: true }, // Total gold tickets
