@@ -4,6 +4,7 @@ import connectDB from './database/Database.js'; // Ensure this matches the file 
 import userRoutes from './routes/userRoutes.js';
 import eventRoute from './routes/eventRoutes.js'
 import ticketRoutes from './routes/ticketRoutes.js';
+import notificationRouter from './routes/notificationRoutes.js'
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 
@@ -26,6 +27,8 @@ connectDB();
 app.use('/user', userRoutes);
 app.use('/event', eventRoute);
 app.use('/tickets', ticketRoutes);
+app.use('/notifications', notificationRouter);
+
 
 // Start the Server
 const PORT = process.env.PORT ;

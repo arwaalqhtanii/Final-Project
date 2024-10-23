@@ -1,13 +1,11 @@
 import Ticket from '../models/ticket.js';
 import Event from '../models/Event.js';
 import User from '../models/User.js';
-import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose'; // Make sure to import mongoose
 import crypto from 'crypto'; // Import the crypto library
 import CryptoJS from 'crypto-js'; // If using crypto-js
 import dotenv from 'dotenv';
-import Stripe from 'stripe';
 
 // Helper function to format date to dd/mm/yyyy
 const formatDate = (date) => {
@@ -141,16 +139,17 @@ const encryptIdNumber = (idNumber, eventId) => {
     return encrypted;
 };
 
-// Generate unique code function
-const generateUniqueCode = async (userId, eventId) => {
-    let uniqueCode;
-    let isDuplicate = true;
 
-    while (isDuplicate) {
-        const baseString = `${userId}${eventId}${Date.now()}`;
-        uniqueCode = CryptoJS.SHA256(baseString).toString().slice(0, 6);
-        const existingTicket = await Ticket.findOne({ uniqueCode });
-        isDuplicate = !!existingTicket;
+
+
+const generateUniqueCode = async (idNumber, eventId) => {
+    const encryptedIdNumber = encryptIdNumber(idNumber, eventId); // تشفير رقم الهوية
+    const uniqueCode = CryptoJS.SHA256(`${encryptedIdNumber}${Date.now()}`).toString().slice(0, 6);
+
+    // تحقق من عدم وجود تكرار
+    const existingTicket = await Ticket.findOne({ uniqueCode });
+    if (existingTicket) {
+        return await generateUniqueCode(idNumber, eventId); // حاول مرة أخرى إذا كان هناك تكرار
     }
 
     // console.log('Generated unique code:', uniqueCode);
