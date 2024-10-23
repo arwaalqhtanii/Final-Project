@@ -5,9 +5,9 @@ import { authenticateToken } from '../middleware/authMiddleware.js'; // Assuming
 const router = express.Router();
 
 // Route to notify a user about a ticket
-router.post('/notify', authenticateToken, notifyUserAboutTicket);
+router.post('/notify/:uniqueCode', authenticateToken, notifyUserAboutTicket);
 
 // Route to get notifications for the authenticated user
-router.get('/notifications', authenticateToken, getUserNotifications);
+router.get('/notificationsshow', authenticateToken, getUserNotifications);
 
 export default router;
