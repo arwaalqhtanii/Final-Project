@@ -1,2 +1,5 @@
 .DS_Store
+<<<<<<< HEAD
 node_modules/
+=======
+>>>>>>> f34b6b1 (Ignore .DS_Store file)
