@@ -1,5 +1,5 @@
 import express from 'express';
-import {purchaseTicket,getTicketCountsByDate,getUserTickets,getTicketsByIdNumber,updateTicketIdNumber,getticketbyID, TicketfindbyCode} from '../controllers/ticketController.js';
+import {purchaseTicket,getTicketCountsByDate,getUserTickets,getTicketsByIdNumber,updateTicketIdNumber,getticketbyID, TicketfindbyCode,createPaymentIntent} from '../controllers/ticketController.js';
 import { authenticateToken } from '../middleware/authMiddleware.js'; // Check the path and export name
 
 
@@ -27,6 +27,10 @@ router.get('/tickets/id/:ticketId',getticketbyID);
 
 //TicketfindbyCode
 router.get('/tickets/unique-code/:uniqueCode', TicketfindbyCode);
+
+
+//payment Method
+router.post('/create-payment-intent', createPaymentIntent);
 
 // Get all tickets for an event
 // router.get('/:eventId', getAllTickets);

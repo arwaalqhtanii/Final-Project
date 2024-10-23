@@ -10,6 +10,8 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const [date, setDate] = useState(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const handleTicketChange = (e) => {
         setSelectedTicket(e.target.value);
@@ -24,18 +26,57 @@ const BookingModal = ({ isOpen, onClose, event }) => {
         setShowConfirmation(true); // عرض تأكيد الحجز
     };
 
-    const handleConfirm = () => {
+    // const handleConfirm = () => {
+    //     setShowConfirmation(false);
+    //     setShowSuccessMessage(true); // عرض رسالة نجاح الحجز
+    // };
+
+    // const handleCancel = () => {
+    //     setShowConfirmation(false); // إغلاق نافذة التأكيد
+    // };
+
+    // const handleSuccessOk = () => {
+    //     setShowSuccessMessage(false); // إغلاق رسالة النجاح
+    //     onClose(); // إغلاق نافذة الحجز
+    // };
+
+    const handleConfirm = async () => {
         setShowConfirmation(false);
-        setShowSuccessMessage(true); // عرض رسالة نجاح الحجز
+
+        try {
+            const response = await fetch(`http://localhost:8050/tickets/addTicket/${event._id}/purchase`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ticketType: selectedTicket,
+                    quantity: 1, // missing !!
+                    visitDate: date?.toLocaleDateString('en-CA'), // Convert date to YYYY-MM-DD format
+                    paymentMethod,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                setShowSuccessMessage(true);
+            } else {
+                setErrorMessage(result.message || 'Something went wrong');
+            }
+        } catch (error) {
+            console.error('Error during ticket purchase:', error);
+            setErrorMessage('Network error. Please try again.');
+        }
     };
 
     const handleCancel = () => {
-        setShowConfirmation(false); // إغلاق نافذة التأكيد
+        setShowConfirmation(false);
     };
 
     const handleSuccessOk = () => {
-        setShowSuccessMessage(false); // إغلاق رسالة النجاح
-        onClose(); // إغلاق نافذة الحجز
+        setShowSuccessMessage(false);
+        onClose();
     };
 
     return (
@@ -75,10 +116,11 @@ const BookingModal = ({ isOpen, onClose, event }) => {
                             <div className="flex flex-col items-start">
                                 {/* Gold */}
                                 <label className="flex items-center mb-2 cursor-pointer">
+                 
                                     <input 
                                         type="radio" 
-                                        value="Gold" 
-                                        checked={selectedTicket === 'Gold'} 
+                                        value="gold" 
+                                        checked={selectedTicket === 'gold'} 
                                         onChange={handleTicketChange} 
                                         className="radio radio-primary mr-2"
                                     />
@@ -90,8 +132,8 @@ const BookingModal = ({ isOpen, onClose, event }) => {
                                 <label className="flex items-center mb-2 cursor-pointer">
                                     <input 
                                         type="radio" 
-                                        value="Silver" 
-                                        checked={selectedTicket === 'Silver'} 
+                                        value="silver" 
+                                        checked={selectedTicket === 'silver'} 
                                         onChange={handleTicketChange} 
                                         className="radio radio-primary mr-2"
                                     />
@@ -103,8 +145,8 @@ const BookingModal = ({ isOpen, onClose, event }) => {
                                 <label className="flex items-center mb-2 cursor-pointer">
                                     <input 
                                         type="radio" 
-                                        value="Bronze" 
-                                        checked={selectedTicket === 'Bronze'} 
+                                        value="standard" 
+                                        checked={selectedTicket === 'standard'} 
                                         onChange={handleTicketChange} 
                                         className="radio radio-primary mr-2"
                                     />
@@ -125,7 +167,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
                                         checked={paymentMethod === 'Apple Pay'} 
                                         onChange={handlePaymentChange} 
                                         className="radio radio-primary mr-2"
-                                    />
+                                    />, 
                                     <FaApplePay className="mr-2 text-2xl" />
                                     <span>Apple Pay</span>
                                 </label>
