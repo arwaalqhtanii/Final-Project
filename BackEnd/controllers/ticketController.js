@@ -483,24 +483,24 @@ export const TicketfindbyCode = async (req, res) => {
 
 const stripe = new Stripe('sk_test_51QCyiNFjwRhkW7KwE7OtYSL4Jyq97onSo0ur0n32cMijET3p7x5nV1OSwCPkJtNUTeWGnbsOHtCBEwERM07mzKx00025J8K7SK');
 
+// Function to create payment intent
 export const createPaymentIntent = async (req, res) => {
-    const { amount, currency } = req.body;
+  const { paymentMethodId, amount } = req.body;
 
-    try {
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount,
-            currency,
-            payment_method_types: ['card'], // Can include 'apple_pay' if needed
-        });
-
-        res.send({
-            clientSecret: paymentIntent.client_secret,
-        });
-    } catch (error) {
-        console.error('Error creating payment intent:', error);
-        res.status(500).send({ error: 'Payment processing error' });
-    }
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'eur', // Change to 'usd' if needed
+      payment_method: paymentMethodId,
+      confirmation_method: 'automatic',
+      confirm: true,
+    });
+    res.send({ paymentIntent });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
 };
+  
 
 
 
