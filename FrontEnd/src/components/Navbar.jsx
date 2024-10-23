@@ -34,9 +34,9 @@ const Navbar = () => {
 
     return (
         <div>
-            <nav className={`fixed top-0 left-0 w-full transition-all duration-300 ${isScrolled ? 'bg-white text-[#78006e]' : 'bg-transparent text-white'} z-50`}>
+            <nav className={`fixed top-0 left-0 w-full transition-all duration-300 ${isScrolled ? 'bg-white text-[#78006e] ' : 'bg-transparent text-white'} z-50`}>
                 <div className="container mx-auto flex justify-between items-center p-4">
-                    <h1 className={`text-2xl font-bold ${isScrolled ? 'text-[#78006e]' : 'text-white'}`}>WhiteTik</h1>
+                    <h1 className={`text-2xl font-bold ${isScrolled ? 'text-[#78006e] '  : 'text-white'}`}>WhiteTik</h1>
 
                     <div className="md:hidden">
                         <button onClick={toggleMenu}>
@@ -47,16 +47,16 @@ const Navbar = () => {
                     <div className={`hidden md:flex space-x-8 items-center`}>
                         <Link
                             to="/"
-                            className={`text-lg font-semibold transition-colors duration-300 hover:text-[#78006e] ${isScrolled ? 'text-[#78006e] hover:text-[#171617]' : 'text-white'}`}
+                            className={`text-lg font-semibold transition-colors duration-300 hover:text-[#78006e] ${isScrolled ? 'text-[#78006e] hover:text-[#101010]' : 'text-white'}`}
                         >
                             Home
                         </Link>
 
-                        <Link to="/Checkteckit" className={`text-lg font-semibold transition-colors duration-300  hover:text-[#78006e] ${isScrolled ? 'text-[#78006e] hover:text-[#171617]' : 'text-white'}`}>Check Ticket</Link>
-                        <Link to="/Teckitmanager" className={`text-lg font-semibold transition-colors duration-300 hover:text-[#78006e] ${isScrolled ? ' text-[#78006e] hover:text-[#171617] '  : 'text-white'}`}>Ticket Management</Link>
+                        <Link to="/Checkteckit" className={`text-lg font-semibold transition-colors duration-300  hover:text-[#78006e] ${isScrolled ? 'text-[#78006e] hover:text-[#101010]' : 'text-white'}`}>Check Ticket</Link>
+                        <Link to="/Teckitmanager" className={`text-lg font-semibold transition-colors duration-300 hover:text-[#78006e] ${isScrolled ? ' text-[#78006e] hover:text-[#101010] '  : 'text-white'}`}>Ticket Management</Link>
 
                         <button onClick={handleLogout} className="transition-colors duration-300">
-                            <FiLogOut className={`text-3xl ${isScrolled ? 'text-[#78006e] ' : 'text-white'}`} />
+                            <FiLogOut className={`text-3xl ${isScrolled ? 'text-[#78006e] hover:text-[#171617] ' : 'text-white'}`} />
                         </button>
                     </div>
 
