@@ -6,6 +6,8 @@ import mongoose from 'mongoose'; // Make sure to import mongoose
 import crypto from 'crypto'; // Import the crypto library
 import CryptoJS from 'crypto-js'; // If using crypto-js
 import dotenv from 'dotenv';
+import Stripe from 'stripe';
+
 
 // Helper function to format date to dd/mm/yyyy
 const formatDate = (date) => {
@@ -282,13 +284,15 @@ export const getUserTickets = async (req, res) => {
         const decryptedIdNumber = decrypt(user.idNumber); // Use your decrypt function
 
         // Construct the response by adding user info to each ticket
-        const ticketsWithUserInfo = tickets.map(ticket => ({
+         // Construct the response by adding user info to each ticket
+         const ticketsWithUserInfo = tickets.map(ticket => ({
             ...ticket.toObject(), // Convert ticket to plain object
+            visitDate: formatDate(ticket.visitDate), // Format the purchase date
             user: {
                 IDNumber: user.idNumber, // Include IDNumber
                 email: user.email,       // Include email
                 userId: user._id.toString(), // Include userId
-                userId2:decryptedIdNumber
+                userId2: decryptedIdNumber
             },
         }));
 
@@ -302,6 +306,62 @@ export const getUserTickets = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+//get all tickets for the authenticated user who based on updatestatus
+export const getUserTicketsupdatestatus = async (req, res) => {
+    const userId = req.user._id; // Get user ID from the authenticated request
+    const { updateStatus } = req.params; // Get the update status from the URL parameters
+
+    try {
+        // Construct the query object
+        const query = { userId };
+
+        // If updateStatus is provided, include it in the query
+        if (updateStatus !== undefined) {
+            query.updateStatus = updateStatus; // Filter by updateStatus
+        }
+
+        // Fetch tickets associated with the user, possibly filtered by updateStatus, sorted by purchaseDate descending
+        const tickets = await Ticket.find(query)
+            .populate('eventId') // Populate eventId for more ticket details
+            .sort({ purchaseDate: -1 }); // Sort by purchaseDate in descending order
+
+        if (!tickets.length) {
+            return res.status(404).json({ message: 'No tickets found for this user.' });
+        }
+
+        // Fetch user information
+        const user = await User.findById(userId); 
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const decryptedIdNumber = decrypt(user.idNumber); // Decrypt ID number
+
+        // Construct the response by adding user info to each ticket
+        const ticketsWithUserInfo = tickets.map(ticket => ({
+            ...ticket.toObject(), // Convert ticket to plain object
+            visitDate: formatDate(ticket.visitDate), // Format the purchase date
+            purchaseDate: formatDate(ticket.purchaseDate), // Format the purchase date
+            user: {
+                IDNumber: user.idNumber, // Include IDNumber
+                email: user.email,       // Include email
+                userId: user._id.toString(), // Include userId
+                userId2: decryptedIdNumber // Include decrypted ID
+            },
+        }));
+
+        // Return the updated response
+        res.status(200).json({
+            message: 'Tickets retrieved successfully',
+            tickets: ticketsWithUserInfo,
+        });
+    } catch (error) {
+        console.error('Error retrieving tickets:', error);
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
 
 
 

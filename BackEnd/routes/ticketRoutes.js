@@ -1,5 +1,5 @@
 import express from 'express';
-import {purchaseTicket,getTicketCountsByDate,getUserTickets,getTicketsByIdNumber,updateTicketIdNumber,getticketbyID, TicketfindbyCode,createPaymentIntent} from '../controllers/ticketController.js';
+import {purchaseTicket,getTicketCountsByDate,getUserTickets,getTicketsByIdNumber,updateTicketIdNumber,getticketbyID, TicketfindbyCode,createPaymentIntent,getUserTicketsupdatestatus} from '../controllers/ticketController.js';
 import { authenticateToken } from '../middleware/authMiddleware.js'; // Check the path and export name
 
 
@@ -17,6 +17,9 @@ router.get('/Usertickets', authenticateToken, getUserTickets);
 //get user ticket depends on the IDNumber 
 router.get('/ticketsUserId/:idNumber', authenticateToken, getTicketsByIdNumber);
 
+
+//get user ticket by the update status
+router.get('/ticketsUserstatus/:updateStatus', authenticateToken, getUserTicketsupdatestatus);
 
 ///update ticket
 router.put('/tickets/update/:ticketId', authenticateToken, updateTicketIdNumber);
