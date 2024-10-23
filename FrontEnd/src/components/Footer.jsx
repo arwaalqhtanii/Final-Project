@@ -1,6 +1,7 @@
 import { FaTwitter, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 
+import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className="bg-[#e1dede] py-28 relative">

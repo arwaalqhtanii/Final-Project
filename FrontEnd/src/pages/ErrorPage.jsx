@@ -13,7 +13,7 @@ const ErrorPage = () => {
      
       <p className="text-2xl text-gray-600 mb-8">Sorry, the page you are looking for does not exist.</p>
       <Link 
-        to="/Home" 
+        to="/" 
         className="bg-[#e9ae40] text-white py-2 px-4 rounded-lg hover:bg-[#767674] transition-all duration-300 text-sm sm:text-base md:text-lg lg:text-xl"
       >
         Go back to Home Page
