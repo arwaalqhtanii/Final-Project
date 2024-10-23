@@ -496,6 +496,8 @@ export const createPaymentIntent = async (req, res) => {
       confirm: true,
     });
     res.send({ paymentIntent });
+    console.log("the pay goooooooooooooooooooooooood!!!");
+    
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
