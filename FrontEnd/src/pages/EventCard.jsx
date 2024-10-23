@@ -9,6 +9,9 @@ const EventCard = ({ event }) => {
     return (
         <div className="relative group bg-white shadow-md rounded-lg overflow-hidden flex flex-col h-[50vh]">
             <img src={event.image} alt={event.name} className="w-full h-full   transition-transform duration-500 group-hover:scale-105" />
+            <h3 className="absolute bottom-0 left-0 w-full text-center bg-black bg-opacity-50 text-white py-2">
+                {event.name}
+            </h3>
             <div className="absolute inset-0 bg-purple-800 bg-opacity-80 text-white flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4 text-right">
                 <h3 className="text-3xl font-bold mb-2">{event.name}</h3>
                 <div className="flex items-center justify-end mb-2">
