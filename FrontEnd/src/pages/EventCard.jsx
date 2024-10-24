@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from 'react-icons/fa'; // استيراد الأيقونات المطلوبة
 import BookingModal from './BookingModal'; // استيراد نافذة الحجز
@@ -51,9 +49,10 @@ const EventCard = ({ event }) => {
             </div>
 
             {/* عرض نافذة الحجز عند فتحها */}
-            {isModalOpen && <BookingModal isOpen={isModalOpen} onClose={closeModal} event={event} />}
+            {isModalOpen && <BookingModal isOpen={isModalOpen} onClose={closeModal} event={event} /> }
         </div>
     );
 };
 
 export default EventCard;
+

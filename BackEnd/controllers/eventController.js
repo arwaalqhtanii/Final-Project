@@ -91,6 +91,7 @@ export const updateEvent = async (req, res) => {
         totalTicketsSilver,
         totalTicketsStandard,
         googleMapLink,
+        Time,
     } = req.body;
 
     try {
@@ -105,6 +106,7 @@ export const updateEvent = async (req, res) => {
         if (location) event.location = location;
         if (details) event.details = details;
         if (googleMapLink) event.googleMapLink = googleMapLink;
+        if (Time) event.Time=Time;
 
 
         // Update total tickets for each type and calculate the overall total

@@ -52,7 +52,6 @@
 
 // export default Router;
 
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginW from "../pages/LoginW";
 import SignupW from "../pages/SignupW";
@@ -64,10 +63,12 @@ import Checkteckit from "../pages/Checkteckit";
 import EventCard from "../pages/EventCard"; // استيراد مكون EventCard
 import { Elements } from '@stripe/react-stripe-js'; // استيراد Elements من Stripe
 import { loadStripe } from '@stripe/stripe-js'; // استيراد loadStripe
+import BookingModal from "../pages/BookingModal";
 
 // تحميل مفتاح Stripe الخاص بك
 const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
 
+// إنشاء الراوتر
 const router = createBrowserRouter([
     {
         path: "/LoginW",
@@ -102,16 +103,16 @@ const router = createBrowserRouter([
         element: <Teckitmanager />
     },
     {
-        path: "/Home",
-        element: <Home/>},
-        {
-            path: "/Checkteckit",
-            element: <Checkteckit />
-        }
-       
-    
+        path: "/Checkteckit",
+        element: <Checkteckit />
+    },
+    {
+        path: "/BookingModal",
+        element: <BookingModal />
+    }
 ]);
 
+// تصدير الراوتر كـ default
 const Router = () => {
     return <RouterProvider router={router} />;
 };
