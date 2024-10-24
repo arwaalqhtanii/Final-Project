@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from 'react-icons/fa'; // استيراد الأيقونات المطلوبة
 import BookingModal from './BookingModal'; // استيراد نافذة الحجز
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
 
 const EventCard = ({ event }) => {
     const [isModalOpen, setIsModalOpen] = useState(false); // حالة للتحكم بفتح وإغلاق نافذة الحجز
@@ -52,7 +49,7 @@ const EventCard = ({ event }) => {
             </div>
 
             {/* عرض نافذة الحجز عند فتحها */}
-            {isModalOpen && <Elements stripe={stripePromise}><BookingModal isOpen={isModalOpen} onClose={closeModal} event={event} /></Elements> }
+            {isModalOpen && <BookingModal isOpen={isModalOpen} onClose={closeModal} event={event} /> }
         </div>
     );
 };

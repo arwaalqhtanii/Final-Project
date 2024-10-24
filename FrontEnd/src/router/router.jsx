@@ -64,6 +64,7 @@ import Checkteckit from "../pages/Checkteckit";
 import EventCard from "../pages/EventCard"; // استيراد مكون EventCard
 import { Elements } from '@stripe/react-stripe-js'; // استيراد Elements من Stripe
 import { loadStripe } from '@stripe/stripe-js'; // استيراد loadStripe
+import BookingModal from "../pages/BookingModal";
 
 // تحميل مفتاح Stripe الخاص بك
 const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
     {
         path: "/Checkteckit",
         element: <Checkteckit />
+    },
+    {
+        path: "/BookingModal",
+        element: <BookingModal />
     },
 ]);
 

@@ -6,6 +6,9 @@ import EventsGrid from './EventsGrid';
 import HowToBook from './HowToBook';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Elements } from '@stripe/react-stripe-js'; // Make sure this line is included
+import { loadStripe } from '@stripe/stripe-js';
+const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
 
 //     // بيانات الفعاليات
 //     {
@@ -165,7 +168,7 @@ useEffect(() => {
 
             <SearchBar onSearch={handleSearch} />
 
-            <EventsGrid events={filteredEvents} />
+            <Elements stripe={stripePromise}>   <EventsGrid events={filteredEvents} /></Elements>
 
             {/* زر المزيد */}
             {visibleCount < eventsData.length && (

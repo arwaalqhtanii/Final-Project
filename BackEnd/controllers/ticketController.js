@@ -50,20 +50,16 @@ const decrypt = (text) => {
 
 // Purchase ticket
 export const purchaseTicket = async (req, res) => {
-    const { ticketType, quantity, visitDate ,paymentMethod} = req.body;
+    const { ticketType, quantity, visitDate } = req.body;
     // const { _id: userId } = req.user;
     // const { idNumber: userId } = req.user; // Ensure this matches your user model
     const { eventId } = req.params;
     // console.log('User data:', req.user); // Log the user data
     const { _id: userId, IDNumber, email } = req.user; // Extract user details
-    const validPaymentMethods = ['Apple Pay', 'Credit Card'];
 
 
     try {
-         // Validate payment method
-         if (!validPaymentMethods.includes(paymentMethod)) {
-            return res.status(400).json({ message: 'Invalid payment method. Only Apple Pay and Credit Card are accepted.' });
-        }
+        
         // Decrypt the IDNumber before using it
         const decryptedIDNumber = decrypt(IDNumber);
 
@@ -96,7 +92,6 @@ export const purchaseTicket = async (req, res) => {
                 eventId,
                 userId,
                 ticketType,
-                paymentMethod,
                 quantity: 1, // Each ticket will have a quantity of 1
                 price: price / quantity, // Calculate price per ticket
                 totalPrice:price,
@@ -540,29 +535,27 @@ export const TicketfindbyCode = async (req, res) => {
 
 //------------------------------------------------Payment----------------------//
 
+// Initialize Stripe with your secret key
 const stripe = new Stripe('sk_test_51QCyiNFjwRhkW7KwE7OtYSL4Jyq97onSo0ur0n32cMijET3p7x5nV1OSwCPkJtNUTeWGnbsOHtCBEwERM07mzKx00025J8K7SK');
 
 // Function to create payment intent
 export const createPaymentIntent = async (req, res) => {
-  const { paymentMethodId, amount } = req.body;
+    const { paymentMethodId, amount } = req.body;
 
-  try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: 'eur', // Change to 'usd' if needed
-      payment_method: paymentMethodId,
-      confirmation_method: 'automatic',
-      confirm: true,
-    });
-    res.send({ paymentIntent });
-    console.log("the pay goooooooooooooooooooooooood!!!");
-    
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
+    try {
+        // Create a PaymentIntent with the amount and currency
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount, // Amount in cents
+            currency: 'sar', // Set your currency here
+            payment_method: paymentMethodId,
+            confirm: true, // Automatically confirm the payment
+            payment_method_types: ['card'], // Specify accepted payment method types
+        });
+
+        // Respond with the payment intent details
+        res.status(200).json({ success: true, paymentIntent });
+    } catch (error) {
+        console.error('Error creating payment intent:', error);
+        res.status(500).json({ error: error.message });
+    }
 };
-  
-
-
-
-
