@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import MyTicket from '../components/MyTicket'
 import { CiSearch } from "react-icons/ci";
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
@@ -7,10 +7,16 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { IoClose } from "react-icons/io5";
 import SellTicketModal from '../components/SellTicketModal';
+import axios from 'axios';
+
 function Teckitmanager() {
 
     const [sellPop, setSellPop] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState()
+    const [tickets, setTickets] = useState([]);
+    const token = localStorage.getItem('token'); 
+    const [filterStatus, setFilterStatus] = useState(null); 
+
     const handleSell = (ticketCode) => {
         setSelectedTicket(ticketCode);
         setSellPop(true);
@@ -21,6 +27,47 @@ function Teckitmanager() {
         setSellPop(false);
         document.body.style.overflow = 'auto';
     };
+
+    useEffect(() => {
+        const fetchTickets = async () => {
+            try {
+                const response = await axios.get('http://localhost:8050/tickets/Usertickets', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+    
+                // Sort tickets by purchaseDate in descending order (most recent first)
+                const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+    
+                setTickets(sortedTickets); // Set the sorted tickets
+            } catch (error) {
+                console.error('Error fetching tickets:', error);
+            }
+        };
+    
+        fetchTickets();
+    }, []);
+    
+    const fetchTicketsByStatus = async (status) => {
+        try {
+            const response = await axios.get(`http://localhost:8050/tickets/ticketsUserstatus/${status}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setTickets(response.data.tickets);
+             
+        } catch (error) {
+            console.error('Error fetching tickets:', error);
+        }
+    };
+
+    const handleFilter = (status) => {
+        fetchTicketsByStatus(status); 
+    };
+
+
     return (
         <div>
             {sellPop && (
@@ -34,8 +81,8 @@ function Teckitmanager() {
                 <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%]'>Manage My Tickets</div>
                 <div className='w-[50%] max-md:w-[80%] h-[30%] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>
                     <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
-                        <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]'>Available</button>
-                        <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]'>Not available</button>
+                        <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(0)}>Available</button>
+                        <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(1)}>Not available</button>
                     </div>
                     <div className='w-[60%] max-md:w-[100%] max-md:justify-center flex justify-end max-md:pr-0 pr-4'>
                         <input className='w-[80%] h-[40px] rounded-l-[10px] max-md:h-[50px] focus:outline-none px-[10px] border-[1px] border-[#78006E]' type='search'></input>
@@ -46,7 +93,23 @@ function Teckitmanager() {
             </div>
 
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
-                <MyTicket
+                 
+            {tickets.map((ticket,index) => (
+                    <MyTicket
+                        key={ticket.index} 
+                        title={ticket.eventId.name}
+                        location={ticket.eventId.location}
+                        date={ticket.visitDate}
+                        time={ticket.eventId.Time}
+                        type={ticket.ticketType}
+                        code={ticket.uniqueCode}
+                        status={ticket.updateStatus}
+                        process='Sell'
+                        popSellForm={() => handleSell(ticket.uniqueCode)}
+                    />
+                ))}
+               
+                {/* <MyTicket
                     title='WWE RAW'
                     location='RIYADH'
                     date='17 - 04'
@@ -67,7 +130,7 @@ function Teckitmanager() {
                     Available={false}
                     popSellForm={() => handleSell('265')}
 
-                ></MyTicket>
+                ></MyTicket> */}
 
             </div>
             <Footer />
