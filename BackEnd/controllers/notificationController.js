@@ -2,7 +2,7 @@ import  Ticket  from'../models/ticket.js';
 import  User  from '../models/User.js';
 import  Notification  from '../models/notificationSchema.js'; // Import the Notification model
 
-//send notification to user 
+//send notification to user (condition not exceed more than 50%)
 export const notifyUserAboutTicket = async (req, res) => {
     const { targetUserEmail, newPrice } = req.body; // Get targetUserEmail and newPrice from the body
     const { uniqueCode } = req.params; // Get uniqueCode from the URL parameters
@@ -36,8 +36,12 @@ export const notifyUserAboutTicket = async (req, res) => {
             return res.status(400).json({ message: 'A notification for this unique code is already pending or approved.' });
         }
 
-        console.log(ticket);
-        
+        // Check if new price exceeds original price by more than 50%
+        const priceIncreaseLimit = ticket.price * 1.5; // Calculate 150% of the original price
+        if (newPrice > priceIncreaseLimit) {
+            return res.status(400).json({ message: `New price cannot exceed 50% of the original price  (${priceIncreaseLimit}).` });
+        }
+
         // Create a new notification
         const notification = new Notification({
             userId: targetUser._id,
@@ -46,7 +50,7 @@ export const notifyUserAboutTicket = async (req, res) => {
                 uniqueCode: ticket.uniqueCode,
                 originalPrice: ticket.price,
                 newPrice: newPrice,
-                eventId:ticket.eventId._id,
+                eventId: ticket.eventId._id,
             },
             status: 'pending', // Set status to pending
         });
@@ -66,7 +70,6 @@ export const notifyUserAboutTicket = async (req, res) => {
         res.status(500).json({ message: 'Error sending notification', error });
     }
 };
-
 
 
 

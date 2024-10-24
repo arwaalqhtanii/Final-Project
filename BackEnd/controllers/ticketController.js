@@ -7,6 +7,8 @@ import crypto from 'crypto'; // Import the crypto library
 import CryptoJS from 'crypto-js'; // If using crypto-js
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
+import Notification from '../models/notificationSchema.js'; // Import your Notification model
+
 
 
 // Helper function to format date to dd/mm/yyyy
@@ -504,6 +506,33 @@ export const getticketbyID = async (req, res) => {
 
 
 //get ticket by the uniqeCode 
+// export const TicketfindbyCode = async (req, res) => {
+//     const { uniqueCode } = req.params; // Get the unique code from request parameters
+
+//     try {
+//         // Find the ticket by unique code
+//         const ticket = await Ticket.findOne({ uniqueCode }).populate('eventId'); // Populate eventId if needed
+
+//         if (!ticket) {
+//             return res.status(404).json({ message: 'Ticket not found' });
+//         }
+
+//         res.status(200).json({
+//             message: 'Ticket retrieved successfully',
+//             ticket: {
+//                 ...ticket.toObject(),
+//                 user: {
+//                     // IDNumber: user.userId.idNumber, // Assuming userId has an idNumber field
+//                     // email: ticket.userId.email,
+//                     userId: ticket.userId._id.toString(),
+//                 },
+//             },
+//         });
+//     } catch (error) {
+//         console.error('Error retrieving ticket:', error);
+//         res.status(500).json({ message: 'Server error', error });
+//     }
+// };
 export const TicketfindbyCode = async (req, res) => {
     const { uniqueCode } = req.params; // Get the unique code from request parameters
 
@@ -515,15 +544,17 @@ export const TicketfindbyCode = async (req, res) => {
             return res.status(404).json({ message: 'Ticket not found' });
         }
 
+        // Find the notification status for the ticket
+        const notification = await Notification.findOne({ 'ticketInfo.uniqueCode': uniqueCode });
+
         res.status(200).json({
             message: 'Ticket retrieved successfully',
             ticket: {
                 ...ticket.toObject(),
                 user: {
-                    // IDNumber: user.userId.idNumber, // Assuming userId has an idNumber field
-                    // email: ticket.userId.email,
                     userId: ticket.userId._id.toString(),
                 },
+                notificationStatus: notification ? notification.status : null // Add notification status
             },
         });
     } catch (error) {

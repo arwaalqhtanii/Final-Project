@@ -1,41 +1,69 @@
 import React, { useState } from 'react';
 import { FaTimes, FaEnvelope, FaDollarSign } from 'react-icons/fa';  
+import axios from 'axios';
+
 
 const SellTicketModal = ({ isOpen, onClose, event }) => {
     const [buyerEmail, setBuyerEmail] = useState('');
     const [ticketPrice, setTicketPrice] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-     
+
+    // console.log(event.ticketCode);
+
+
     const handleSellSubmit = (e) => {
         e.preventDefault();
-        setShowConfirmation(true);  
+        setShowConfirmation(true);
     };
 
-     
-    const handleConfirmSale = () => {
+    const handleConfirmSale = async () => {
         setShowConfirmation(false);
-        setShowSuccessMessage(true);  
-        resetForm();  
-    };
-
     
+        const token = localStorage.getItem('token');
+    
+        try {
+            const response = await axios.post(
+                `http://localhost:8050/notifications/notify/${event.ticketCode}`,
+                {
+                    targetUserEmail: buyerEmail,
+                    newPrice: ticketPrice,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include the token in the request
+                    },
+                }
+            );
+    
+            console.log(response.data);
+            setShowSuccessMessage(true);
+            resetForm();
+        } catch (error) {
+            const message = error.response.data.message || 'An error occurred while selling the ticket.';
+            setErrorMessage('Error selling ticket: ' + message);
+            //alert here shoould added
+            console.log(message);
+            console.error('Error:', error);
+        }
+    };
+    
+
     const handleCancelSale = () => {
-        setShowConfirmation(false);  
-        resetForm();  
+        setShowConfirmation(false);
+        resetForm();
     };
 
-    
     const handleSuccessOk = () => {
-        setShowSuccessMessage(false);  
-        onClose();  
+        setShowSuccessMessage(false);
+        onClose();
     };
 
-    
     const resetForm = () => {
-        setBuyerEmail('');  
-        setTicketPrice('');  
+        setBuyerEmail('');
+        setTicketPrice('');
     };
 
     return (
