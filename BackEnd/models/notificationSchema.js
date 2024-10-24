@@ -9,7 +9,6 @@ const notificationSchema = new mongoose.Schema({
     },
     message: { 
         type: String, 
-        required: true // Make this required if you want to ensure every notification has a message
     },
     ticketInfo: {
         eventName: { type: String, required: true }, // Ensure event name is required
@@ -20,8 +19,9 @@ const notificationSchema = new mongoose.Schema({
     status: { 
         type: String, 
         default: 'pending', // Default status
-        enum: ['pending', 'approved', 'cancel'] // Optional: restrict status values
+        enum: ['pending', 'approved','canceled'] // Optional: restrict status values
     },
+    visitDate:{type: Date}
 }, { timestamps: true }); // Automatically manage createdAt and updatedAt fields
 
 // Export the Notification model

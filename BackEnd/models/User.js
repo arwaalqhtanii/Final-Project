@@ -6,7 +6,9 @@ const UserSchema = new mongoose.Schema({
     Username:{typr:String},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    token: { type: String } // For session management
+    token: { type: String }, // For session management
+    isSuspended: { type: Boolean, default: false },
+    suspensionEnd: { type: Date, default: null },
 
 });
 

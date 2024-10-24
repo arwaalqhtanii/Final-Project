@@ -148,6 +148,8 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({ message: 'Email and password are required' });
         }
 
+
+
         // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
@@ -158,6 +160,10 @@ export const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        if (user.isSuspended) {
+            return res.status(403).json({ message: 'Account is temporarily suspended. Please try again later.' });
         }
 
         // Decrypt the idNumber
