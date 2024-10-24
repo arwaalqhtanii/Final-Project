@@ -6,6 +6,7 @@ import { FaTimes, FaTicketAlt } from 'react-icons/fa'; // استيراد الأ�
 import "react-datepicker/dist/react-datepicker.css"; // استيراد أنماط react-datepicker
 
 // استيراد مكتبات Stripe
+
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 

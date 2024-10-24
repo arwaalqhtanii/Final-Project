@@ -7,7 +7,6 @@ import HowToBook from './HowToBook';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-
 const EventsPage = () => {
     const [eventsData, setEventsData] = useState([]); // To store fetched events
     const [filteredEvents, setFilteredEvents] = useState(eventsData.slice(0, 8)); // عرض 8 فعاليات في البداية
