@@ -15,7 +15,6 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const stripe = useStripe();
     const elements = useElements();
 
-    // console.log("event._id" + event._id);
     
     const ticketPrices = {
         gold: 150,  
@@ -32,102 +31,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
 
     console.log("total"+total);
     
-//     const handleSubmit = async () => { 
-//         if (!stripe || !elements) {
-//             console.error('Stripe.js has not loaded yet.');
-//             return;
-//         }
-    
-//         const cardElement = elements.getElement(CardElement);
-    
-//         if (!cardElement) {
-//             console.error('CardElement is not rendered properly.');
-//             return;
-//         }
-    
-//         setLoading(true);
-    
-//         const { error, paymentMethod } = await stripe.createPaymentMethod({
-//             type: 'card',
-//             card: cardElement,
-//         });
-    
-//         if (error) {
-//             console.error('[Error]', error);
-//             alert(error.message);
-//             setLoading(false);
-//             return;
-//         }
-    
-//         try {
-//             const paymentResponse = await axios.post('http://localhost:8050/tickets/create-payment-intent', {
-//                 paymentMethodId: paymentMethod.id,
-//                 amount: total,
-//             });
-// console.log("test"+paymentResponse.data.success);
 
-
-//             if (paymentResponse.data.success) {
-//                 console.log('Payment Intent response:', paymentResponse.data);
-//                 // Assuming you have a user authentication token stored
-//                 const userToken = localStorage.getItem('token'); // Adjust as needed
-//                 const formatDate = (date) => {
-//                     if (!date) return ''; // Return empty string if date is null or undefined
-                
-//                     const year = date.getFullYear();
-//                     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-//                     const day = String(date.getDate()).padStart(2, '0');
-                
-//                     return `${year}/${month}/${day}`; // Format as yyyy/mm/dd
-//                 };
-//                 const ticketData = {
-//                     ticketType: selectedTicket,
-//                     quantity: numberOfTickets,
-//                     visitDate: formatDate(date), // Format the selected date
-//                 };
-                
-//                 // Now convert it to the format expected by your backend, if necessary
-//                 const visitDateObj = new Date(ticketData.visitDate); // Convert formatted string back to Date if needed
-//                 const formattedDate = visitDateObj.toISOString().split('T')[0]; // Convert to 'YYYY-MM-DD'
-                
-//                 // Use formattedDate for the API call if your backend expects it in 'YYYY-MM-DD' format
-//                 const finalTicketData = {
-//                     ticketType: selectedTicket,
-//                     quantity: numberOfTickets,
-//                     visitDate: formattedDate,
-//                 };
-
-//                 console.log(finalTicketData);
-//                 console.log(userToken);
-//                 console.log("eventis  "+event._id);
-                
-    
-//                 // Create ticket for the user
-//                 const ticketResponse = await axios.post(`http://localhost:8050/tickets/addTicket/${event._id}/purchase`, finalTicketData, {
-//                     headers: {
-//                         Authorization: `Bearer ${userToken}`, // Include the token for authenticated requests
-//                     },
-//                 });
-
-//                 console.log(ticketResponse);
-                
-//                 if (ticketResponse.data.success) {
-//                     console.log("ticket goood" );
-                    
-//                     setShowSuccessMessage(true);
-//                 } else {
-//                     throw new Error(ticketResponse.data.error || 'Ticket creation failed');
-//                 }
-//             } else {
-//                 throw new Error(paymentResponse.data.error || 'Payment failed');
-//             }
-//         } catch (error) {
-//             console.error('Error creating payment intent:', error);
-//             alert('Payment failed: ' + error.message);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
     
 const handleSubmit = async () => { 
     if (!stripe || !elements) {
