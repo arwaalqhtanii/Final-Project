@@ -71,7 +71,11 @@ function Teckitmanager() {
     return (
         <div>
             {sellPop && (
-                <SellTicketModal></SellTicketModal>
+                <SellTicketModal
+                    isOpen={sellPop}
+                    onClose={handleCloseSellPopup}
+                    event={{ ticketCode: selectedTicket }}
+                />
             )}
             <Navbar />
 
