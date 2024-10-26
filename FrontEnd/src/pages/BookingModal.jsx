@@ -14,6 +14,8 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const [loading, setLoading] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
+    const [error, setError] = useState(null);
+
 
     
     const ticketPrices = {
@@ -34,6 +36,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
 
     
 const handleSubmit = async () => { 
+    setError('');
     if (!stripe || !elements) {
         console.error('Stripe.js has not loaded yet.');
         return;
@@ -112,8 +115,9 @@ const handleSubmit = async () => {
             throw new Error('Ticket creation failed');
         }
     } catch (error) {
-        //here add window show error message when date in before !!
-        console.error('Error during ticket creation:', error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
+            setError(errorMessage); // Set error message from the response or fallback
+            console.error('Error during ticket creation:', errorMessage);
     }
 };
 
@@ -146,7 +150,7 @@ const handleSubmit = async () => {
 
                 <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">{event.name}</h2>
                 <p className="text-gray-600 mb-6 text-center">Date: {event.startDate} - {event.endDate}</p>
-
+                {error && <h1 className="text-red-600">{error}</h1>} {/* Display error message */}
                 <form onSubmit={(e) => { e.preventDefault(); setShowConfirmation(true); }}>
                     <div className="mb-6 md:flex md:items-start">
                         <div className="w-full mb-4 md:mb-0">

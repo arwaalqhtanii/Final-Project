@@ -9,6 +9,8 @@ import Vector from '/Vector.png';
 function MyTicket(props) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+    console.log("pending ticketmanager "+ props.pending);
+
     useEffect(() => {
         // Function to handle screen resize
         const handleResize = () => {
@@ -25,10 +27,10 @@ function MyTicket(props) {
     }, []);
 
     return (
-        <div className={` ${windowWidth > 700 ? 'ticket-big' : 'ticket-small'} w-[50vw] max-md:w-[80%] h-[40vh]  max-md:h-[fit-content] max-md:py-[15px] flex max-md:flex-col max-md:items-center justify-start rounded-[10px] relative ${!props.Available ? 'bg-gray-300 text-gray-500' : 'bg-white'}`}>
+        <div className={` ${windowWidth > 700 ? 'ticket-big' : 'ticket-small'} w-[50vw] max-md:w-[80%] h-[40vh]  max-md:h-[fit-content] max-md:py-[15px] flex max-md:flex-col max-md:items-center justify-start rounded-[10px] relative ${props.status === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white'}`}>
             <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] justify-evenly  p-[10px]  pl-[35px] pr-[35px]'>
                 <div className='flex'>
-                    <div className={` text-[2rem] font-bold ${!props.Available ? 'text-gray-500' : 'text-[#78006E]'}`}>{props.title}</div>
+                    <div className={` text-[2rem] font-bold ${props.status === 1 ? 'text-gray-500' : 'text-[#78006E]'}`}>{props.title}</div>
                 </div>
                 <div className='flex items-center gap-x-[1rem]'>
                     <div className='font-bold text-[1.5rem]'>{props.location}</div>
@@ -59,7 +61,7 @@ function MyTicket(props) {
                     <div className='relative flex justify-center'>
                         {/* QR Code with conditional blur effect */}
                         <img
-                            className={`w-[75%] ${!props.Available ? 'filter blur-[5px]' : ''}`}
+                            className={`w-[75%] ${props.status === 1 ? 'filter blur-[5px]' : ''}`}
                             src='https://www.marefa.org/w/images/8/87/QRCode.png'
                             alt="Barcode"
                         />
@@ -69,8 +71,8 @@ function MyTicket(props) {
                     <div className='relative'>
                         <div className='font-bold'>
                             <span>Ticket code : </span>
-
-                            <span className={`${!props.Available ? 'filter blur-[5px]' : ''}`}>
+                            
+                            <span className={`${props.status === 1 ? 'filter blur-[5px]' : ''}`}>
                                 {props.code}
                             </span>
                         </div>
@@ -84,11 +86,11 @@ function MyTicket(props) {
                         </div>
                     ) : (
                         <div className='flex justify-end gap-x-[1.5rem]'>
-                            {props.Available ? (
+                            {props.status === 0 ? (
                                 <button
-                                    className='px-[10px] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center font-bold'
-                                    onClick={props.popSellForm}
-                                >
+                                className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending === '1' ? 'bg-gray-500' : 'bg-[#78006E]'}`}
+                                onClick={props.pending === '1' ? null : props.popSellForm}
+                            >
                                     Sell
                                 </button>
                             ) : (

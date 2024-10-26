@@ -7,6 +7,9 @@ import crypto from 'crypto'; // Import the crypto library
 import CryptoJS from 'crypto-js'; // If using crypto-js
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
+import Notification from '../models/notificationSchema.js'; // Import your Notification model
+import { log } from 'console';
+
 
 
 // Helper function to format date to dd/mm/yyyy
@@ -97,7 +100,8 @@ export const purchaseTicket = async (req, res) => {
                 totalPrice:price,
                 visitDate,
                 uniqueCode,
-                updateStatus: 0 // Adding the update status flag
+                updateStatus: 0 ,// Adding the update status flag
+                isPendingSale: false
             });
 
             // Save the ticket and push the promise to the array
@@ -408,15 +412,98 @@ export const getTicketsByIdNumber = async (req, res) => {
 //------------//---------------------------------
 
 // update the ticket with new user 
-export const updateTicketIdNumber = async (req, res) => {
-    const { ticketId } = req.params; // Get ticket ID from request parameters
-    const { newIdNumber } = req.body; // Get new ID number from request body
-    // console.log("enter Id : "+newIdNumber);
+// export const updateTicketIdNumber = async (req, res) => {
+//     const { ticketId } = req.params; // Get ticket ID from request parameters
+//     const { newIdNumber } = req.body; // Get new ID number from request body
+//     // console.log("enter Id : "+newIdNumber);
  
+//     try {
+//         // Fetch the ticket to be updated
+//         const ticket = await Ticket.findById(ticketId);
+//         // console.log(ticket);
+        
+//         if (!ticket) {
+//             return res.status(404).json({ message: 'Ticket not found' });
+//         }
+
+//         // Check if the ticket's updateStatus is 0
+//         if (ticket.updateStatus !== 0) {
+//             return res.status(403).json({ message: 'You are not allowed to update this ticket' });
+//         }
+
+//         // Fetch all users from the database
+//         const users = await User.find();
+//         let foundUser = null;
+
+//         // Loop through users to find a match
+//         for (let user of users) {
+//             // console.log("encription "+user.idNumber);
+
+//             let decryptedIDNumber = decrypt(user.idNumber); // Decrypt the ID number
+//             // console.log("decryptedIDNumber"+decryptedIDNumber);
+//             if (decryptedIDNumber === newIdNumber) {
+//                 foundUser = user; // Store the found user
+//                 break; // Exit loop once we find a match
+//             }
+//         }
+
+//         // If no user found
+//         if (!foundUser) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         // Update the ticket's userId and set updateStatus to 1
+//         ticket.userId = foundUser._id;
+//         ticket.updateStatus = 1; // Mark ticket as updated
+//         ticket.idNumber=foundUser.idNumber;
+
+//         // Generate a new unique code
+//         const newUniqueCode = await generateUniqueCode(foundUser._id, ticket.eventId);
+//         ticket.uniqueCode = newUniqueCode; // Assuming your Ticket model has a uniqueCode field
+
+//         // Save the updated ticket
+//         await ticket.save();
+
+//         res.status(200).json({
+//             message: 'Ticket updated successfully and a new ticket created',
+//             updatedTicket: ticket,
+//             newTicket: {
+//                 ...newTicket.toObject(),
+//                 user: {
+//                     IDNumber: newIdNumber, // Original ID number
+//                     email: foundUser.email,
+//                     userId: foundUser._id.toString(),
+//                 },
+//             },
+//         });
+//     } catch (error) {
+//         console.error('Error updating ticket:', error);
+//         res.status(500).json({ message: 'Error updating ticket', error });
+//     }
+// };
+export const updateTicketIdNumber = async (req, res) => {
+    const { ticketId, newPrice } = req.params; // Get ticket ID and new price from request parameters
+
+    // Extract token from headers
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    }
+
     try {
+        // Verify token and extract user information
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure your JWT_SECRET is set in your environment variables
+        const userId = decoded.id; // Assuming the token contains user ID as 'id'
+
+        // Fetch the user to get their ID number
+        const foundUser = await User.findById(userId);
+        if (!foundUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         // Fetch the ticket to be updated
         const ticket = await Ticket.findById(ticketId);
-        // console.log(ticket);
         
         if (!ticket) {
             return res.status(404).json({ message: 'Ticket not found' });
@@ -427,31 +514,12 @@ export const updateTicketIdNumber = async (req, res) => {
             return res.status(403).json({ message: 'You are not allowed to update this ticket' });
         }
 
-        // Fetch all users from the database
-        const users = await User.find();
-        let foundUser = null;
-
-        // Loop through users to find a match
-        for (let user of users) {
-            // console.log("encription "+user.idNumber);
-
-            let decryptedIDNumber = decrypt(user.idNumber); // Decrypt the ID number
-            // console.log("decryptedIDNumber"+decryptedIDNumber);
-            if (decryptedIDNumber === newIdNumber) {
-                foundUser = user; // Store the found user
-                break; // Exit loop once we find a match
-            }
-        }
-
-        // If no user found
-        if (!foundUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Update the ticket's userId and set updateStatus to 1
+        // Update the ticket's userId, price, and set updateStatus to 1
         ticket.userId = foundUser._id;
         ticket.updateStatus = 1; // Mark ticket as updated
-        ticket.idNumber=foundUser.idNumber;
+        ticket.idNumber = foundUser.idNumber; // Assuming this is the decrypted ID number
+        ticket.price = newPrice; // Update ticket price from parameters
+        ticket.status = 'approved'; // Set ticket status to approved
 
         // Generate a new unique code
         const newUniqueCode = await generateUniqueCode(foundUser._id, ticket.eventId);
@@ -461,15 +529,12 @@ export const updateTicketIdNumber = async (req, res) => {
         await ticket.save();
 
         res.status(200).json({
-            message: 'Ticket updated successfully and a new ticket created',
+            message: 'Ticket updated successfully and approved',
             updatedTicket: ticket,
-            newTicket: {
-                ...newTicket.toObject(),
-                user: {
-                    IDNumber: newIdNumber, // Original ID number
-                    email: foundUser.email,
-                    userId: foundUser._id.toString(),
-                },
+            user: {
+                IDNumber: foundUser.idNumber, // ID number from the found user
+                email: foundUser.email,
+                userId: foundUser._id.toString(),
             },
         });
     } catch (error) {
@@ -504,6 +569,33 @@ export const getticketbyID = async (req, res) => {
 
 
 //get ticket by the uniqeCode 
+// export const TicketfindbyCode = async (req, res) => {
+//     const { uniqueCode } = req.params; // Get the unique code from request parameters
+
+//     try {
+//         // Find the ticket by unique code
+//         const ticket = await Ticket.findOne({ uniqueCode }).populate('eventId'); // Populate eventId if needed
+
+//         if (!ticket) {
+//             return res.status(404).json({ message: 'Ticket not found' });
+//         }
+
+//         res.status(200).json({
+//             message: 'Ticket retrieved successfully',
+//             ticket: {
+//                 ...ticket.toObject(),
+//                 user: {
+//                     // IDNumber: user.userId.idNumber, // Assuming userId has an idNumber field
+//                     // email: ticket.userId.email,
+//                     userId: ticket.userId._id.toString(),
+//                 },
+//             },
+//         });
+//     } catch (error) {
+//         console.error('Error retrieving ticket:', error);
+//         res.status(500).json({ message: 'Server error', error });
+//     }
+// };
 export const TicketfindbyCode = async (req, res) => {
     const { uniqueCode } = req.params; // Get the unique code from request parameters
 
@@ -515,15 +607,21 @@ export const TicketfindbyCode = async (req, res) => {
             return res.status(404).json({ message: 'Ticket not found' });
         }
 
+        // Find the notification status for the ticket
+        const notification = await Notification.findOne({ 'ticketInfo.uniqueCode': uniqueCode });
+
         res.status(200).json({
             message: 'Ticket retrieved successfully',
             ticket: {
                 ...ticket.toObject(),
                 user: {
-                    // IDNumber: user.userId.idNumber, // Assuming userId has an idNumber field
-                    // email: ticket.userId.email,
                     userId: ticket.userId._id.toString(),
                 },
+                notificationStatus: notification ? notification.status : null, // Add notification status
+                notificationID: notification ? notification._id : null, // 
+                ticketId: ticket._id.toString(), // Add ticket ID here
+
+
             },
         });
     } catch (error) {

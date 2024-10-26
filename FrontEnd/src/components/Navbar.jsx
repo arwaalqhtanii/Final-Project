@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FiMenu, FiX, FiLogOut, FiBell } from 'react-icons/fi';  
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [hasNotification, setHasNotification] = useState(true);  
+    const [notifications, setNotifications] = useState([]);  
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);  
     const navigate = useNavigate();
 
@@ -26,15 +27,49 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
+        localStorage.clear();
         navigate('/LoginW');
     };
+// Fetch notifications
+const fetchNotifications = async () => {
+    try {
+        const token = localStorage.getItem('token'); 
+        const response = await axios.get('http://localhost:8050/notifications/notificationsshow', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        // const ticket = response.data.ticket;
+        console.log('oooooooooooooooooooooo');
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+        setNotifications(response.data.notifications);
+        console.log(notifications);
+        
+        console.log('noti');
+
+        
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+};
+
+useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    fetchNotifications();
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+    };
+}, []);
+
+const handleNavigate = (uniqueCode, newPrice) => {
+    navigate('/Checkteckit', {
+        state: { code: uniqueCode, newPrice }
+    });
+};
+
+
+   
 
     return (
         <div>
@@ -50,22 +85,24 @@ const Navbar = () => {
                                 className={`text-3xl cursor-pointer transition-colors duration-300 ${isScrolled ? 'text-[#78006e] hover:text-[#171617]' : 'text-white'}`} 
                                 onClick={toggleNotificationDropdown}
                             />
-                            {hasNotification && (
+                            {notifications.length > 0  && (
                                 <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-600 rounded-full"></span>
                             )}
                             {isNotificationOpen && (
                                 <div className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10">
                                     <h3 className="text-lg font-bold px-4 py-2 text-[#78006e] border-b">Notifications</h3>
                                     <ul className="text-[#101010]">
-                                        <li className="px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer bg-gray-100">
-                                            You have a new ticket request.
-                                        </li>
-                                        <li className="px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer bg-white">
-                                            Your ticket request has been approved.
-                                        </li>
-                                        <li className="px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer bg-gray-100">
-                                            Special discount on your next purchase!
-                                        </li>
+                                    {notifications.length === 0 ? (
+                                        <li className="px-4 py-2 text-gray-500">No notifications found.</li>
+                                    ) : (
+                                        notifications.map((notification, index) => (
+                                            <li key={index}  className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer ${
+                                                index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+                                            }`} onClick={() => handleNavigate(notification.uniqueCode, notification.newPrice)}>
+                                             You have a new ticket request. {notification.eventName } -{notification.uniqueCode}- {notification.status}
+                                            </li>
+                                        ))
+                                    )}
                                     </ul>
                                 </div>
                             )}
@@ -99,22 +136,24 @@ const Navbar = () => {
                                 className={`text-3xl cursor-pointer transition-colors duration-300 ${isScrolled ? 'text-[#78006e] hover:text-[#171617]' : 'text-white'}`} 
                                 onClick={toggleNotificationDropdown}
                             />
-                            {hasNotification && (
+                            {notifications && (
                                 <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-600 rounded-full"></span>
                             )}
                             {isNotificationOpen && (
                                 <div className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10">
                                     <h3 className="text-lg font-bold px-4 py-2 text-[#78006e] border-b">Notifications</h3>
                                     <ul className="text-[#101010]">
-                                        <li className="px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer bg-gray-100">
-                                            You have a new ticket request.
-                                        </li>
-                                        <li className="px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer bg-white">
-                                            Your ticket request has been approved.
-                                        </li>
-                                        <li className="px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer bg-gray-100">
-                                            Special discount on your next purchase!
-                                        </li>
+                                    {notifications.length === 0 ? (
+                                        <li className="px-4 py-2 text-gray-500">No notifications found.</li>
+                                    ) : (
+                                        notifications.map((notification, index) => (
+                                            <li key={index}  className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer ${
+                                                index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+                                            }`} onClick={() => handleNavigate(notification.uniqueCode, notification.newPrice)}>
+                                             You have a new ticket request. {notification.eventName } -{notification.uniqueCode}- {notification.status}
+                                            </li>
+                                        ))
+                                    )}
                                     </ul>
                                 </div>
                             )}
