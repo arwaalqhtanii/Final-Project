@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import MyTicket from '../components/MyTicket'
 import { CiSearch } from "react-icons/ci";
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
