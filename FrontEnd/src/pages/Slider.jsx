@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // استيراد useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Slider = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const navigate = useNavigate(); // استخدام useNavigate
+    const navigate = useNavigate(); 
 
     const images = [
         'https://i.pinimg.com/736x/cf/fe/cf/cffecf7ee5420bec5e123256036970f8.jpg',  
@@ -61,7 +61,8 @@ const Slider = () => {
                     className="px-8 py-4 bg-gradient-to-r from-[#9b27b0] to-[#ff4081] text-white font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out"
                     onClick={handleCheckTicketClick} // استدعاء دالة التوجيه عند الضغط
                 >
-                    Check Ticket
+                   
+                            Book Now
                 </button>
                 <p className="absolute bottom-8 text-sm">
                     Don't miss the chance to be part of this grand event that brings together fun, art, and culture in one season.

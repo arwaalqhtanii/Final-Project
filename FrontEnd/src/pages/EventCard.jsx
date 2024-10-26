@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from 'react-icons/fa'; // استيراد الأيقونات المطلوبة
-import BookingModal from './BookingModal'; // استيراد نافذة الحجز
+import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from 'react-icons/fa';
+import BookingModal from './BookingModal'; 
 
 const EventCard = ({ event }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false); // حالة للتحكم بفتح وإغلاق نافذة الحجز
+    const [isModalOpen, setIsModalOpen] = useState(false); 
 
     if (!event || !event.image) {
         return <p className="text-red-500 text-center">No data available for this event</p>;
     }
 
     const handleBookNow = () => {
-        setIsModalOpen(true); // فتح نافذة الحجز
+        setIsModalOpen(true);
     };
 
     const closeModal = () => {
-        setIsModalOpen(false); // إغلاق نافذة الحجز
+        setIsModalOpen(false);
     };
 
     return (
@@ -28,13 +28,13 @@ const EventCard = ({ event }) => {
                     <p className="text-lg">{event.location}</p>
                 </div>
                 
-                {/* أيقونة التاريخ */}
+         
                 <div className="flex items-center justify-start mb-2">
                     <FaCalendarAlt className="mr-1" />
                     <p className="text-lg">{event.startDate} - {event.endDate}</p>
                 </div>
 
-                {/* أيقونة الوقت */}
+               
                 <div className="flex items-center justify-start mb-4">
                     <FaClock className="mr-1" />
                     <p className="text-lg">{event.Time}</p>
@@ -42,13 +42,13 @@ const EventCard = ({ event }) => {
                 
                 <button 
                     className="bg-white text-purple-800 py-2 px-4 rounded-full border-2 border-purple-800 hover:bg-purple-200 hover:text-purple-800 transition duration-300"
-                    onClick={handleBookNow} // فتح نافذة الحجز عند الضغط على الزر
+                    onClick={handleBookNow}
                 >
                     Book Now
                 </button>
             </div>
 
-            {/* عرض نافذة الحجز عند فتحها */}
+           
             {isModalOpen && <BookingModal isOpen={isModalOpen} onClose={closeModal} event={event} /> }
         </div>
     );

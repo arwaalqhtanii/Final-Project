@@ -27,7 +27,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     
     
     
-    const total = selectedTicket ? ticketPrices[selectedTicket] * numberOfTickets * 100 : 0;
+    const total = selectedTicket ? ticketPrices[selectedTicket] * numberOfTickets * 1 : 0;
 
     console.log("total"+total);
     

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';  
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Make sure to import axios
+import axios from 'axios'; 
 
 function SignupW() {
   const [idNumber, setIdNumber] = useState('');
@@ -21,7 +21,7 @@ function SignupW() {
       newErrors.idNumber = 'This field is required';
     } else if (idNumber.length !== 9) {
       newErrors.idNumber = 'ID number must be exactly 9 digits';
-    } else if (!/^\d+$/.test(idNumber)) { // Check if idNumber contains only digits
+    } else if (!/^\d+$/.test(idNumber)) {
       newErrors.idNumber = 'ID number must contain only digits';
     }   else if (password === '') {
       newErrors.password = 'This field is required';
@@ -42,7 +42,7 @@ function SignupW() {
     } else {
       setErrors({});
       try {
-        // Send the data to the backend
+      
         const response = await axios.post('http://localhost:8050/user/register', {
           idNumber,
           email,
@@ -52,10 +52,10 @@ function SignupW() {
         if (response.status === 201) {
           console.log('Registration successful!');
           alert('Registration successful!');
-          navigate('/login'); // Navigate to the login page
+          navigate('/LoginW'); 
         }
       } catch (error) {
-        // Handle error from the server
+       
         if (error.response && error.response.data) {
           setErrors({ api: error.response.data.message });
         } else {
@@ -168,7 +168,7 @@ function SignupW() {
         <div className="text-center">
           <p className="text-lg">
             Already have an account? 
-            <a href="/login" className="text-[#78006e] hover:underline"> Log In</a>
+            <a href="/LoginW" className="text-[#78006e] hover:underline"> Log In</a>
           </p>
         </div>
       </div>

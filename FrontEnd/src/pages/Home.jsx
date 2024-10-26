@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Slider from './Slider';
 import SearchBar from './SearchBar';
@@ -6,18 +5,18 @@ import EventsGrid from './EventsGrid';
 import HowToBook from './HowToBook';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Elements } from '@stripe/react-stripe-js'; 
-import { loadStripe } from '@stripe/stripe-js'; // استيراد loadStripe
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
-// تحميل مفتاح Stripe الخاص بك
+
 const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
 
 const EventsPage = () => {
-    const [eventsData, setEventsData] = useState([]); // To store fetched events
-    const [filteredEvents, setFilteredEvents] = useState(eventsData.slice(0, 8)); // عرض 8 فعاليات في البداية
-    const [visibleCount, setVisibleCount] = useState(8); // عدد الفعاليات المعروضة
+    const [eventsData, setEventsData] = useState([]); 
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const [visibleCount, setVisibleCount] = useState(8);
 
-    // Fetch events data from the API
+   
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -25,17 +24,17 @@ const EventsPage = () => {
                 const data = await response.json();
                 console.log(data);
 
-                setEventsData(data); // Update the events data state
-                setFilteredEvents(data.slice(0, visibleCount)); // Initialize filtered events
+                setEventsData(data); 
+                setFilteredEvents(data.slice(0, visibleCount)); 
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
         };
 
         fetchEvents();
-    }, []); // Empty dependency array to run once on mount
+    }, [visibleCount]); 
 
-    // دالة البحث
+   
     const handleSearch = (searchTerm) => {
         if (searchTerm === '') {
             setFilteredEvents(eventsData.slice(0, visibleCount));
@@ -77,3 +76,4 @@ const EventsPage = () => {
 };
 
 export default EventsPage;
+
