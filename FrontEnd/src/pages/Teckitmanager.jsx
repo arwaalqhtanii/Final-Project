@@ -13,8 +13,11 @@ function Teckitmanager() {
     const [selectedTicket, setSelectedTicket] = useState()
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
+    const [notifications, setNotifications] = useState([]); // State for notifications
+
     // const [pendingTickets, setPendingTickets] = useState(new Set()); 
     // const [filterStatus, setFilterStatus] = useState(null); 
+
 
 
     const handleSell = (ticketCode) => {
@@ -45,14 +48,52 @@ function Teckitmanager() {
             console.log(sortedTickets);
 
             setTickets(sortedTickets); // Set the sorted tickets
+            setNotifications(response.data.tickets.flatMap(ticket => ticket.notifications || []));
+
         } catch (error) {
             console.error('Error fetching tickets:', error);
         }
     };
 
+
+    // Fetch tickets initially when the component mounts
+    // Fetch tickets initially when the component mounts
     useEffect(() => {
-        fetchTickets();
-    }, );
+        fetchTickets(); // Initial fetch
+    }, []);
+
+    // Fetch tickets only when new pending notifications are received
+    useEffect(() => {
+        const hasPendingNotification = notifications.some(notification => notification.status === 'pending');
+        if (hasPendingNotification) {
+            fetchTickets(); // Re-fetch tickets if there are pending notifications
+        }
+    }, [notifications]);
+
+    // Simulate notification changes (for demonstration purposes)
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setNotifications(prev => [...prev, { message: 'New notification!', uniqueCode: 'someCode', status: 'pending' }]); // Simulate a pending notification
+        }, 10000); // Simulate a notification every 10 seconds
+
+        return () => clearInterval(intervalId); // Cleanup on unmount
+    }, []);
+    // useEffect(() => {
+    //     fetchTickets();
+    // },[]);
+    // const longPollTickets = async () => {
+    //     while (true) {
+    //         await fetchTickets();
+    //         await new Promise(resolve => setTimeout(resolve, 5000)); // Poll every 5 seconds
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     longPollTickets(); // Start long polling
+    // }, []);
+    // Use useEffect to update tickets when notifications change
+
+  
 
     const fetchTicketsByStatus = async (status) => {
         try {

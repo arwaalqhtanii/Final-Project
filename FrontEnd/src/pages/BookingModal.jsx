@@ -121,6 +121,7 @@ const handleSubmit = async () => {
             console.error('Error during ticket creation:', errorMessage);
     }
 };
+
 const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
     const handleConfirm = () => {
@@ -200,7 +201,7 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
                     {numberOfTickets > 1 && selectedTicket && (
                         <div className="mb-6">
-                            <p className="font-semibold text-left">Total: <strong>{total} SAR</strong></p>
+                            <p className="font-semibold text-left">Total: <strong>{totalcalc} SAR</strong></p>
                         </div>
                     )}
 

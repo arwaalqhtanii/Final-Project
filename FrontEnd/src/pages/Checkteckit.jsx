@@ -6,9 +6,12 @@ import Purchase from '../components/Purchase';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js'; // Make sure this line is included
+import { loadStripe } from '@stripe/stripe-js';
+
 function Checkteckit() {
     const [purchasePop, setPurchasePop] = useState(false);
-
+    const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
 
     const location = useLocation();
     const { code, newPrice } = location.state || {}; // Access state passed from notification
@@ -57,8 +60,13 @@ function Checkteckit() {
         <div>
             <Navbar />
             {purchasePop && (
-                <Purchase isOpen={true} onClose={handleCloseBuyPopup} />
+                <Elements stripe={stripePromise}>
+                    <Purchase isOpen={true} onClose={handleCloseBuyPopup} newPrice={newPrice}  notificationID={ticketForCheck.notificationID}  />
+                </Elements>
             )}
+            {/* {purchasePop && (
+                <Purchase isOpen={true} onClose={handleCloseBuyPopup} />
+            )} */}
             <div className='w-[100%] h-[100vh] relative'>
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard} alt="Background" />
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
@@ -68,7 +76,7 @@ function Checkteckit() {
                     {error && <div className="text-red-500">{error}</div>}
                     {ticketForCheck ? (
                         <div className='w-[100%] flex justify-center'>
-                            
+                        
                             <MyTicket
                                 title={ticketForCheck.eventId?.name || 'Event not found'} // Safe access
                                 location={ticketForCheck.eventId?.location || 'Location not found'} // Safe access
@@ -77,11 +85,12 @@ function Checkteckit() {
                                 type={ticketForCheck.ticketType || 'Type not found'} // Default message
                                 code={ticketForCheck.uniqueCode || 'Code not found'} // Default message
                                 status={ticketForCheck.updateStatus} // Update status logic
-                                newPrice={newPrice } // Safe access
+                                newPrice={newPrice} // Safe access
                                 forbuy='true'
-                                ignoreId={ticketForCheck.notificationID}
+                                notificationID={ticketForCheck.notificationID}
                                 purchaseForm={popPurchaseform}
                             />
+                         
                         </div>
                     ) : (
                         !loading && <div className='text-white'>No ticket found.</div>

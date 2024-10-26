@@ -28,7 +28,7 @@ const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // Use a strong key stored in
 const IV_LENGTH = 16; // For AES, this is typically 16 bytes
 
 
-const decrypt = (text) => {
+export const decrypt = (text) => {
     // console.log('decripted ID Number:', text);
 
     const parts = text.split(':');
@@ -71,20 +71,36 @@ export const purchaseTicket = async (req, res) => {
          if (!event) {
              return res.status(404).json({ message: 'Event not found' });
          }
- 
-         const startDate = new Date(event.startDate);
-         const endDate = new Date(event.endDate);
-         const visitDateObj = new Date(visitDate.split('/').reverse().join('-')); // Converts "25/10/2024" to "2024-10-25"
-        // Convert visitDate from dd/mm/yyyy to Date object
-        // const [day, month, year] = visitDate.split('/');
-        // const visitDateObj2 = new Date(`${year}-${month}-${day}`); // Convert to YYYY-MM-DD format
 
-         // Validate that visitDate is within the event date range
-         if (visitDateObj < startDate || visitDateObj > endDate) {
-             return res.status(400).json({
-                 message: `Visit date must be between ${formatDate(startDate)} and ${formatDate(endDate)}.`
-             });
-         }
+       // Extract dates
+    const startDateStr = event.startDate;
+    const endDateStr = event.endDate;
+    const visitDateStr = visitDate; // Expecting dd/mm/yyyy format
+ console.log("visitDateStr"+visitDateStr);
+ 
+    // Validate visitDate
+    if (typeof visitDateStr !== 'string' || !/^\d{2}\/\d{2}\/\d{4}$/.test(visitDateStr)) {
+        return res.status(400).json({ message: 'Visit date must be provided in dd/mm/yyyy format.' });
+    }
+
+    // Split visitDate using dd/mm/yyyy format
+    const [visitDay, visitMonth, visitYear] = visitDateStr.split('/');
+    const visitDateObj = new Date(`${visitYear}-${visitMonth}-${visitDay}`);
+
+    // Log the visit date for debugging
+    console.log('visitDateObj:', visitDateObj);
+
+    // Create Date objects for startDate and endDate
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+
+    // Validate that visitDate is within the event date range
+    if (visitDateObj < startDate || visitDateObj > endDate) {
+        return res.status(400).json({
+            message: `Visit date must be between ${formatDate(startDate)} and ${formatDate(endDate)}.`
+        });
+    }
+
 
          // Check ticket availability
         const totalSold = event.totalTicketsSold[ticketType] || 0;
@@ -111,7 +127,7 @@ export const purchaseTicket = async (req, res) => {
                 quantity: 1, // Each ticket will have a quantity of 1
                 price: price / quantity, // Calculate price per ticket
                 totalPrice:price,
-                visitDate,
+                visitDate:visitDateObj,
                 uniqueCode,
                 updateStatus: 0 ,// Adding the update status flag
                 isPendingSale: false
@@ -156,7 +172,7 @@ const encryptIdNumber = (idNumber, eventId) => {
 
 
 
-const generateUniqueCode = async (idNumber, eventId) => {
+export const generateUniqueCode = async (idNumber, eventId) => {
     const encryptedIdNumber = encryptIdNumber(idNumber, eventId); // تشفير رقم الهوية
     const uniqueCode = CryptoJS.SHA256(`${encryptedIdNumber}${Date.now()}`).toString().slice(0, 6);
 
@@ -171,7 +187,7 @@ const generateUniqueCode = async (idNumber, eventId) => {
 };
 
 // Price calculation function
-const calculatePrice = (ticketType, quantity) => {
+export const calculatePrice = (ticketType, quantity) => {
     const prices = {
         gold: 150,
         silver: 100,

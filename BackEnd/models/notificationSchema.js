@@ -15,14 +15,16 @@ const notificationSchema = new mongoose.Schema({
         eventName: { type: String, required: true }, // Ensure event name is required
         uniqueCode: { type: String, required: true }, // Ensure unique code is required
         originalPrice: { type: Number, required: true }, // Ensure original price is required
-        newPrice: { type: Number, required: true }, // Ensure new price is required
+        newPrice: { type: Number, required: true }, // Ensure new price is required\
+        visitDate: { type: Date, required: true },
     },
     status: { 
         type: String, 
         default: 'pending', // Default status
         enum: ['pending', 'approved','canceled'] // Optional: restrict status values
     },
-    visitDate:{type: Date}
+   
+    createdAt: { type: Date, default: Date.now },
 }, { timestamps: true }); // Automatically manage createdAt and updatedAt fields
 
 // Export the Notification model

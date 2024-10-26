@@ -337,7 +337,7 @@ function MyTicket(props) {
 
         try {
             await axios.put(
-                `http://localhost:8050/notifications/notificationsignore/${props.ignoreId}`,
+                `http://localhost:8050/notifications/notificationsignore/${props.notificationID}`,
                 {},
                 {
                     headers: {
