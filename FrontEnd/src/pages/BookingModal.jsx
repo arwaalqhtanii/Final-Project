@@ -32,6 +32,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const total = selectedTicket ? ticketPrices[selectedTicket] * numberOfTickets * 100 : 0;
 
     console.log("total"+total);
+     
     
 
     
@@ -120,6 +121,7 @@ const handleSubmit = async () => {
             console.error('Error during ticket creation:', errorMessage);
     }
 };
+const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
     const handleConfirm = () => {
         setShowConfirmation(false);
@@ -242,7 +244,7 @@ const handleSubmit = async () => {
                             <h2 className="text-xl font-bold mb-4">Confirm Your Booking</h2>
                             <p className="mb-2">Ticket Type: <strong>{selectedTicket}</strong></p>
                             <p className="mb-2">Number of Tickets: <strong>{numberOfTickets}</strong></p>
-                            <p className="mb-2">Total Amount: <strong>{total} SAR</strong></p>
+                            <p className="mb-2">Total Amount: <strong>{totalcalc} SAR</strong></p>
                             <p className="mb-4">Do you want to proceed with the payment?</p>
                             <div className="flex justify-between">
                                 <button onClick={() => setShowConfirmation(false)} className="bg-gray-400 text-white py-2 px-4 rounded">Cancel</button>

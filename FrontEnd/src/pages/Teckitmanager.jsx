@@ -14,10 +14,8 @@ function Teckitmanager() {
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
     // const [pendingTickets, setPendingTickets] = useState(new Set()); 
-    const [pending, setpending] = useState('0');
     // const [filterStatus, setFilterStatus] = useState(null); 
 
-    console.log("pending ticketmanager " + pending);
 
     const handleSell = (ticketCode) => {
 
@@ -34,28 +32,27 @@ function Teckitmanager() {
 
 
 
+    const fetchTickets = async () => {
+        try {
+            const response = await axios.get('http://localhost:8050/tickets/Usertickets', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
+            // Sort tickets by purchaseDate in descending order (most recent first)
+            const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+            console.log(sortedTickets);
+
+            setTickets(sortedTickets); // Set the sorted tickets
+        } catch (error) {
+            console.error('Error fetching tickets:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const response = await axios.get('http://localhost:8050/tickets/Usertickets', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                // Sort tickets by purchaseDate in descending order (most recent first)
-                const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-
-                setTickets(sortedTickets); // Set the sorted tickets
-            } catch (error) {
-                console.error('Error fetching tickets:', error);
-            }
-        };
-
         fetchTickets();
-    }, []);
+    }, );
 
     const fetchTicketsByStatus = async (status) => {
         try {
@@ -84,7 +81,7 @@ function Teckitmanager() {
                     isOpen={sellPop}
                     onClose={handleCloseSellPopup}
                     event={{ ticketCode: selectedTicket }}
-                    setpending={setpending}
+                   
                 />
             )}
             <Navbar />
@@ -109,6 +106,8 @@ function Teckitmanager() {
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
 
                 {tickets.map((ticket, index) => (
+                    <>
+                   {/* <h1 className='text-white'> {ticket.notifications}</h1> */}
                     <MyTicket
                         key={ticket.index}
                         title={ticket.eventId.name}
@@ -119,11 +118,19 @@ function Teckitmanager() {
                         code={ticket.uniqueCode}
                         status={ticket.updateStatus}
                         process='Sell'
-                        pending={pending}
                         popSellForm={() => handleSell(ticket.uniqueCode)}
+                        // pending={ticket.notifications[0].status}
+                        pending={ticket.notifications && ticket.notifications.length > 0 ? ticket.notifications[0].status : null} 
+
 
                     />
+                    </>
                 ))}
+    
+
+
+
+
 
                 {/* <MyTicket
                     title='WWE RAW'

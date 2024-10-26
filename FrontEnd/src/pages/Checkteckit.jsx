@@ -39,9 +39,9 @@ function Checkteckit() {
     }, [code]);
 
    
-    function ignoreTicket() {
-        // محتوى الدالة يمكن إضافته هنا لاحقًا
-    }
+    // function ignoreTicket() {
+    //     // محتوى الدالة يمكن إضافته هنا لاحقًا
+    // }
 
     function popPurchaseform() {
         setPurchasePop(true);
@@ -79,7 +79,7 @@ function Checkteckit() {
                                 status={ticketForCheck.updateStatus} // Update status logic
                                 newPrice={newPrice } // Safe access
                                 forbuy='true'
-                                ignore={ignoreTicket}
+                                ignoreId={ticketForCheck.notificationID}
                                 purchaseForm={popPurchaseform}
                             />
                         </div>

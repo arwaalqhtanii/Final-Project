@@ -285,7 +285,7 @@ export const trackAndSuspendUser = async (req, res) => {
         for (const user of notifications) {
             await User.findByIdAndUpdate(user._id, {
                 isSuspended: true,
-                suspensionEnd: Date.now() + 120000, // Set end time for suspension
+                suspensionEnd: Date.now() + 120000, // Set end time for suspension 
             });
 
             // Schedule unsuspension
@@ -335,7 +335,6 @@ const createTestNotifications = async () => {
 };
 
 createTestNotifications();
-
 
 
 

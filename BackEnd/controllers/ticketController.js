@@ -275,11 +275,54 @@ export const getTicketCountsByDate = async (req, res) => {
 //-------------------------------//--------------------------
 
 // Get all tickets for the authenticated user
+// export const getUserTickets = async (req, res) => {
+//     const userId = req.user._id; // Get user ID from the authenticated request
+
+//     try {
+
+//         // Fetch tickets associated with the user
+//         const tickets = await Ticket.find({ userId }).populate('eventId'); // Populate eventId for more ticket details
+
+//         if (!tickets.length) {
+//             return res.status(404).json({ message: 'No tickets found for this user.' });
+//         }
+
+//         // Fetch user information
+//         const user = await User.findById(userId); // Assuming userId corresponds to the user's document in the User collection
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found.' });
+//         }
+
+//         const decryptedIdNumber = decrypt(user.idNumber); // Use your decrypt function
+
+//         // Construct the response by adding user info to each ticket
+//          // Construct the response by adding user info to each ticket
+//          const ticketsWithUserInfo = tickets.map(ticket => ({
+//             ...ticket.toObject(), // Convert ticket to plain object
+//             visitDate: formatDate(ticket.visitDate), // Format the purchase date
+//             user: {
+//                 IDNumber: user.idNumber, // Include IDNumber
+//                 email: user.email,       // Include email
+//                 userId: user._id.toString(), // Include userId
+//                 userId2: decryptedIdNumber
+//             },
+//         }));
+
+//         // Return the updated response
+//         res.status(200).json({
+//             message: 'Tickets retrieved successfully',
+//             tickets: ticketsWithUserInfo,
+//         });
+//     } catch (error) {
+//         console.error('Error retrieving tickets:', error);
+//         res.status(500).json({ message: 'Server error', error });
+//     }
+// };
+
 export const getUserTickets = async (req, res) => {
     const userId = req.user._id; // Get user ID from the authenticated request
 
     try {
-
         // Fetch tickets associated with the user
         const tickets = await Ticket.find({ userId }).populate('eventId'); // Populate eventId for more ticket details
 
@@ -295,9 +338,23 @@ export const getUserTickets = async (req, res) => {
 
         const decryptedIdNumber = decrypt(user.idNumber); // Use your decrypt function
 
-        // Construct the response by adding user info to each ticket
-         // Construct the response by adding user info to each ticket
-         const ticketsWithUserInfo = tickets.map(ticket => ({
+        // Fetch notifications associated with the user's tickets
+        const notifications = await Notification.find({
+            'ticketInfo.uniqueCode': { $in: tickets.map(ticket => ticket.uniqueCode) }
+        });
+
+        // Map notifications by ticket unique code for easy lookup
+        const notificationsByTicket = notifications.reduce((acc, notification) => {
+            const code = notification.ticketInfo.uniqueCode;
+            if (!acc[code]) {
+                acc[code] = [];
+            }
+            acc[code].push(notification); // Collect notifications for each ticket
+            return acc;
+        }, {});
+
+        // Construct the response by adding user info and notification info to each ticket
+        const ticketsWithUserInfo = tickets.map(ticket => ({
             ...ticket.toObject(), // Convert ticket to plain object
             visitDate: formatDate(ticket.visitDate), // Format the purchase date
             user: {
@@ -306,6 +363,7 @@ export const getUserTickets = async (req, res) => {
                 userId: user._id.toString(), // Include userId
                 userId2: decryptedIdNumber
             },
+            notifications: notificationsByTicket[ticket.uniqueCode] || [] // Attach notifications if available
         }));
 
         // Return the updated response
@@ -318,6 +376,8 @@ export const getUserTickets = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+
 
 //get all tickets for the authenticated user who based on updatestatus
 export const getUserTicketsupdatestatus = async (req, res) => {
