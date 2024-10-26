@@ -74,14 +74,27 @@ export const purchaseTicket = async (req, res) => {
  
          const startDate = new Date(event.startDate);
          const endDate = new Date(event.endDate);
-         const visitDateObj = new Date(visitDate.split('/').reverse().join('-')); // Convert dd/mm/yyyy to Date
- 
+         const visitDateObj = new Date(visitDate.split('/').reverse().join('-')); // Converts "25/10/2024" to "2024-10-25"
+        // Convert visitDate from dd/mm/yyyy to Date object
+        // const [day, month, year] = visitDate.split('/');
+        // const visitDateObj2 = new Date(`${year}-${month}-${day}`); // Convert to YYYY-MM-DD format
+
          // Validate that visitDate is within the event date range
          if (visitDateObj < startDate || visitDateObj > endDate) {
              return res.status(400).json({
                  message: `Visit date must be between ${formatDate(startDate)} and ${formatDate(endDate)}.`
              });
          }
+
+         // Check ticket availability
+        const totalSold = event.totalTicketsSold[ticketType] || 0;
+        const totalAvailable = event[`totalTickets${ticketType.charAt(0).toUpperCase() + ticketType.slice(1)}`]; // Get total available tickets
+
+        if (totalSold + quantity > totalAvailable) {
+            return res.status(400).json({
+                message: `Cannot purchase ${quantity} ${ticketType} tickets. Only ${totalAvailable - totalSold} tickets left.`
+            });
+        }
  
         const price = calculatePrice(ticketType, quantity);
         const tickets = []; // Array to hold ticket promises
