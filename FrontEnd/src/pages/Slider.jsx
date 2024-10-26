@@ -9,9 +9,9 @@ const Slider = ({ searchBarRef }) => {
     const images = [
 
 
-        //         'https://cdn.pixabay.com/photo/2017/04/03/04/48/riyadh-2197496_1280.jpg',  
-        //         'https://cdn.pixabay.com/photo/2018/05/10/11/34/concert-3387324_1280.jpg',
-        //         'https://cdn.pixabay.com/photo/2023/08/11/04/51/fireworks-8182800_1280.jpg',
+        //'https://cdn.pixabay.com/photo/2017/04/03/04/48/riyadh-2197496_1280.jpg',  
+        //'https://cdn.pixabay.com/photo/2018/05/10/11/34/concert-3387324_1280.jpg',
+        //'https://cdn.pixabay.com/photo/2023/08/11/04/51/fireworks-8182800_1280.jpg',
         'https://cdn.pixabay.com/photo/2017/04/03/04/48/riyadh-2197496_1280.jpg',
         'https://cdn.pixabay.com/photo/2018/05/10/11/34/concert-3387324_1280.jpg',
         'https://cdn.pixabay.com/photo/2023/08/11/04/51/fireworks-8182800_1280.jpg',
