@@ -15,9 +15,14 @@ function Teckitmanager() {
     const [selectedTicket, setSelectedTicket] = useState()
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token'); 
-    const [filterStatus, setFilterStatus] = useState(null); 
+    // const [pendingTickets, setPendingTickets] = useState(new Set()); 
+   const[pending,setpending]=useState('0');
+    // const [filterStatus, setFilterStatus] = useState(null); 
 
+    console.log("pending ticketmanager "+ pending);
+    
     const handleSell = (ticketCode) => {
+      
         setSelectedTicket(ticketCode);
         setSellPop(true);
         document.body.style.overflow = 'hidden';
@@ -28,6 +33,11 @@ function Teckitmanager() {
         document.body.style.overflow = 'auto';
     };
 
+   
+ 
+ 
+
+ 
     useEffect(() => {
         const fetchTickets = async () => {
             try {
@@ -67,6 +77,7 @@ function Teckitmanager() {
         fetchTicketsByStatus(status); 
     };
 
+   
 
     return (
         <div>
@@ -75,6 +86,7 @@ function Teckitmanager() {
                     isOpen={sellPop}
                     onClose={handleCloseSellPopup}
                     event={{ ticketCode: selectedTicket }}
+                    setpending={setpending}
                 />
             )}
             <Navbar />
@@ -109,7 +121,9 @@ function Teckitmanager() {
                         code={ticket.uniqueCode}
                         status={ticket.updateStatus}
                         process='Sell'
+                        pending={pending}
                         popSellForm={() => handleSell(ticket.uniqueCode)}
+
                     />
                 ))}
                
@@ -143,3 +157,7 @@ function Teckitmanager() {
 }
 
 export default Teckitmanager
+
+
+
+

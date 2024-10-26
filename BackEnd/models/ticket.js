@@ -10,7 +10,8 @@ const TicketSchema = new mongoose.Schema({
     visitDate: { type: Date, required: true },
     uniqueCode: { type: String, required: true },
     purchaseDate: { type: Date, default: Date.now },
-    updateStatus: { type: Number, default: 0 } 
+    updateStatus: { type: Number, default: 0 } ,
+    spending:{type:Boolean ,default:false}
 });
 
 

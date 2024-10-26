@@ -95,6 +95,12 @@ export const notifyUserAboutTicket = async (req, res) => {
             return res.status(400).json({ message: 'A notification for this unique code is already pending.' });
         }
 
+        // Check if new price exceeds original price by more than 50%
+        const priceIncreaseLimit = ticket.price * 1.5; // Calculate 150% of the original price
+        if (newPrice > priceIncreaseLimit) {
+            return res.status(400).json({ message: `New price cannot exceed 50% of the original price  (${priceIncreaseLimit}).` });
+        }
+
         // Create a new notification
         const notification = new Notification({
             userId: targetUser._id,
@@ -222,6 +228,7 @@ export const approveNotification = async (req, res) => {
         }
 
         // Update the ticket's status, userId, and other relevant fields
+        ticket.isPendingSale = false; 
         ticket.status = 'approved'; // Set the ticket status to approved
         ticket.updateStatus = 1; // Mark ticket as updated
         ticket.userId = currentUserId; // Update ticket's userId to the current user

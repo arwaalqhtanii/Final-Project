@@ -100,7 +100,8 @@ export const purchaseTicket = async (req, res) => {
                 totalPrice:price,
                 visitDate,
                 uniqueCode,
-                updateStatus: 0 // Adding the update status flag
+                updateStatus: 0 ,// Adding the update status flag
+                isPendingSale: false
             });
 
             // Save the ticket and push the promise to the array

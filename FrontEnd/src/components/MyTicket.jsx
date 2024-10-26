@@ -9,6 +9,8 @@ import Vector from '/Vector.png';
 function MyTicket(props) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+    console.log("pending ticketmanager "+ props.pending);
+
     useEffect(() => {
       // Function to handle screen resize
       const handleResize = () => {
@@ -86,9 +88,9 @@ function MyTicket(props) {
                         <div className='flex justify-end gap-x-[1.5rem]'>
                             {props.status === 0 ? (
                                 <button
-                                    className='px-[10px] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center font-bold'
-                                    onClick={props.popSellForm}
-                                >
+                                className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending === '1' ? 'bg-gray-500' : 'bg-[#78006E]'}`}
+                                onClick={props.pending === '1' ? null : props.popSellForm}
+                            >
                                     Sell
                                 </button>
                             ) : (
