@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import Slider from './Slider';
 import SearchBar from './SearchBar';
 import EventsGrid from './EventsGrid';
@@ -8,15 +9,14 @@ import Footer from '../components/Footer';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-
 const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
 
 const EventsPage = () => {
     const [eventsData, setEventsData] = useState([]); 
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [visibleCount, setVisibleCount] = useState(8);
+    const searchBarRef = useRef(null); 
 
-   
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -34,7 +34,6 @@ const EventsPage = () => {
         fetchEvents();
     }, [visibleCount]); 
 
-   
     const handleSearch = (searchTerm) => {
         if (searchTerm === '') {
             setFilteredEvents(eventsData.slice(0, visibleCount));
@@ -51,11 +50,19 @@ const EventsPage = () => {
         setFilteredEvents(eventsData.slice(0, visibleCount + 8));
     };
 
+    const handleScrollToSearchBar = () => {
+        if (searchBarRef && searchBarRef.current) {
+            searchBarRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <div>
             <Navbar />
-            <Slider />
-            <SearchBar onSearch={handleSearch} />
+            <Slider searchBarRef={searchBarRef} /> 
+            <div ref={searchBarRef}>
+                <SearchBar onSearch={handleSearch} />
+            </div>
             <Elements stripe={stripePromise}>
                 <EventsGrid events={filteredEvents} />
             </Elements>
@@ -76,4 +83,3 @@ const EventsPage = () => {
 };
 
 export default EventsPage;
-

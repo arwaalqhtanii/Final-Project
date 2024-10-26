@@ -5,7 +5,7 @@ import image3 from '../assets/img3.png'
 const HowToBook = () => {
     return (
         <div className="container mx-auto py-10">
-            {/* How to Book Section */}
+      
             <h2 className="text-2xl text-center font-bold mb-6 pr-6 pb-9 text-purple-900">How to Book Your Ticket?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
                 <div>
@@ -26,7 +26,7 @@ const HowToBook = () => {
                 </div>
             </div>
 
-            {/* Separator */}
+           
             {/* <hr className="my-12 border-t-1 border-gray-300" /> */}
 
             {/* About Us Section */}
@@ -71,7 +71,7 @@ const HowToBook = () => {
                 </div>
             </div>
 
-            {/* خط فاصل */}
+           
             {/* <hr className="my-12 border-t-1 border-gray-300" /> */}
 
             </div>
