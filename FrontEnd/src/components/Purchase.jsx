@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoHardwareChipOutline } from "react-icons/io5";
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const Purchase = ({ isOpen, onClose }) => {
     const [cardName, setCardName] = useState('');
@@ -78,29 +79,27 @@ const Purchase = ({ isOpen, onClose }) => {
                 </div>
                 <div className="flex flex-col gap-y-[1.5rem] p-6">
                     <div className="flex justify-between w-[100%]">
-                        <div className="flex flex-col w-[65%]">
-                            <p>Name</p>
-                            <input  placeholder="Name on Card" className="px-[10px] focus:outline-[#78006E] w-[100%] h-[40px] border-[1px] border-[#78006E] rounded-md" type="text" onChange={(e) => setCardName(e.target.value)} />
-                        </div>
-                        <div className="flex flex-col w-[30%]">
-                            <p>Expiration</p>
-                            <input
-                                className="px-[10px] w-[100%] focus:outline-[#78006E] h-[40px] border-[1px] border-[#78006E] rounded-md"
-                                type="date"
-                                onChange={handleDateChange}
-                            />
-                        </div>
+                        <CardElement
+                            options={{
+                                style: {
+                                    base: {
+                                        fontSize: '16px',
+                                        color: '#32325d',
+                                        fontFamily: 'Arial, sans-serif',
+                                        '::placeholder': {
+                                            color: '#a0aec0',
+                                        },
+                                        padding: '10px 12px',
+                                    },
+                                    invalid: {
+                                        color: '#fa755a',
+                                    },
+                                },
+                            }}
+                            className="input input-bordered w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#be008d]"
+                        />
                     </div>
-                    <div className="flex justify-between w-[100%]">
-                        <div className="flex flex-col w-[65%]">
-                            <p>Card Number</p>
-                            <input placeholder="Card Number" className="px-[10px] w-[100%] h-[40px] focus:outline-[#78006E] border-[1px] border-[#78006E] rounded-md" type="number" inputMode="numeric" onChange={(e) => setCardNumber(e.target.value)} style={{ WebkitAppearance: "none", MozAppearance: "textfield" }} />
-                        </div>
-                        <div className="flex flex-col w-[30%]">
-                            <p>CVV</p>
-                            <input placeholder="CVV" className="px-[10px] w-[100%] h-[40px] focus:outline-[#78006E] border-[1px] border-[#78006E] rounded-md" type="number" inputMode="numeric" onChange={(e) => setCardCVV(e.target.value)} style={{ WebkitAppearance: "none", MozAppearance: "textfield" }} />
-                        </div>
-                    </div>
+
                     <div className="flex justify-between">
                         <button className="w-[40%] h-[40px] rounded-md bg-white border-[#78006E] border-[1px] shadow-md text-[#78006E] font-bold" onClick={onClose}>Cancel</button>
                         <button className="w-[40%] h-[40px] rounded-md bg-gradient-to-r from-[#78006E] to-[#be008d] text-white shadow-md font-bold" onClick={SubmitPurchase}>Submit</button>
