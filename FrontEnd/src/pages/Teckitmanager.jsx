@@ -1,11 +1,9 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import MyTicket from '../components/MyTicket'
-import { CiSearch } from "react-icons/ci";
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
 import { AiOutlineFileSearch } from "react-icons/ai";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { IoClose } from "react-icons/io5";
 import SellTicketModal from '../components/SellTicketModal';
 import axios from 'axios';
 
@@ -14,15 +12,15 @@ function Teckitmanager() {
     const [sellPop, setSellPop] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState()
     const [tickets, setTickets] = useState([]);
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     // const [pendingTickets, setPendingTickets] = useState(new Set()); 
-   const[pending,setpending]=useState('0');
+    const [pending, setpending] = useState('0');
     // const [filterStatus, setFilterStatus] = useState(null); 
 
-    console.log("pending ticketmanager "+ pending);
-    
+    console.log("pending ticketmanager " + pending);
+
     const handleSell = (ticketCode) => {
-      
+
         setSelectedTicket(ticketCode);
         setSellPop(true);
         document.body.style.overflow = 'hidden';
@@ -33,11 +31,11 @@ function Teckitmanager() {
         document.body.style.overflow = 'auto';
     };
 
-   
- 
- 
 
- 
+
+
+
+
     useEffect(() => {
         const fetchTickets = async () => {
             try {
@@ -46,19 +44,19 @@ function Teckitmanager() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-    
+
                 // Sort tickets by purchaseDate in descending order (most recent first)
                 const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-    
+
                 setTickets(sortedTickets); // Set the sorted tickets
             } catch (error) {
                 console.error('Error fetching tickets:', error);
             }
         };
-    
+
         fetchTickets();
     }, []);
-    
+
     const fetchTicketsByStatus = async (status) => {
         try {
             const response = await axios.get(`http://localhost:8050/tickets/ticketsUserstatus/${status}`, {
@@ -67,17 +65,17 @@ function Teckitmanager() {
                 }
             });
             setTickets(response.data.tickets);
-             
+
         } catch (error) {
             console.error('Error fetching tickets:', error);
         }
     };
 
     const handleFilter = (status) => {
-        fetchTicketsByStatus(status); 
+        fetchTicketsByStatus(status);
     };
 
-   
+
 
     return (
         <div>
@@ -109,10 +107,10 @@ function Teckitmanager() {
             </div>
 
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
-                 
-            {tickets.map((ticket,index) => (
+
+                {tickets.map((ticket, index) => (
                     <MyTicket
-                        key={ticket.index} 
+                        key={ticket.index}
                         title={ticket.eventId.name}
                         location={ticket.eventId.location}
                         date={ticket.visitDate}
@@ -126,7 +124,7 @@ function Teckitmanager() {
 
                     />
                 ))}
-               
+
                 {/* <MyTicket
                     title='WWE RAW'
                     location='RIYADH'

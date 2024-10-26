@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MdLocationPin } from "react-icons/md";
 import { CiCalendarDate } from "react-icons/ci";
 import { MdAccessTime } from "react-icons/md";
@@ -12,18 +12,18 @@ function MyTicket(props) {
     console.log("pending ticketmanager "+ props.pending);
 
     useEffect(() => {
-      // Function to handle screen resize
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth);
-      };
-  
-      // Add event listener to track window resizing
-      window.addEventListener('resize', handleResize);
-  
-      // Cleanup the event listener on component unmount
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
+        // Function to handle screen resize
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        // Add event listener to track window resizing
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     return (
@@ -50,8 +50,8 @@ function MyTicket(props) {
                         <div>{props.date}</div>
                     </div>
                 </div>
-                {windowWidth > 700 ?<img className='w-[60%] max-md:w-[100%] h-[10px]' src={Vector}></img>:null}
-                
+                {windowWidth > 700 ? <img className='w-[60%] max-md:w-[100%] h-[10px]' src={Vector}></img> : null}
+
                 {props.newPrice ? <div className='h-[40px] font-bold text-[1.2rem]'>Price : {props.newPrice} SR</div> : <div className='h-[40px]'></div>}
             </div>
 
@@ -81,8 +81,8 @@ function MyTicket(props) {
 
                     {props.forbuy ? (
                         <div className='flex gap-x-[1.5rem]'>
-                            <button className='px-[10px] py-[5px] text-white rounded-[10px] bg-slate-500 text-center font-bold'>ignore</button>
-                            <button className='px-[10px] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center font-bold'>accept</button>
+                            <button className='px-[10px] py-[5px] text-white rounded-[10px] bg-slate-500 text-center font-bold' onClick={props.ignore}>ignore</button>
+                            <button className='px-[10px] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center font-bold' onClick={props.purchaseForm}>accept</button>
                         </div>
                     ) : (
                         <div className='flex justify-end gap-x-[1.5rem]'>

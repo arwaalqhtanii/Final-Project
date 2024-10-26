@@ -59,7 +59,7 @@ const Footer = () => {
           </p>
           <p className="text-[#000000] flex items-center"><MdOutlineMail className="mr-2"/>htsalhagbani@gmail.com</p>
           <p className="text-[#000000] flex items-center"> <MdOutlineMail className="mr-2"/>waleedalhrbi2001@gmail.com</p>
-          <p className="text-[#000000] flex items-center"><MdOutlineMail className="mr-2"/>Email: info@quicktik.com</p>
+          <p className="text-[#000000] flex items-center"><MdOutlineMail className="mr-2"/>yohejazi@gmail.com</p>
         </div>
 
       </div>

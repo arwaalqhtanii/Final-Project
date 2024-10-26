@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
 import { useState,useEffect } from 'react';
