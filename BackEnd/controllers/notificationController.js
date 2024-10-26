@@ -84,15 +84,15 @@ export const notifyUserAboutTicket = async (req, res) => {
         const targetUser = await User.findOne({ email: targetUserEmail });
         if (!targetUser) return res.status(404).json({ message: 'User not found' });
 
-        // Check for existing notifications
+       // Check for existing notifications with either pending or approved status
         const existingNotification = await Notification.findOne({
             'ticketInfo.uniqueCode': uniqueCode,
-            status: 'pending',
+            status: { $in: ['pending', 'approved'] }, // Check for both pending and approved statuses
         });
 
-        // If a pending notification exists, return an error or update it
+        // If a pending or approved notification exists, return an error
         if (existingNotification) {
-            return res.status(400).json({ message: 'A notification for this unique code is already pending.' });
+            return res.status(400).json({ message: 'A notification for this unique code is already pending or approved.' });
         }
 
         // Check if new price exceeds original price by more than 50%
