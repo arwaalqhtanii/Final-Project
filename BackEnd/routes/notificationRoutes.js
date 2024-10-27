@@ -1,5 +1,5 @@
 import express from 'express';
-import { notifyUserAboutTicket, getUserNotifications,ignoreNotification,approveNotification,trackAndSuspendUser } from '../controllers/notificationController.js';
+import { notifyUserAboutTicket, getUserNotifications,ignoreNotification,approveNotification ,fetchNotifications} from '../controllers/notificationController.js';
 import { authenticateToken } from '../middleware/authMiddleware.js'; // Assuming you have an authentication middleware
 
 const router = express.Router();
@@ -18,7 +18,9 @@ router.put('/notificationsignore/:notificationId',authenticateToken, ignoreNotif
 router.put('/approve/:notificationId', approveNotification);
 
 
-// Route to track and suspend users
-router.post('/track-and-suspend', trackAndSuspendUser);
+
+//fetchNotifications
+router.get('/fetchNotifications', fetchNotifications);
+
 
 export default router;

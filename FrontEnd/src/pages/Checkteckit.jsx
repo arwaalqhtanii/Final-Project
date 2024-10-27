@@ -66,7 +66,7 @@ function Checkteckit() {
             <Navbar />
             {purchasePop && (
                 <Elements stripe={stripePromise}>
-                    <Purchase isOpen={true} onClose={handleCloseBuyPopup} newPrice={newPrice}  notificationID={ticketForCheck.notificationID}  />
+                    <Purchase isOpen={true} onClose={handleCloseBuyPopup} newPrice={newPrice}  notificationID={ticketForCheck.notificationID} userId={ticketForCheck.user.userId}/>
                 </Elements>
             )}
             {/* {purchasePop && (
