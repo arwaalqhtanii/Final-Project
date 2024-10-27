@@ -65,7 +65,9 @@ function Checkteckit() {
                 </Elements>
             )}
             {/* {purchasePop && (
-                <Purchase isOpen={true} onClose={handleCloseBuyPopup} />
+                <Purchase isOpen=
+                {true} onClose={handleCloseBuyPopup} />
+                add here
             )} */}
             <div className='w-[100%] h-[100vh] relative'>
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard} alt="Background" />
