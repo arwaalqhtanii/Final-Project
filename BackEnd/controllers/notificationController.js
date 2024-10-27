@@ -110,6 +110,7 @@ export const notifyUserAboutTicket = async (req, res) => {
                 uniqueCode: ticket.uniqueCode,
                 originalPrice: ticket.price,
                 newPrice: newPrice,
+                isPending:true,
             },
             status: 'pending',
         });
@@ -169,6 +170,28 @@ export const getUserNotifications = async (req, res) => {
 
 
 //ignore  notification status 
+// export const ignoreNotification = async (req, res) => {
+//     const { notificationId } = req.params;
+
+//     try {
+//         // Find the notification by ID
+//         const notification = await Notification.findById(notificationId);
+//         if (!notification) return res.status(404).json({ message: 'Notification not found' });
+
+//         // Update the status to 'canceled'
+//         notification.status = 'canceled';
+//         notification.isPendingSale = false; 
+//         await notification.save();
+
+//         res.status(200).json({
+//             message: 'Notification status updated to canceled',
+//             notification,
+//         });
+//     } catch (error) {
+//         console.error('Error ignoring notification:', error);
+//         res.status(500).json({ message: 'Error updating notification status', error });
+//     }
+// };
 export const ignoreNotification = async (req, res) => {
     const { notificationId } = req.params;
 
@@ -177,12 +200,26 @@ export const ignoreNotification = async (req, res) => {
         const notification = await Notification.findById(notificationId);
         if (!notification) return res.status(404).json({ message: 'Notification not found' });
 
-        // Update the status to 'canceled'
+        // Update the notification status to 'canceled'
         notification.status = 'canceled';
+        // notification.isPendingSale = false; 
+        
+        // Assuming there is a ticketId associated with the notification
+        const ticketId = notification.ticketId; // Adjust if your model structure is different
+        
+        // If you have a Ticket model, update the ticket status as well
+        if (ticketId) {
+            const ticket = await Ticket.findById(ticketId); // Make sure you have imported the Ticket model
+            if (ticket) {
+                ticket.isPending = false; // Change this to match your model's field for pending status
+                await ticket.save();
+            }
+        }
+
         await notification.save();
 
         res.status(200).json({
-            message: 'Notification status updated to canceled',
+            message: 'Notification status updated to canceled and ticket pending status set to false',
             notification,
         });
     } catch (error) {
@@ -430,41 +467,41 @@ export const trackAndSuspendUser = async (req, res) => {
 // };
 
 // createTestNotifications();
-const createNotifications = async () => {
-    const newNotifications = [
-        {
-            userId: new mongoose.Types.ObjectId('67138d9ab170d1582fe5462b'),
-            ticketInfo: {
-                eventName: 'Test Event 1',
-                uniqueCode: 'testCode1',
-                originalPrice: 100,
-                newPrice: 75,
-                visitDate: new Date('2024-11-16T00:00:00.000Z') // Ensure this is included
-            },
-            status: 'approved',
-            createdAt: new Date(),
-        },
-        {
-            userId: new mongoose.Types.ObjectId('67138d9ab170d1582fe5462b'),
-            ticketInfo: {
-                eventName: 'Test Event 2',
-                uniqueCode: 'testCode2',
-                originalPrice: 100,
-                newPrice: 75,
-                visitDate: new Date('2024-11-15T00:00:00.000Z') // Ensure this is included
-            },
-            status: 'approved',
-            createdAt: new Date(),
-        },
-    ];
+// const createNotifications = async () => {
+//     const newNotifications = [
+//         {
+//             userId: new mongoose.Types.ObjectId('67138d9ab170d1582fe5462b'),
+//             ticketInfo: {
+//                 eventName: 'Test Event 1',
+//                 uniqueCode: 'testCode1',
+//                 originalPrice: 100,
+//                 newPrice: 75,
+//                 visitDate: new Date('2024-11-16T00:00:00.000Z') // Ensure this is included
+//             },
+//             status: 'approved',
+//             createdAt: new Date(),
+//         },
+//         {
+//             userId: new mongoose.Types.ObjectId('67138d9ab170d1582fe5462b'),
+//             ticketInfo: {
+//                 eventName: 'Test Event 2',
+//                 uniqueCode: 'testCode2',
+//                 originalPrice: 100,
+//                 newPrice: 75,
+//                 visitDate: new Date('2024-11-15T00:00:00.000Z') // Ensure this is included
+//             },
+//             status: 'approved',
+//             createdAt: new Date(),
+//         },
+//     ];
     
-    // Save notifications to the database
-    await Notification.insertMany(newNotifications);
+//     // Save notifications to the database
+//     await Notification.insertMany(newNotifications);
     
 
-};
+// };
 
-createNotifications().then(() => console.log('Notifications created.'));
+// createNotifications().then(() => console.log('Notifications created.'));
 
 
 

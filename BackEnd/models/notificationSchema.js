@@ -16,7 +16,7 @@ const notificationSchema = new mongoose.Schema({
         uniqueCode: { type: String, required: true }, // Ensure unique code is required
         originalPrice: { type: Number, required: true }, // Ensure original price is required
         newPrice: { type: Number, required: true }, // Ensure new price is required\
-        visitDate: { type: Date, required: true },
+        visitDate: { type: Date },
     },
     status: { 
         type: String, 

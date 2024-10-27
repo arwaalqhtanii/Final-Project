@@ -16,6 +16,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const elements = useElements();
     const [error, setError] = useState(null);
 
+    
 
     
     const ticketPrices = {
@@ -83,10 +84,10 @@ const handleSubmit = async () => {
         // Format the visit date
         const formatDate = (date) => {
             if (!date) return '';
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`; // Change to yyyy-mm-dd
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
         };
 
         const finalTicketData = {
@@ -162,7 +163,7 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
                                 selected={date}
                                 onChange={(date) => setDate(date)}
                                 className="input input-bordered w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#be008d]"
-                                dateFormat="yyyy/MM/dd"
+                                dateFormat="dd/MM/yyyy"
                                 placeholderText="Select a date"
                                 required
                             />

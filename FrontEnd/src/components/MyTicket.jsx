@@ -336,6 +336,8 @@ function MyTicket(props) {
         const token = localStorage.getItem('token');
 
         try {
+            console.log("tesssssssssssst"+props.notificationID);
+            
             await axios.put(
                 `http://localhost:8050/notifications/notificationsignore/${props.notificationID}`,
                 {},
@@ -362,6 +364,8 @@ function MyTicket(props) {
         navigate('/');
     };
 
+    // console.log("test"+props.ticketnotistatus);
+    
     return (
         <div className={` ${windowWidth > 700 ? 'ticket-big' : 'ticket-small'} w-[50vw] max-md:w-[80%] h-[40vh]  max-md:h-[fit-content] max-md:py-[15px] flex max-md:flex-col max-md:items-center justify-start rounded-[10px] relative ${props.status === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white'}`}>
             <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] justify-evenly  p-[10px]  pl-[35px] pr-[35px]'>
@@ -419,7 +423,7 @@ function MyTicket(props) {
                         <div className='flex justify-end gap-x-[1.5rem]'>
                             {props.status === 0 ? (
                                 <button
-                                    className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending ? 'bg-[gray]' : 'bg-[#78006E]'}`}
+                                    className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.isPending ? 'bg-[gray]' : 'bg-[#78006E]'}`}
                                     onClick={props.popSellForm}
                                 >
                                     Sell

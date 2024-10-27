@@ -23,8 +23,10 @@ function Checkteckit() {
         const fetchTicket = async () => {
             try {
                 const response = await axios.get(`http://localhost:8050/tickets/tickets/unique-code/${code}`);
+               console.log('test fetch ticket ');
+               
                 console.log(response.data.ticket);
-                
+
                 setTicketForCheck(response.data.ticket); // Set the ticket data
             } catch (err) {
                 setError('Error retrieving ticket: ' + (err.response?.data?.message || err.message));
@@ -55,6 +57,9 @@ function Checkteckit() {
         setPurchasePop(false);
         document.body.style.overflow = 'auto'; // السماح بتمرير الصفحة عند إغلاق النافذة
     };
+
+    // console.log("test ticket "+ticketForCheck.user.userId);
+    
 
     return (
         <div>
@@ -91,6 +96,7 @@ function Checkteckit() {
                                 forbuy='true'
                                 notificationID={ticketForCheck.notificationID}
                                 purchaseForm={popPurchaseform}
+                                isPending={ticketForCheck.isPending}
                             />
                          
                         </div>

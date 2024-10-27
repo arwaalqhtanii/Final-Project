@@ -163,7 +163,6 @@ function Teckitmanager() {
                         // pending={ticket.notifications[0].status}
                         pending={ticket.notifications && ticket.notifications.length > 0 ? ticket.notifications[0].status : null} 
 
-
                     />
                     </>
                 ))}
