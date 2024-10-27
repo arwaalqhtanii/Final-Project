@@ -251,7 +251,7 @@ export const approveNotification = async (req, res) => {
         }
 
         // Check if the notification is already approved or canceled
-        if (notification.status !== 'pending') {
+        if (notification.status !== 'pending' && notification.status !== 'canceled') {
             return res.status(403).json({ message: 'Notification is not in a pending state' });
         }
 

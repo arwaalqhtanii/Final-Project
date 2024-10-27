@@ -289,6 +289,8 @@ const Purchase = ({ isOpen, onClose, newPrice, notificationID }) => {
                 throw new Error(response.data.error || 'Payment failed');
             }
 
+            console.log(response.data);
+            
             // Call track-and-suspend endpoint
             // const suspendResponse = await axios.post('http://localhost:8050/notifications/track-and-suspend', {
             //     userId: userId,
@@ -299,6 +301,8 @@ const Purchase = ({ isOpen, onClose, newPrice, notificationID }) => {
             // }
 
             const token = localStorage.getItem('token'); // Your actual token
+            console.log(token);
+            
             console.log("notificationID"+notificationID);
             
             await axios.put(`http://localhost:8050/notifications/approve/${notificationID}`, {}, {
