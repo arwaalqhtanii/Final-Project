@@ -144,7 +144,7 @@ const Purchase = ({ isOpen, onClose, newPrice ,notificationID,userId}) => {
     return (
         <div className={`fixed inset-0 flex items-center justify-center z-50 ${isOpen ? '' : 'hidden'}`}>
             <div className="fixed inset-0 bg-black opacity-75" onClick={onClose}></div>
-            <div className="flex flex-col gap-y-[2rem] relative bg-white rounded-lg z-10 shadow-lg max-w-md mx-auto w-[90%] h-auto">
+            <div className="flex flex-col gap-y-[2rem] relative  bg-white rounded-lg z-10 shadow-lg max-w-md mx-auto w-[90%] h-auto">
                 <div className="flex justify-center items-center p-6 bg-gradient-to-r from-[#F8F9D7] to-[#E49BFF] rounded-t-md">
                     <div className="flex flex-col justify-end p-4 gap-y-[0.3rem] w-[80%] h-[25vh] max-md:h-[20vh] rounded-md bg-gradient-to-r from-[#78006E] to-[#be008d] shadow-xl">
                         <IoHardwareChipOutline className="text-[2.5rem] text-[#F3CA52]" />
@@ -156,7 +156,7 @@ const Purchase = ({ isOpen, onClose, newPrice ,notificationID,userId}) => {
                         />
                     </div>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form className='flex flex-col gap-y-[2rem] px-[2rem]' onSubmit={handleSubmit}>
                     <CardElement
                         options={{
                             style: {
@@ -176,7 +176,7 @@ const Purchase = ({ isOpen, onClose, newPrice ,notificationID,userId}) => {
                         }}
                         className="input input-bordered w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#be008d]"
                     />
-                    <div className="flex justify-between">
+                    <div className="flex justify-between pb-[2rem]">
                         <button type="button" className="w-[40%] h-[40px] rounded-md bg-white border-[#78006E] border-[1px] shadow-md text-[#78006E] font-bold" onClick={onClose}>
                             Cancel
                         </button>
