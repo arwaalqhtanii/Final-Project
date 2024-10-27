@@ -11,7 +11,8 @@ const TicketSchema = new mongoose.Schema({
     uniqueCode: { type: String, required: true },
     purchaseDate: { type: Date, default: Date.now },
     updateStatus: { type: Number, default: 0 } ,
-    isPending:{type:Boolean ,default:false}
+    isPending:{type:Boolean ,default:false},
+   
 });
 
 

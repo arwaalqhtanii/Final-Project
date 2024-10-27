@@ -23,8 +23,12 @@ const notificationSchema = new mongoose.Schema({
         default: 'pending', // Default status
         enum: ['pending', 'approved','canceled'] // Optional: restrict status values
     },
-   
-    createdAt: { type: Date, default: Date.now },
+       createdBy: {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      email: String,
+      name: String
+    },
+    updatedAt: {type: Date, default: Date.now },
 }, { timestamps: true }); // Automatically manage createdAt and updatedAt fields
 
 // Export the Notification model

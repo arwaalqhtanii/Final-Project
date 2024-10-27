@@ -421,10 +421,11 @@ function MyTicket(props) {
                         </div>
                     ) : (
                         <div className='flex justify-end gap-x-[1.5rem]'>
+                            {/* <h1>{props.pending}</h1> */}
                             {props.status === 0 ? (
                                 <button
-                                    className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.isPending ? 'bg-[gray]' : 'bg-[#78006E]'}`}
-                                    onClick={props.popSellForm}
+                                className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending === 'pending' || props.pending === 'approved' ? 'bg-[gray]' : 'bg-[#78006E]'}`}
+                                onClick={props.popSellForm}
                                 >
                                     Sell
                                 </button>

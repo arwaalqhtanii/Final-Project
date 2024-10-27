@@ -44,7 +44,7 @@ function LoginW() {
             const data = await response.json();
             console.log('تسجيل دخول ناجح', data);
             localStorage.setItem('token',data.token);
-            localStorage.setItem('id',data.idNumber);
+            localStorage.setItem('id',data.user.idNumber);
             localStorage.setItem('email',data.user.email);
             navigate('/'); // الانتقال إلى الصفحة الرئيسية بعد تسجيل الدخول الناجح
         } catch (error) {
