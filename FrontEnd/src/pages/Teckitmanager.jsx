@@ -13,11 +13,12 @@ function Teckitmanager() {
     const [selectedTicket, setSelectedTicket] = useState()
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
+    const [notifications, setNotifications] = useState([]); // State for notifications
+
     // const [pendingTickets, setPendingTickets] = useState(new Set()); 
-    const [pending, setpending] = useState('0');
     // const [filterStatus, setFilterStatus] = useState(null); 
 
-    console.log("pending ticketmanager " + pending);
+
 
     const handleSell = (ticketCode) => {
 
@@ -34,28 +35,50 @@ function Teckitmanager() {
 
 
 
+    const fetchTickets = async () => {
+        try {
+            const response = await axios.get('http://localhost:8050/tickets/Usertickets', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            // Sort tickets by purchaseDate in descending order (most recent first)
+            const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
+            console.log(sortedTickets);
+
+            setTickets(sortedTickets); // Set the sorted tickets
+            setNotifications(response.data.tickets.flatMap(ticket => ticket.notifications || []));
+
+        } catch (error) {
+            console.error('Error fetching tickets:', error);
+        }
+    };
 
 
+    // Fetch tickets initially when the component mounts
+    // Fetch tickets initially when the component mounts
     useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const response = await axios.get('http://localhost:8050/tickets/Usertickets', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                // Sort tickets by purchaseDate in descending order (most recent first)
-                const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
-
-                setTickets(sortedTickets); // Set the sorted tickets
-            } catch (error) {
-                console.error('Error fetching tickets:', error);
-            }
-        };
-
-        fetchTickets();
+        fetchTickets(); // Initial fetch
     }, []);
+
+    // Fetch tickets only when new pending notifications are received
+    useEffect(() => {
+        const hasPendingNotification = notifications.some(notification => notification.status === 'pending');
+        if (hasPendingNotification) {
+            fetchTickets(); // Re-fetch tickets if there are pending notifications
+        }
+    }, [notifications]);
+
+    // Simulate notification changes (for demonstration purposes)
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setNotifications(prev => [...prev, { message: 'New notification!', uniqueCode: 'someCode', status: 'pending' }]); // Simulate a pending notification
+        }, 10000); // Simulate a notification every 10 seconds
+
+        return () => clearInterval(intervalId); // Cleanup on unmount
+    }, []);
+ 
 
     const fetchTicketsByStatus = async (status) => {
         try {
@@ -84,7 +107,7 @@ function Teckitmanager() {
                     isOpen={sellPop}
                     onClose={handleCloseSellPopup}
                     event={{ ticketCode: selectedTicket }}
-                    setpending={setpending}
+                   
                 />
             )}
             <Navbar />
@@ -109,6 +132,8 @@ function Teckitmanager() {
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
 
                 {tickets.map((ticket, index) => (
+                    <>
+                   {/* <h1 className='text-white'> {ticket.notifications}</h1> */}
                     <MyTicket
                         key={ticket.index}
                         title={ticket.eventId.name}
@@ -119,11 +144,18 @@ function Teckitmanager() {
                         code={ticket.uniqueCode}
                         status={ticket.updateStatus}
                         process='Sell'
-                        pending={pending}
                         popSellForm={() => handleSell(ticket.uniqueCode)}
+                        // pending={ticket.notifications[0].status}
+                        pending={ticket.notifications && ticket.notifications.length > 0 ? ticket.notifications[0].status : null} 
 
                     />
+                    </>
                 ))}
+    
+
+
+
+
 
                 {/* <MyTicket
                     title='WWE RAW'

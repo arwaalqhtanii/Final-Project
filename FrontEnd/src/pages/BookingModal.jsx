@@ -16,6 +16,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const elements = useElements();
     const [error, setError] = useState(null);
 
+    
 
     
     const ticketPrices = {
@@ -32,6 +33,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const total = selectedTicket ? ticketPrices[selectedTicket] * numberOfTickets * 100 : 0;
 
     console.log("total"+total);
+     
     
 
     
@@ -82,10 +84,10 @@ const handleSubmit = async () => {
         // Format the visit date
         const formatDate = (date) => {
             if (!date) return '';
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`; // Change to yyyy-mm-dd
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
         };
 
         const finalTicketData = {
@@ -120,6 +122,8 @@ const handleSubmit = async () => {
             console.error('Error during ticket creation:', errorMessage);
     }
 };
+
+const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
     const handleConfirm = () => {
         setShowConfirmation(false);
@@ -159,7 +163,7 @@ const handleSubmit = async () => {
                                 selected={date}
                                 onChange={(date) => setDate(date)}
                                 className="input input-bordered w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#be008d]"
-                                dateFormat="yyyy/MM/dd"
+                                dateFormat="dd/MM/yyyy"
                                 placeholderText="Select a date"
                                 required
                             />
@@ -198,7 +202,7 @@ const handleSubmit = async () => {
 
                     {numberOfTickets > 1 && selectedTicket && (
                         <div className="mb-6">
-                            <p className="font-semibold text-left">Total: <strong>{total} SAR</strong></p>
+                            <p className="font-semibold text-left">Total: <strong>{totalcalc} SAR</strong></p>
                         </div>
                     )}
 
@@ -242,7 +246,7 @@ const handleSubmit = async () => {
                             <h2 className="text-xl font-bold mb-4">Confirm Your Booking</h2>
                             <p className="mb-2">Ticket Type: <strong>{selectedTicket}</strong></p>
                             <p className="mb-2">Number of Tickets: <strong>{numberOfTickets}</strong></p>
-                            <p className="mb-2">Total Amount: <strong>{total} SAR</strong></p>
+                            <p className="mb-2">Total Amount: <strong>{totalcalc} SAR</strong></p>
                             <p className="mb-4">Do you want to proceed with the payment?</p>
                             <div className="flex justify-between">
                                 <button onClick={() => setShowConfirmation(false)} className="bg-gray-400 text-white py-2 px-4 rounded">Cancel</button>

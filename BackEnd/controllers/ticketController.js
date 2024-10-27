@@ -28,7 +28,7 @@ const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // Use a strong key stored in
 const IV_LENGTH = 16; // For AES, this is typically 16 bytes
 
 
-const decrypt = (text) => {
+export const decrypt = (text) => {
     // console.log('decripted ID Number:', text);
 
     const parts = text.split(':');
@@ -71,20 +71,36 @@ export const purchaseTicket = async (req, res) => {
          if (!event) {
              return res.status(404).json({ message: 'Event not found' });
          }
- 
-         const startDate = new Date(event.startDate);
-         const endDate = new Date(event.endDate);
-         const visitDateObj = new Date(visitDate.split('/').reverse().join('-')); // Converts "25/10/2024" to "2024-10-25"
-        // Convert visitDate from dd/mm/yyyy to Date object
-        // const [day, month, year] = visitDate.split('/');
-        // const visitDateObj2 = new Date(`${year}-${month}-${day}`); // Convert to YYYY-MM-DD format
 
-         // Validate that visitDate is within the event date range
-         if (visitDateObj < startDate || visitDateObj > endDate) {
-             return res.status(400).json({
-                 message: `Visit date must be between ${formatDate(startDate)} and ${formatDate(endDate)}.`
-             });
-         }
+       // Extract dates
+    const startDateStr = event.startDate;
+    const endDateStr = event.endDate;
+    const visitDateStr = visitDate; // Expecting dd/mm/yyyy format
+ console.log("visitDateStr"+visitDateStr);
+ 
+    // Validate visitDate
+    if (typeof visitDateStr !== 'string' || !/^\d{2}\/\d{2}\/\d{4}$/.test(visitDateStr)) {
+        return res.status(400).json({ message: 'Visit date must be provided in dd/mm/yyyy format.' });
+    }
+
+    // Split visitDate using dd/mm/yyyy format
+    const [visitDay, visitMonth, visitYear] = visitDateStr.split('/');
+    const visitDateObj = new Date(`${visitYear}-${visitMonth}-${visitDay}`);
+
+    // Log the visit date for debugging
+    console.log('visitDateObj:', visitDateObj);
+
+    // Create Date objects for startDate and endDate
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+
+    // Validate that visitDate is within the event date range
+    if (visitDateObj < startDate || visitDateObj > endDate) {
+        return res.status(400).json({
+            message: `Visit date must be between ${formatDate(startDate)} and ${formatDate(endDate)}.`
+        });
+    }
+
 
          // Check ticket availability
         const totalSold = event.totalTicketsSold[ticketType] || 0;
@@ -111,7 +127,7 @@ export const purchaseTicket = async (req, res) => {
                 quantity: 1, // Each ticket will have a quantity of 1
                 price: price / quantity, // Calculate price per ticket
                 totalPrice:price,
-                visitDate,
+                visitDate:visitDateObj,
                 uniqueCode,
                 updateStatus: 0 ,// Adding the update status flag
                 isPendingSale: false
@@ -156,7 +172,7 @@ const encryptIdNumber = (idNumber, eventId) => {
 
 
 
-const generateUniqueCode = async (idNumber, eventId) => {
+export const generateUniqueCode = async (idNumber, eventId) => {
     const encryptedIdNumber = encryptIdNumber(idNumber, eventId); // تشفير رقم الهوية
     const uniqueCode = CryptoJS.SHA256(`${encryptedIdNumber}${Date.now()}`).toString().slice(0, 6);
 
@@ -171,7 +187,7 @@ const generateUniqueCode = async (idNumber, eventId) => {
 };
 
 // Price calculation function
-const calculatePrice = (ticketType, quantity) => {
+export const calculatePrice = (ticketType, quantity) => {
     const prices = {
         gold: 150,
         silver: 100,
@@ -275,11 +291,54 @@ export const getTicketCountsByDate = async (req, res) => {
 //-------------------------------//--------------------------
 
 // Get all tickets for the authenticated user
+// export const getUserTickets = async (req, res) => {
+//     const userId = req.user._id; // Get user ID from the authenticated request
+
+//     try {
+
+//         // Fetch tickets associated with the user
+//         const tickets = await Ticket.find({ userId }).populate('eventId'); // Populate eventId for more ticket details
+
+//         if (!tickets.length) {
+//             return res.status(404).json({ message: 'No tickets found for this user.' });
+//         }
+
+//         // Fetch user information
+//         const user = await User.findById(userId); // Assuming userId corresponds to the user's document in the User collection
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found.' });
+//         }
+
+//         const decryptedIdNumber = decrypt(user.idNumber); // Use your decrypt function
+
+//         // Construct the response by adding user info to each ticket
+//          // Construct the response by adding user info to each ticket
+//          const ticketsWithUserInfo = tickets.map(ticket => ({
+//             ...ticket.toObject(), // Convert ticket to plain object
+//             visitDate: formatDate(ticket.visitDate), // Format the purchase date
+//             user: {
+//                 IDNumber: user.idNumber, // Include IDNumber
+//                 email: user.email,       // Include email
+//                 userId: user._id.toString(), // Include userId
+//                 userId2: decryptedIdNumber
+//             },
+//         }));
+
+//         // Return the updated response
+//         res.status(200).json({
+//             message: 'Tickets retrieved successfully',
+//             tickets: ticketsWithUserInfo,
+//         });
+//     } catch (error) {
+//         console.error('Error retrieving tickets:', error);
+//         res.status(500).json({ message: 'Server error', error });
+//     }
+// };
+
 export const getUserTickets = async (req, res) => {
     const userId = req.user._id; // Get user ID from the authenticated request
 
     try {
-
         // Fetch tickets associated with the user
         const tickets = await Ticket.find({ userId }).populate('eventId'); // Populate eventId for more ticket details
 
@@ -295,9 +354,23 @@ export const getUserTickets = async (req, res) => {
 
         const decryptedIdNumber = decrypt(user.idNumber); // Use your decrypt function
 
-        // Construct the response by adding user info to each ticket
-         // Construct the response by adding user info to each ticket
-         const ticketsWithUserInfo = tickets.map(ticket => ({
+        // Fetch notifications associated with the user's tickets
+        const notifications = await Notification.find({
+            'ticketInfo.uniqueCode': { $in: tickets.map(ticket => ticket.uniqueCode) }
+        });
+
+        // Map notifications by ticket unique code for easy lookup
+        const notificationsByTicket = notifications.reduce((acc, notification) => {
+            const code = notification.ticketInfo.uniqueCode;
+            if (!acc[code]) {
+                acc[code] = [];
+            }
+            acc[code].push(notification); // Collect notifications for each ticket
+            return acc;
+        }, {});
+
+        // Construct the response by adding user info and notification info to each ticket
+        const ticketsWithUserInfo = tickets.map(ticket => ({
             ...ticket.toObject(), // Convert ticket to plain object
             visitDate: formatDate(ticket.visitDate), // Format the purchase date
             user: {
@@ -306,6 +379,7 @@ export const getUserTickets = async (req, res) => {
                 userId: user._id.toString(), // Include userId
                 userId2: decryptedIdNumber
             },
+            notifications: notificationsByTicket[ticket.uniqueCode] || [] // Attach notifications if available
         }));
 
         // Return the updated response
@@ -318,6 +392,8 @@ export const getUserTickets = async (req, res) => {
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+
 
 //get all tickets for the authenticated user who based on updatestatus
 export const getUserTicketsupdatestatus = async (req, res) => {

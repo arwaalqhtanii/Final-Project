@@ -3,6 +3,10 @@ import User from '../models/User.js'; // Adjust the path to your User model
 
 export const authenticateToken = async (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
+    if (!token || !/^Bearer\s[\w-]+\.[\w-]+\.[\w-]+$/.test(req.headers['authorization'])) {
+        return res.status(401).json({ message: 'Access denied: No valid token provided' });
+    }
+
 
     if (!token) {
         return res.status(401).json({ message: 'Access denied: No token provided' });
