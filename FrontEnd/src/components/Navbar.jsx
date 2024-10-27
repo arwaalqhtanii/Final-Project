@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FiMenu, FiX, FiLogOut, FiBell } from 'react-icons/fi';  
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,6 +9,7 @@ const Navbar = () => {
     const [notifications, setNotifications] = useState([]);  
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);  
     const navigate = useNavigate();
+    const notificationRef = useRef(null);
 
     const handleScroll = () => {
         if (window.scrollY > 50) {
@@ -67,6 +68,18 @@ const handleNavigate = (uniqueCode, newPrice) => {
         state: { code: uniqueCode, newPrice }
     });
 };
+useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+            setIsNotificationOpen(false);  
+        }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+}, []);
 
 
    
@@ -89,7 +102,7 @@ const handleNavigate = (uniqueCode, newPrice) => {
                                 <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-600 rounded-full"></span>
                             )}
                             {isNotificationOpen && (
-                                <div className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10">
+                                <div  ref={notificationRef} className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10 overflow-y-auto max-h-48">
                                     <h3 className="text-lg font-bold px-4 py-2 text-[#78006e] border-b">Notifications</h3>
                                     <ul className="text-[#101010]">
                                     {notifications.length === 0 ? (
@@ -140,7 +153,7 @@ const handleNavigate = (uniqueCode, newPrice) => {
                                 <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-600 rounded-full"></span>
                             )}
                             {isNotificationOpen && (
-                                <div className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10">
+                                <div  ref={notificationRef} className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10 overflow-y-auto max-h-48">
                                     <h3 className="text-lg font-bold px-4 py-2 text-[#78006e] border-b">Notifications</h3>
                                     <ul className="text-[#101010]">
                                     {notifications.length === 0 ? (
