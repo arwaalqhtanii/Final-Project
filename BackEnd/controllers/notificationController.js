@@ -301,6 +301,88 @@ export const ignoreNotification = async (req, res) => {
 
 
 //approved with track user behaivoure 
+// export const approveNotification = async (req, res) => {
+//     const { notificationId } = req.params;
+//     const token = req.headers.authorization?.split(' ')[1];
+
+//     if (!token) {
+//         return res.status(401).json({ message: 'Unauthorized: No token provided' });
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         const currentUserId = decoded.id;
+
+//         const notification = await Notification.findById(notificationId);
+//         if (!notification) {
+//             return res.status(404).json({ message: 'Notification not found' });
+//         }
+
+//         if (notification.status !== 'pending' && notification.status !== 'canceled') {
+//             return res.status(403).json({ message: 'Notification is not in a pending state' });
+//         }
+
+//         notification.status = 'approved';
+//         await notification.save();
+
+//         const ticket = await Ticket.findOne({ uniqueCode: notification.ticketInfo.uniqueCode });
+//         if (!ticket) {
+//             return res.status(404).json({ message: 'Ticket not found' });
+//         }
+
+//         ticket.isPending = false; 
+//         ticket.status = 'approved';
+//         notification.updatedAt = new Date();
+//         ticket.updateStatus = 1;
+//         await ticket.save();
+
+//         // Create a new ticket based on notification details
+//         const newTicket = new Ticket({
+//             userId: currentUserId,
+//             ticketType: notification.ticketInfo.ticketType || ticket.ticketType,
+//             quantity: 1,
+//             price: notification.ticketInfo.newPrice,
+//             uniqueCode: await generateUniqueCode(currentUserId, ticket.eventId),
+//             updateStatus: 0,
+//             eventId: ticket.eventId,
+//             visitDate: ticket.visitDate,
+//             isPendingSale: false,
+//         });
+
+//         await newTicket.save();
+
+//         const senderId = notification.createdBy.userId;
+//         const sender = await User.findById(senderId);
+        
+//         // Track unique visit days
+//         const visitDateString = ticket.visitDate.toISOString().split('T')[0]; // Get date as YYYY-MM-DD
+        
+//         if (!sender.approvedVisitDays.includes(visitDateString)) {
+//             sender.approvedVisitDays.push(visitDateString);
+//             sender.approvedNotificationCount += 1; // Increment only if it's a unique visit day
+//         }
+ 
+//         console.log("approvedNotificationCount"+sender.approvedNotificationCount);
+//         console.log("sender.approvedVisitDays"+ sender.approvedVisitDays);
+        
+//         // Track approval timestamps
+//         sender.approvalTimestamps.push(Date.now());
+
+//         // Check for recent approvals for suspension logic...
+
+//         await sender.save();
+
+//         res.status(200).json({
+//             message: 'Notification approved and new ticket created',
+//             notification,
+//             newTicket
+//         });
+//     } catch (error) {
+//         console.error('Error approving notification:', error);
+//         res.status(500).json({ message: 'Error approving notification', error });
+//     }
+// };
+
 export const approveNotification = async (req, res) => {
     const { notificationId } = req.params;
     const token = req.headers.authorization?.split(' ')[1];
@@ -322,6 +404,7 @@ export const approveNotification = async (req, res) => {
             return res.status(403).json({ message: 'Notification is not in a pending state' });
         }
 
+        // Approve the notification
         notification.status = 'approved';
         await notification.save();
 
@@ -330,9 +413,9 @@ export const approveNotification = async (req, res) => {
             return res.status(404).json({ message: 'Ticket not found' });
         }
 
+        // Update ticket status
         ticket.isPending = false; 
         ticket.status = 'approved';
-        notification.updatedAt = new Date();
         ticket.updateStatus = 1;
         await ticket.save();
 
@@ -353,24 +436,43 @@ export const approveNotification = async (req, res) => {
 
         const senderId = notification.createdBy.userId;
         const sender = await User.findById(senderId);
-        
+
         // Track unique visit days
-        const visitDateString = ticket.visitDate.toISOString().split('T')[0]; // Get date as YYYY-MM-DD
-        
+        const visitDateString = ticket.visitDate.toISOString().split('T')[0];
+
         if (!sender.approvedVisitDays.includes(visitDateString)) {
             sender.approvedVisitDays.push(visitDateString);
-            sender.approvedNotificationCount += 1; // Increment only if it's a unique visit day
+            sender.approvedNotificationCount += 1; // Increment if it's a unique visit day
         }
- 
-        console.log("approvedNotificationCount"+sender.approvedNotificationCount);
-        console.log("sender.approvedVisitDays"+ sender.approvedVisitDays);
-        
+
         // Track approval timestamps
         sender.approvalTimestamps.push(Date.now());
 
-        // Check for recent approvals for suspension logic...
+       // Check for recent approvals for suspension logic
+const oneMinuteAgo = Date.now() - 60 * 1000;
+const recentApprovals = sender.approvalTimestamps.filter(timestamp => timestamp >= oneMinuteAgo);
 
+// Check if count is >= 2
+if (recentApprovals.length > 0) {
+    // Suspend user if not already suspended
+    if (!sender.isSuspended) {
+        sender.isSuspended = true;
+        sender.suspensionEnd = Date.now() + 120000; // Suspend for 2 minutes
         await sender.save();
+
+        // Schedule unsuspension
+        setTimeout(async () => {
+            sender.isSuspended = false;
+            sender.suspensionEnd = null; // Clear suspensionEnd
+            await sender.save();
+            console.log(`User ${senderId} unsuspended.`);
+        }, 120000); // Unsuspend after 2 minutes
+
+            console.log(`User ${senderId} suspended due to multiple approvals.`);
+        }
+    }
+        console.log("approvedNotificationCount: " + sender.approvedNotificationCount);
+        console.log("sender.approvedVisitDays: " + sender.approvedVisitDays);
 
         res.status(200).json({
             message: 'Notification approved and new ticket created',
@@ -382,6 +484,7 @@ export const approveNotification = async (req, res) => {
         res.status(500).json({ message: 'Error approving notification', error });
     }
 };
+
 
 
 
@@ -409,4 +512,3 @@ export const fetchNotifications = async (req, res) => {
         res.status(500).json({ message: 'Error fetching notifications', error });
     }
 };
-
