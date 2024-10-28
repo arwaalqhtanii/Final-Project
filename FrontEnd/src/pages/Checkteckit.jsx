@@ -1,9 +1,11 @@
+
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif';
 import MyTicket from '../components/MyTicket';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Purchase from '../components/Purchase';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js'; // Make sure this line is included
@@ -12,12 +14,21 @@ import { loadStripe } from '@stripe/stripe-js';
 function Checkteckit() {
     const [purchasePop, setPurchasePop] = useState(false);
     const stripePromise = loadStripe('pk_test_51QCyiNFjwRhkW7KwJEkXQOsCQEU2GDFji43vyUInNGrJr2l6QIk0wpStec41VtJKOLZwnbyOr3Q8mB5uSLp86z9n00veLycNjH');
-
     const location = useLocation();
     const { code, newPrice } = location.state || {}; // Access state passed from notification
     const [ticketForCheck, setTicketForCheck] = useState(null); // Initialize as null
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const token = localStorage.getItem('token');
+
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!token) {
+            navigate('/'); // Redirect to home page if not logged in
+        }
+    }, [token, navigate]);
+    
 
     useEffect(() => {
         const fetchTicket = async () => {
