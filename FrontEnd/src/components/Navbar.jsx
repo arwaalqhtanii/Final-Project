@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { FiMenu, FiX, FiLogOut, FiBell } from 'react-icons/fi';
 import { FaCircleUser } from "react-icons/fa6";
@@ -125,16 +126,26 @@ const Navbar = () => {
                                                 <li className="px-4 py-2 text-gray-500">No notifications found.</li>
                                             ) : (
                                                 notifications.map((notification, index) => (
-                                                    <li key={index} className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+                                                    <li key={index} className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer flex items-center gap-x-[0.5rem] ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
                                                         }`} onClick={() => handleNavigate(notification.uniqueCode, notification.newPrice)}>
-                                                        You have a new ticket request. {notification.eventName} -{notification.uniqueCode}- {notification.status}
+                                                        ticket request. {notification.eventName}
                                                         <span>
                                                             <div
-                                                                className={`w-[20px] h-[20px]  rounded-full ${notification.status == 'approved' ? 'bg-green-500' :
-                                                                    notification.status == 'pending' ? 'bg-orange-500' :
-                                                                        notification.status == 'canceled' ? 'bg-red-500' : 'bg-gray-300'
+                                                                className={`w-[15px] h-[15px] flex items-center justify-center rounded-full ${notification.status === 'approved' ? 'bg-green-500' :
+                                                                    notification.status === 'pending' ? 'bg-orange-500' :
+                                                                        notification.status === 'canceled' ? 'bg-red-500' : 'bg-gray-300'
                                                                     }`}
-                                                            ></div>
+                                                            >
+                                                                {notification.status === 'pending' && (
+                                                                    <span className="text-white text-[10px] font-bold">!</span>
+                                                                )}
+                                                                {notification.status === 'approved' && (
+                                                                    <span className="text-white text-[10px] font-bold">✔</span>
+                                                                )}
+                                                                {notification.status === 'canceled' && (
+                                                                    <span className="text-white text-[10px] font-bold">✘</span>
+                                                                )}
+                                                            </div>
                                                         </span>
                                                     </li>
                                                 ))
@@ -192,16 +203,26 @@ const Navbar = () => {
                                                 <li className="px-4 py-2 text-gray-500">No notifications found.</li>
                                             ) : (
                                                 notifications.map((notification, index) => (
-                                                    <li key={index} className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
+                                                    <li key={index} className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer flex items-center gap-x-[0.5rem] ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
                                                         }`} onClick={() => handleNavigate(notification.uniqueCode, notification.newPrice)}>
-                                                        You have a new ticket request. {notification.eventName} -{notification.uniqueCode}- {notification.status}
+                                                        ticket request. {notification.eventName}
                                                         <span>
                                                             <div
-                                                                className={`w-[20px] h-[20px]  rounded-full ${notification.status == 'approved' ? 'bg-green-500' :
-                                                                    notification.status == 'pending' ? 'bg-orange-500' :
-                                                                        notification.status == 'canceled' ? 'bg-red-500' : 'bg-gray-300'
+                                                                className={`w-[15px] h-[15px] flex items-center justify-center rounded-full ${notification.status === 'approved' ? 'bg-green-500' :
+                                                                    notification.status === 'pending' ? 'bg-orange-500' :
+                                                                        notification.status === 'canceled' ? 'bg-red-500' : 'bg-gray-300'
                                                                     }`}
-                                                            ></div>
+                                                            >
+                                                                {notification.status === 'pending' && (
+                                                                    <span className="text-white text-[10px] font-bold">!</span>
+                                                                )}
+                                                                {notification.status === 'approved' && (
+                                                                    <span className="text-white text-[10px] font-bold">✔</span>
+                                                                )}
+                                                                {notification.status === 'canceled' && (
+                                                                    <span className="text-white text-[10px] font-bold">✘</span>
+                                                                )}
+                                                            </div>
                                                         </span>
 
 
