@@ -51,7 +51,7 @@ function SignupW() {
 
         if (response.status === 201) {
           console.log('Registration successful!');
-          alert('Registration successful!');
+          // alert('Registration successful!');
           navigate('/LoginW'); 
         }
       } catch (error) {

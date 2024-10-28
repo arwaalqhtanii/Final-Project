@@ -8,6 +8,7 @@ function LoginW() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const[suspend,setsuspend]=useState('');
   const newErrors = {};
 
   const handleSubmit = async (e) => {
@@ -37,9 +38,15 @@ function LoginW() {
                 body: JSON.stringify({ email, password }),
             });
 
+            // Handle response based on status
             if (!response.ok) {
-                throw new Error('Login failed');
-            }
+              const errorData = await response.json(); 
+              if (response.status === 403) { 
+                  throw new Error(errorData.message || 'Login failed');
+              }
+              throw new Error('Login failed');
+          }
+
 
             const data = await response.json();
             console.log('Login successful!', data);
@@ -49,7 +56,7 @@ function LoginW() {
             navigate('/'); 
         } catch (error) {
             console.error('Error:', error);
-            newErrors.suspend='error'
+            setsuspend(error.message);
             setErrors({ general: error });
         }
     }
@@ -79,7 +86,7 @@ function LoginW() {
    
     <div className="relative bg-white shadow-lg rounded-xl p-6 sm:p-8 md:p-10 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl w-full z-10 min-h-[400px] sm:min-h-[450px] md:min-h-[500px]">
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 text-[#78006e]">Login</h2>
-      <h1>{errors.suspend}</h1>
+      <h1>{suspend}</h1>
       <div className="mb-4 sm:mb-6">
         <label className="block text-left mb-2 text-gray-600">Email:</label>
         <input 
@@ -123,7 +130,7 @@ function LoginW() {
       <div className="text-center">
         <p className="text-sm sm:text-lg">
           Don't have an account? 
-          <Link to="SignupW" className="text-[#78006e] hover:underline"> Create an account</Link>
+          <Link to="/SignupW" className="text-[#78006e] hover:underline"> Create an account</Link>
         </p>
       </div>
     </div>

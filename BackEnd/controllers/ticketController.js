@@ -414,9 +414,10 @@ export const getUserTicketsupdatestatus = async (req, res) => {
             .populate('eventId') // Populate eventId for more ticket details
             .sort({ purchaseDate: -1 }); // Sort by purchaseDate in descending order
 
-        if (!tickets.length) {
-            return res.status(404).json({ message: 'No tickets found for this user.' });
-        }
+      
+            if (!tickets || tickets.length === 0) {
+                return res.status(200).json({ message: 'No tickets found for this user.', tickets: [] });
+            }
 
         // Fetch user information
         const user = await User.findById(userId); 

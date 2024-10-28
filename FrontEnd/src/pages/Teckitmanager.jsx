@@ -14,7 +14,7 @@ function Teckitmanager() {
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
     const [notifications, setNotifications] = useState([]); // State for notifications
-
+    const[message,setMessage]=useState('');
     // const [pendingTickets, setPendingTickets] = useState(new Set()); 
     // const [filterStatus, setFilterStatus] = useState(null); 
 
@@ -24,12 +24,12 @@ function Teckitmanager() {
 
         setSelectedTicket(ticketCode);
         setSellPop(true);
-        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow = 'hidden';
     };
 
     const handleCloseSellPopup = () => {
         setSellPop(false);
-        document.body.style.overflow = 'auto';
+        // document.body.style.overflow = 'auto';
     };
 
 
@@ -48,7 +48,7 @@ function Teckitmanager() {
             console.log(sortedTickets);
 
             setTickets(sortedTickets); // Set the sorted tickets
-            setNotifications(response.data.tickets.flatMap(ticket => ticket.notifications || []));
+            // setNotifications(response.data.tickets.flatMap(ticket => ticket.notifications || []));
 
         } catch (error) {
             console.error('Error fetching tickets:', error);
@@ -70,12 +70,20 @@ function Teckitmanager() {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setTickets(response.data.tickets);
-
+    
+            if (response.data.tickets && response.data.tickets.length > 0) {
+                setTickets(response.data.tickets);
+                setMessage(''); // Clear message if tickets are found
+            } else {
+                setTickets([]); // Clear tickets if none found
+                setMessage( "No tickets found for the selected section."); // Display server message
+            }
         } catch (error) {
             console.error('Error fetching tickets:', error);
+            setMessage("An error occurred while fetching tickets. Please try again later.");
         }
     };
+    
 
     const handleFilter = (status) => {
         fetchTicketsByStatus(status);
@@ -114,12 +122,10 @@ function Teckitmanager() {
             </div>
 
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
-
-                {tickets.map((ticket, index) => (
-                    <>
-                   {/* <h1 className='text-white'> {ticket.notifications}</h1> */}
+            {tickets.length > 0 ? (
+                tickets.map((ticket) => (
                     <MyTicket
-                        key={ticket.index}
+                        key={ticket.uniqueCode}
                         title={ticket.eventId.name}
                         location={ticket.eventId.location}
                         date={ticket.visitDate}
@@ -129,15 +135,13 @@ function Teckitmanager() {
                         status={ticket.updateStatus}
                         process='Sell'
                         popSellForm={() => handleSell(ticket.uniqueCode)}
-                        // pending={ticket.notifications[0].status}
                         pending={ticket.notifications && ticket.notifications.length > 0 ? ticket.notifications[0].status : null} 
-
+                    
                     />
-                    </>
-                ))}
-    
-
-
+                ))
+            ) : (
+                <p className='text-white'>{message || "No tickets available."}</p> // Use the message state or a default message
+            )}
 
 
 
