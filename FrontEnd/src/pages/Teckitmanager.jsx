@@ -60,22 +60,7 @@ function Teckitmanager() {
         fetchTickets(); // Initial fetch
     }, []);
 
-    // Fetch tickets only when new pending notifications are received
-    // useEffect(() => {
-    //     const hasPendingNotification = notifications.some(notification => notification.status === 'pending');
-    //     if (hasPendingNotification) {
-    //         fetchTickets(); // Re-fetch tickets if there are pending notifications
-    //     }
-    // }, [notifications]);
-
-    // Simulate notification changes (for demonstration purposes)
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //         setNotifications(prev => [...prev, { message: 'New notification!', uniqueCode: 'someCode', status: 'pending' }]); // Simulate a pending notification
-    //     }, 10000); // Simulate a notification every 10 seconds
-
-    //     return () => clearInterval(intervalId); // Cleanup on unmount
-    // }, []);
+   
  
 
     const fetchTicketsByStatus = async (status) => {

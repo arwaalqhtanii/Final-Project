@@ -221,7 +221,7 @@ export const loginUser = async (req, res) => {
         }
 
         console.log("User suspension status:", user.isSuspended);
-console.log("user.suspensionEnd "+user.suspensionEnd );
+        console.log("user.suspensionEnd "+user.suspensionEnd );
         // Check if there is a suspensionEnd and if it has passed
         const now = Date.now();
         if (user.isSuspended) {
