@@ -104,7 +104,11 @@ const SellTicketModal = ({ isOpen, onClose, event ,update}) => {
                             </div>
                         </div>
 
-                       
+                        <div className="mb-6">
+                            <label className="block mb-2 font-semibold text-left">Original Ticket Price:</label>
+                                <p className="bg-gray-100 p-4 rounded-lg text-center font-semibold text-gray-700">{event.price || 'N/A'} SAR</p>
+                        </div>
+
                         <div className="mb-6">
                             <label className="block mb-2 font-semibold text-left">New Ticket Price:</label>
                             <div className="relative">
