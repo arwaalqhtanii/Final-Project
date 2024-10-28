@@ -5,6 +5,8 @@ const EventSchema = new mongoose.Schema({
     image: { type: String, required: true },
     location: { type: String, required: true },
     googleMapLink: String, 
+    Latitude: { type: Number }, // Ensure Latitude is defined
+    Longitude: { type: Number }, // Add Longitude if needed
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     Time: { type: String, required: true }, // Time in HH:mm format
@@ -19,7 +21,7 @@ const EventSchema = new mongoose.Schema({
         standard: { type: Number, default: 0 }
     },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
 });
 
 const Event = mongoose.model('Event', EventSchema);

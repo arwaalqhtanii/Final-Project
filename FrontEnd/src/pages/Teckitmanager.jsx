@@ -15,10 +15,29 @@ function Teckitmanager() {
     const token = localStorage.getItem('token');
     const [notifications, setNotifications] = useState([]); // State for notifications
     const[message,setMessage]=useState('');
-    // const [pendingTickets, setPendingTickets] = useState(new Set()); 
-    // const [filterStatus, setFilterStatus] = useState(null); 
+    const [userLocation, setUserLocation] = useState(null);
 
+  
 
+    const getUserLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLocation = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                };
+                setUserLocation(userLocation)
+                console.log(userLocation);
+                // Use the location as needed
+            }, (error) => {
+                console.error("Error obtaining location: ", error);
+            });
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    };
+
+    
 
     const handleSell = (ticketCode) => {
 
@@ -57,10 +76,25 @@ function Teckitmanager() {
 
    
     useEffect(() => {
+        getUserLocation();
         fetchTickets(); // Initial fetch
     }, []);
 
-   
+    console.log("User Location:", userLocation);
+
+    const getDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // Radius of the Earth in km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in km
+    };
+
+    const DISTANCE_THRESHOLD = 5; // Distance threshold in km
+
  
 
     const fetchTicketsByStatus = async (status) => {
@@ -123,25 +157,34 @@ function Teckitmanager() {
 
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
             {tickets.length > 0 ? (
-                tickets.map((ticket) => (
-                    <MyTicket
-                        key={ticket.uniqueCode}
-                        title={ticket.eventId.name}
-                        location={ticket.eventId.location}
-                        date={ticket.visitDate}
-                        time={ticket.eventId.Time}
-                        type={ticket.ticketType}
-                        code={ticket.uniqueCode}
-                        status={ticket.updateStatus}
-                        process='Sell'
-                        popSellForm={() => handleSell(ticket.uniqueCode)}
-                        pending={ticket.notifications && ticket.notifications.length > 0 ? ticket.notifications[0].status : null} 
-                    
-                    />
-                ))
-            ) : (
-                <p className='text-white'>{message || "No tickets available."}</p> // Use the message state or a default message
-            )}
+    tickets.map((ticket) => {
+        // const showBarcode = ticket.eventId && ticket.eventId.googlemaplink === userLocation;
+        const eventLatitude = ticket.eventId?.Latitude;
+        const eventLongitude = ticket.eventId?.Longitude;
+        const showBarcode = userLocation && eventLatitude && eventLongitude &&
+            getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
+
+        return ( // Use return here to return the JSX
+            <MyTicket
+                key={ticket.uniqueCode}
+                title={ticket.eventId?.name} // Use optional chaining for safety
+                location={ticket.eventId?.location}
+                date={ticket.visitDate}
+                time={ticket.eventId?.Time}
+                type={ticket.ticketType}
+                code={ticket.uniqueCode}
+                status={ticket.updateStatus}
+                process='Sell'
+                popSellForm={() => handleSell(ticket.uniqueCode)}
+                pending={ticket.notifications?.[0]?.status || null} // Use optional chaining
+                showBarcode={showBarcode} // Ensure this is passed
+          
+            />
+        );
+    })
+) : (
+    <p className='text-white'>{message || "No tickets available."}</p> // Use the message state or a default message
+)}
 
 
 

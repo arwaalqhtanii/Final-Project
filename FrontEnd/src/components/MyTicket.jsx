@@ -362,6 +362,8 @@ function MyTicket(props) {
         navigate('/');
     };
 
+
+
     return (
         <div className={` ${windowWidth > 768 ? 'ticket-big' : 'ticket-small'} w-[60vw] max-md:w-[80%] h-[40vh]  max-md:h-[fit-content] max-md:py-[15px] flex max-md:flex-col max-md:items-center justify-start rounded-[10px] relative ${props.status === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white'}`}>
             <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] justify-evenly  p-[10px]  pl-[35px] pr-[35px]'>
@@ -424,11 +426,11 @@ function MyTicket(props) {
             <div className={`w-[35%] max-md:w-[100%] h-[100%] ${windowWidth > 768 ? 'border-l-[3px]' : 'border-t-[3px]'} border-dashed  border-black p-[10px] max-md:px-[12.5px] pl-[10px] relative`}>
                 <div className='w-[100%] h-[100%] flex flex-col justify-evenly items-center relative'>
                     <div className='relative flex justify-center'>
-                        <img
+                    {props.showBarcode && <img
                             className={`w-[75%] ${props.status === 1 ? 'filter blur-[5px]' : ''}`}
                             src='https://www.marefa.org/w/images/8/87/QRCode.png'
                             alt="Barcode"
-                        />
+                        />}
                     </div>
 
                     <div className='relative'>

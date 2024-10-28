@@ -15,6 +15,8 @@ router.delete('/deleteevent/:id', deleteEvent); // Route to delete an event by I
 //updateEvent 
 router.put('/update/:eventId', updateEvent);
 
+//getCoordinatesFromLink 
+// router.get('/getCoordinatesFromLink',getCoordinatesFromLink);
 
 
 export default router;

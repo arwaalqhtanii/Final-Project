@@ -92,6 +92,8 @@ export const updateEvent = async (req, res) => {
         totalTicketsStandard,
         googleMapLink,
         Time,
+        Latitude,
+        Longitude,
     } = req.body;
 
     try {
@@ -106,8 +108,9 @@ export const updateEvent = async (req, res) => {
         if (location) event.location = location;
         if (details) event.details = details;
         if (googleMapLink) event.googleMapLink = googleMapLink;
-        if (Time) event.Time=Time;
-
+        if (Time) event.Time = Time;
+        if (Latitude !== undefined) event.Latitude = Latitude; // Update Latitude
+        if (Longitude !== undefined) event.Longitude = Longitude; // Update Longitude if needed
 
         // Update total tickets for each type and calculate the overall total
         if (totalTicketsGold !== undefined) event.totalTicketsGold = totalTicketsGold;
@@ -116,11 +119,31 @@ export const updateEvent = async (req, res) => {
         event.totalTickets = (totalTicketsGold || 0) + (totalTicketsSilver || 0) + (totalTicketsStandard || 0);
 
         await event.save();
-
         res.status(200).json({ message: 'Event updated successfully', event });
     } catch (error) {
-        console.error('Error updating event:', error);
+        console.error('Error updating event:', error.message);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
+
+//get litutde and from googlemap link
+// const apiKey ="AIzaSyAXllPwqX9_-b98OOXKky9MfTcKEiryRag"
+// export const getCoordinatesFromLink = async (link) => {
+//     // Extract place ID from the link (this example assumes you have the place ID)
+//     const placeId = await getPlaceIdFromLink(link);
+
+//     if (placeId) {
+//         const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${apiKey}`);
+//         const data = await response.json();
+//         if (data.result) {
+//             const location = data.result.geometry.location;
+//             console.log(`Latitude: ${location.lat}, Longitude: ${location.lng}`);
+//             return { latitude: location.lat, longitude: location.lng };
+//         } else {
+//             console.error('Error fetching location details:', data);
+//         }
+//     } else {
+//         console.error('Place ID not found for link:', link);
+//     }
+// };
