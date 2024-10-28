@@ -311,6 +311,7 @@ import { MdAccessTime } from "react-icons/md";
 import { FaTicketAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { QRCode } from 'qrcode.react';
 import Vector from '/Vector.png';
 
 function MyTicket(props) {
@@ -427,13 +428,16 @@ function MyTicket(props) {
 
             <div className={`w-[35%] max-md:w-[100%] flex flex-col items-center h-[100%] ${windowWidth > 768 ? 'border-l-[3px]' : 'border-t-[3px]'} border-dashed  border-black p-[10px] max-md:px-[12.5px] pl-[10px] relative`}>
                 <div className='w-[100%] h-[100%] flex flex-col justify-evenly items-center relative'>
-                    <div className='relative flex justify-center'>
-                    {props.showBarcode && <img
-                            className={`w-[75%] ${props.status === 1 ? 'filter blur-[5px]' : ''}`}
-                            src='https://www.marefa.org/w/images/8/87/QRCode.png'
-                            alt="Barcode"
-                        />}
-                    </div>
+                <div className='relative flex justify-center'>
+                    {props.showBarcode && (
+                        <QRCode
+                             value={props.code}  
+                             size={128}  
+                              className={`${props.status === 1 ? 'filter blur-[5px]' : ''}`}
+                        />
+                    )}
+                </div>
+
 
                     <div className='relative'>
                         <div className='font-bold'>
