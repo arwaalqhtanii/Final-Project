@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { FaTimes, FaTicketAlt, FaPlus, FaMinus } from 'react-icons/fa';
@@ -16,9 +17,7 @@ const BookingModal = ({ isOpen, onClose, event }) => {
     const elements = useElements();
     const [error, setError] = useState(null);
 
-    
 
-    
     const ticketPrices = {
         gold: 150,  
         silver: 100,
@@ -182,23 +181,26 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
                     </div>
 
                     <div className="mb-6">
-                        <label className="block mb-2 font-semibold text-left">Ticket type:</label>
-                        <div className="flex flex-col items-start">
-                            {Object.keys(ticketPrices).map((ticket) => (
-                                <label key={ticket} className="flex items-center mb-2 cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        value={ticket}
-                                        checked={selectedTicket === ticket}
-                                        onChange={(e) => setSelectedTicket(e.target.value)}
-                                        className="radio radio-primary mr-2"
-                                    />
-                                    <FaTicketAlt className={`mr-2 text-${ticket === 'gold' ? 'yellow-500' : ticket === 'silver' ? 'gray-400' : 'orange-500'} text-2xl`} />
-                                    <span>{ticketPrices[ticket]} SAR</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
+  <label className="block mb-2 font-semibold text-left">Ticket type:</label>
+  <div className="flex flex-col items-start">
+    {Object.keys(ticketPrices).map((ticket) => (
+      <label key={ticket} className="flex items-center mb-2 cursor-pointer">
+        <input
+          type="radio"
+          value={ticket}
+          checked={selectedTicket === ticket}
+          onChange={(e) => setSelectedTicket(e.target.value)}
+          className="radio radio-primary mr-2"
+        />
+        <FaTicketAlt
+          className={`mr-2 ${ticket === 'gold' ? 'text-yellow-500' : ticket === 'silver' ? 'text-gray-400' : 'text-black'} text-2xl`}
+        />
+        <span>{ticketPrices[ticket]} SAR</span>
+      </label>
+    ))}
+  </div>
+</div>
+
 
                     {numberOfTickets > 1 && selectedTicket && (
                         <div className="mb-6">
@@ -241,30 +243,59 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
                 {/* Confirmation Modal */}
                 {showConfirmation && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black opacity-75 z-50">
-                        <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%]">
-                            <h2 className="text-xl font-bold mb-4">Confirm Your Booking</h2>
-                            <p className="mb-2">Ticket Type: <strong>{selectedTicket}</strong></p>
-                            <p className="mb-2">Number of Tickets: <strong>{numberOfTickets}</strong></p>
-                            <p className="mb-2">Total Amount: <strong>{totalcalc} SAR</strong></p>
-                            <p className="mb-4">Do you want to proceed with the payment?</p>
-                            <div className="flex justify-between">
-                                <button onClick={() => setShowConfirmation(false)} className="bg-gray-400 text-white py-2 px-4 rounded">Cancel</button>
-                                <button onClick={handleConfirm} className="bg-[#78006e] hover:bg-[#be008d] text-white py-2 px-4 rounded">Confirm</button>
-                            </div>
-                        </div>
-                    </div>
+                   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                   <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%]">
+                     <h2 className="text-2xl font-bold mb-4 text-center">Confirm Your Booking</h2>
+                     <p className="mb-2 text-lg">
+                       Ticket Type: <strong> {selectedTicket}</strong>
+                     </p>
+                     <p className="mb-2 text-lg">
+                       Number of Tickets: <strong>{numberOfTickets}</strong>
+                     </p>
+                     <p className="mb-2 text-lg">
+                       Total Amount: <strong>{totalcalc} SAR</strong>
+                     </p>
+                     <br />
+                     <p className="mb-4 text-left font-bold">Do you want to proceed with the payment?</p>
+                     <div className="flex justify-between mt-6">
+                       <button
+                         onClick={() => setShowConfirmation(false)}
+                         className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded transition duration-300 ease-in-out"
+                       >
+                         Cancel
+                       </button>
+                       <button
+                         onClick={handleConfirm}
+                         className="bg-[#78006e] hover:bg-[#be008d] text-white py-2 px-4 rounded transition duration-300 ease-in-out"
+                       >
+                         Confirm
+                       </button>
+                     </div>
+                   </div>
+                 </div>
+                 
                 )}
 
                 {/* Success Message */}
                 {showSuccessMessage && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black opacity-75 z-50">
-                        <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%]">
-                            <h2 className="text-xl font-bold mb-4">Booking Successful!</h2>
-                            <p className="mb-4">Thank you for your booking. Your tickets will be sent to your email.</p>
-                            <button onClick={() => { setShowSuccessMessage(false); onClose(); }} className="bg-[#78006e] hover:bg-[#be008d] text-white py-2 px-4 rounded">Close</button>
-                        </div>
-                    </div>
+                   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                   <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%]">
+                     <h2 className="text-2xl font-bold mb-4 text-center">Booking Successful!</h2>
+                     <p className="mb-4 text-center">Thank you for your booking. Your tickets will be sent to Teckit manager.</p>
+                     <div className="flex justify-center">
+                       <button
+                         onClick={() => {
+                           setShowSuccessMessage(false);
+                           onClose();
+                         }}
+                         className="bg-[#78006e] hover:bg-[#be008d] text-white py-2 px-6 rounded transition duration-300 ease-in-out"
+                       >
+                         Close
+                       </button>
+                     </div>
+                   </div>
+                 </div>
+                 
                 )}
             </div>
         </div>
@@ -272,3 +303,4 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 };
 
 export default BookingModal;
+
