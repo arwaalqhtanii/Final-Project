@@ -124,7 +124,7 @@ function Teckitmanager() {
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
                 <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%]'>Manage My Tickets</div>
-                <div className='w-[55vw] max-md:w-[80%] h-[30%] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>
+                <div className='w-[55vw] max-md:w-[80%] h-[fit-content] py-[20px] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>
                     <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
                         <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(0)}>Available</button>
                         <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(1)}>Not available</button>
