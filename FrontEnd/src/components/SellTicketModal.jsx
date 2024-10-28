@@ -3,7 +3,7 @@ import { FaTimes, FaEnvelope, FaDollarSign } from 'react-icons/fa';
 import axios from 'axios';
 
 
-const SellTicketModal = ({ isOpen, onClose, event }) => {
+const SellTicketModal = ({ isOpen, onClose, event ,update}) => {
     const [buyerEmail, setBuyerEmail] = useState('');
     const [ticketPrice, setTicketPrice] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -39,6 +39,7 @@ const SellTicketModal = ({ isOpen, onClose, event }) => {
     
             console.log(response.data);
             setShowSuccessMessage(true);
+            update.fetchTickets();
             resetForm();
         } catch (error) {
             const message = error.response.data.message || 'An error occurred while selling the ticket.';
