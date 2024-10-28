@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react'
 import MyTicket from '../components/MyTicket'
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif'
@@ -5,6 +6,7 @@ import { AiOutlineFileSearch } from "react-icons/ai";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import SellTicketModal from '../components/SellTicketModal';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Teckitmanager() {
@@ -17,7 +19,14 @@ function Teckitmanager() {
 
     // const [pendingTickets, setPendingTickets] = useState(new Set()); 
     // const [filterStatus, setFilterStatus] = useState(null); 
-
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!token) {
+            navigate('/'); // Redirect to home page if not logged in
+        }
+    }, [token, navigate]);
+    
 
 
     const handleSell = (ticketCode) => {
@@ -55,29 +64,27 @@ function Teckitmanager() {
         }
     };
 
-
-    // Fetch tickets initially when the component mounts
-    // Fetch tickets initially when the component mounts
+   
     useEffect(() => {
         fetchTickets(); // Initial fetch
     }, []);
 
     // Fetch tickets only when new pending notifications are received
-    useEffect(() => {
-        const hasPendingNotification = notifications.some(notification => notification.status === 'pending');
-        if (hasPendingNotification) {
-            fetchTickets(); // Re-fetch tickets if there are pending notifications
-        }
-    }, [notifications]);
+    // useEffect(() => {
+    //     const hasPendingNotification = notifications.some(notification => notification.status === 'pending');
+    //     if (hasPendingNotification) {
+    //         fetchTickets(); // Re-fetch tickets if there are pending notifications
+    //     }
+    // }, [notifications]);
 
     // Simulate notification changes (for demonstration purposes)
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setNotifications(prev => [...prev, { message: 'New notification!', uniqueCode: 'someCode', status: 'pending' }]); // Simulate a pending notification
-        }, 10000); // Simulate a notification every 10 seconds
+    // useEffect(() => {
+    //     const intervalId = setInterval(() => {
+    //         setNotifications(prev => [...prev, { message: 'New notification!', uniqueCode: 'someCode', status: 'pending' }]); // Simulate a pending notification
+    //     }, 10000); // Simulate a notification every 10 seconds
 
-        return () => clearInterval(intervalId); // Cleanup on unmount
-    }, []);
+    //     return () => clearInterval(intervalId); // Cleanup on unmount
+    // }, []);
  
 
     const fetchTicketsByStatus = async (status) => {
@@ -107,6 +114,7 @@ function Teckitmanager() {
                     isOpen={sellPop}
                     onClose={handleCloseSellPopup}
                     event={{ ticketCode: selectedTicket }}
+                    update={{fetchTickets}}
                    
                 />
             )}
@@ -116,7 +124,7 @@ function Teckitmanager() {
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
                 <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%]'>Manage My Tickets</div>
-                <div className='w-[50%] max-md:w-[80%] h-[30%] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>
+                <div className='w-[55vw] max-md:w-[80%] h-[30%] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>
                     <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
                         <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(0)}>Available</button>
                         <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(1)}>Not available</button>
@@ -187,7 +195,3 @@ function Teckitmanager() {
 }
 
 export default Teckitmanager
-
-
-
-
