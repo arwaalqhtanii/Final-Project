@@ -2,10 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif';
 import { useState, useEffect } from 'react';
 import { FaRegEdit } from "react-icons/fa";
-import { FiLogOut } from 'react-icons/fi';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import axios from 'axios';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -14,50 +13,53 @@ const Profile = () => {
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:8050/user/userinfo', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('User info fetched:', response.data); // طباعة البيانات المستلمة
+        setEmail(response.data.email);
+        setUsername(response.data.username);
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
+    };
+    
     fetchUserInfo();
   }, []);
-
-  // Fetch user info
-  const fetchUserInfo = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8050/user/userinfo', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setEmail(response.data.email);
-      setUsername(response.data.username);
-    } catch (error) {
-      console.error('Error fetching user info:', error);
-    }
-  };
 
   const handleEdit = () => {
     setIsEditable(!isEditable);
   };
 
-  // Save updated user info
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(
+      console.log(token)
+      const response = await axios.put(
         'http://localhost:8050/user/update',
-        { email, username },
+        { username, email },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
+            'Content-Type': 'application/json'
+          }
         }
       );
+      
+      console.log('User info updated:', response.data); // طباعة البيانات المستلمة بعد التحديث
       setIsEditable(false);
     } catch (error) {
       console.error('Error updating user info:', error);
     }
   };
+  
+  
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token'); // إزالة التوكن عند تسجيل الخروج
     navigate('/LoginW');
   };
 
@@ -74,8 +76,14 @@ const Profile = () => {
           <div className="profile-card flex flex-col gap-y-[1.5rem] bg-white shadow-lg rounded-lg p-8 w-96 text-center relative">
 
             <h1 className="text-2xl font-bold text-[#78006e] mb-4">Welcome , {username}</h1>
-            <input type='text' className='h-[40px] border-[1px] border-[#78006e] focus:outline-none rounded-[5px] px-[10px]' placeholder='first name'></input>
-            <div className='flex items-center'>
+            <input 
+              type='text'
+              className='h-[40px] border-[1px] border-[#78006e] focus:outline-none rounded-[5px] px-[10px]'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder='First name'
+              disabled={!isEditable}
+            />            <div className='flex items-center'>
               <input
                 type='email'
                 className='h-[40px] w-[80%] border-[1px] px-[10px] focus:outline-none rounded-l-[5px] border-[#78006e]'

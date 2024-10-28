@@ -440,31 +440,7 @@ function MyTicket(props) {
                         </div>
                     </div>
 
-                    {props.forbuy ? (
-                        <div className='flex gap-x-[1.5rem]'>
-                            <button className='px-[10px] py-[5px] text-white rounded-[10px] bg-slate-500 text-center font-bold' onClick={handleIgnore}>Ignore</button>
-                            <button className='px-[10px] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center font-bold' onClick={props.purchaseForm}>Accept</button>
-                        </div>
-                    ) : (
-                        <div className='flex justify-end gap-x-[1.5rem]'>
-                            {/* <h1>{props.pending}</h1> */}
-                            {props.status === 0 ? (
-                                <button
-                                className={`px-[10px] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending === 'pending' || props.pending === 'approved' ? 'bg-[gray]' : 'bg-[#78006E]'}`}
-                                onClick={props.popSellForm}
-                                >
-                                    Sell
-                                </button>
-                            ) : (
-                                <button
-                                    className='px-[10px] py-[5px] text-white rounded-[10px] bg-slate-500 text-center font-bold'
-                                    disabled
-                                >
-                                    Not Available
-                                </button>
-                            )}
-                        </div>
-                    )}
+                    
                     {windowWidth < 768 ?
                     <div>
                         {props.forbuy ? (
