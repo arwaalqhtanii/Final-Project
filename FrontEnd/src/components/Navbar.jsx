@@ -46,7 +46,6 @@ const Navbar = () => {
         setIsLoggedIn(false);
         navigate('/LoginW');
     };
-    // Fetch notifications
     const fetchNotifications = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -56,7 +55,6 @@ const Navbar = () => {
                 },
             });
             console.log(response);
-            // const ticket = response.data.ticket;
             console.log('oooooooooooooooooooooo');
 
             setNotifications(response.data.notifications);
@@ -262,9 +260,7 @@ const Navbar = () => {
                                 )}
                             </div>
                         )}
-                        {/* <button onClick={handleLogout} className="transition-colors duration-300">
-                            <FiLogOut className={`text-3xl ${isScrolled ? 'text-[#78006e] hover:text-[#171617]' : 'text-white'}`} />
-                        </button>*/}
+
                     </div>
 
 
