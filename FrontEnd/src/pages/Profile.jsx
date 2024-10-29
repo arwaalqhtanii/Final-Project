@@ -10,6 +10,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState([]);
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
@@ -21,12 +22,13 @@ const Profile = () => {
         });
         console.log('User info fetched:', response.data); // طباعة البيانات المستلمة
         setEmail(response.data.email);
-        setUsername(response.data.username);
+        setUsername(response.data.Username);
+        setUserData(response.data)
       } catch (error) {
         console.error('Error fetching user info:', error);
       }
     };
-    
+
     fetchUserInfo();
   }, []);
 
@@ -48,15 +50,15 @@ const Profile = () => {
           }
         }
       );
-      
+
       console.log('User info updated:', response.data); // طباعة البيانات المستلمة بعد التحديث
       setIsEditable(false);
     } catch (error) {
       console.error('Error updating user info:', error);
     }
   };
-  
-  
+
+
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // إزالة التوكن عند تسجيل الخروج
@@ -70,13 +72,15 @@ const Profile = () => {
       <div className='w-[100%] h-[100vh] relative'>
         <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
         <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
-        <div className='max-md:w-[100%]  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col gap-y-[3rem] items-center'>
-          <div className='text-white font-bold text-[3rem]'>Profile</div>
+        <div className='max-md:w-[100%]  absolute top-[50%] left-[0%]  translate-y-[-50%] flex flex-col gap-y-[3rem] items-center'>
 
-          <div className="profile-card flex flex-col gap-y-[1.5rem] bg-white shadow-lg rounded-lg p-8 w-96 text-center relative">
+
+          <div className="profile-card flex flex-col items-start gap-y-[1.5rem] bg-white shadow-lg h-[100vh] p-8 w-[40vw] text-center relative">
 
             <h1 className="text-2xl font-bold text-[#78006e] mb-4">Welcome , {username}</h1>
-            <input 
+            <h1 className="text-2xl font-bold text-[#78006e] mb-4">Welcome , {userData}</h1>
+
+            <input
               type='text'
               className='h-[40px] border-[1px] border-[#78006e] focus:outline-none rounded-[5px] px-[10px]'
               value={username}
