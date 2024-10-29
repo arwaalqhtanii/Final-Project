@@ -5,7 +5,7 @@ const HowToBook = () => {
     return (
     
         <div className="container mx-auto py-28">
-  <h2 className="text-3xl font-bold text-left mb-10 text-purple-900 py-4">How to Book Your Ticket?</h2>
+  <h2 className="text-3xl font-bold text-purple-900 px-8 mb-6 text-left">How to Book Your Ticket?</h2>
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
     <div>
       <img src="https://cdn.grintahub.com/public/assets/web/images/waiting-room.webp" alt="Enter Event Icon" className="w-12 h-12 mx-auto mb-2"/>
@@ -28,12 +28,12 @@ const HowToBook = () => {
   <div className="mt-12 bg-slate-100 py-5 flex flex-col items-start">
   <h2 className="text-3xl font-bold text-purple-900 px-8 mb-6">About Us</h2>
   <p className="text-lg text-gray-700 px-6 lg:px-24 leading-relaxed">
-    At Safe Ticket, we strive to provide a secure and reliable platform for buying and selling tickets. Our goal is to combat fraud and prevent the resale of used tickets in the black market, ensuring a transparent and safe purchasing experience for all users.
+    At WhiteTik, we strive to provide a secure and reliable platform for buying and selling tickets. Our goal is to combat fraud and prevent the resale of used tickets in the black market, ensuring a transparent and safe purchasing experience for all users.
   </p>
 </div>
-
+<br />
   <div className="mt-12 text-center">
-    <h2 className="text-3xl font-bold text-left mb-10 text-purple-900 py-8">Why Us?</h2>
+    <h2 className="text-3xl font-bold text-purple-900 px-8 mb-6 text-left">Why Us?</h2>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         
         <div className="bg-gray-100  rounded-lg p-6 ">
@@ -43,6 +43,7 @@ const HowToBook = () => {
                 All tickets offered on our site go through rigorous verification processes to ensure their validity.
             </p>
         </div>
+    
 
         <div className="bg-gray-100  rounded-lg p-6">
             <img src={image2} alt="Ease of Use" className="w-16 h-16 mx-auto mb-4" />
