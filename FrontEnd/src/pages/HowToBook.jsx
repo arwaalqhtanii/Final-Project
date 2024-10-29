@@ -9,19 +9,19 @@ const HowToBook = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
                 <div>
                     <img src="https://cdn.grintahub.com/public/assets/web/images/waiting-room.webp" alt="Enter Event Icon" className="w-12 h-12 mx-auto mb-2"/>
-                    <h3 className="text-xl font-bold">Enter the Event</h3>
+                    <h3 className="text-xl font-bold p-4">Enter the Event</h3>
                 </div>
                 <div>
                     <img src="https://cdn.grintahub.com/public/assets/web/images/ticket.webp" alt="Ticket Icon" className="w-12 h-12 mx-auto mb-2"/>
-                    <h3 className="text-xl font-bold">Receive Your Ticket</h3>
+                    <h3 className="text-xl font-bold p-4">Receive Your Ticket</h3>
                 </div>
                 <div>
                     <img src="https://cdn.grintahub.com/public/assets/web/images/credit-card.webp" alt="Payment Icon" className="w-12 h-12 mx-auto mb-2"/>
-                    <h3 className="text-xl font-bold">Make Payment</h3>
+                    <h3 className="text-xl font-bold p-4">Make Payment</h3>
                 </div>
                 <div>
                     <img src="https://cdn.grintahub.com/public/assets/web/images/stadium.webp" alt="Select Event Icon" className="w-12 h-12 mx-auto mb-2"/>
-                    <h3 className="text-xl font-bold">Select the Event</h3>
+                    <h3 className="text-xl font-bold p-4">Select the Event</h3>
                 </div>
             </div>
 
