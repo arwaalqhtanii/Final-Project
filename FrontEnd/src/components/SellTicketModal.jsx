@@ -3,7 +3,7 @@ import { FaTimes, FaEnvelope, FaDollarSign } from 'react-icons/fa';
 import axios from 'axios';
 
 
-const SellTicketModal = ({ isOpen, onClose, event, update }) => {
+const SellTicketModal = ({ isOpen, onClose, event, update, originalPrice }) => {
     const [buyerEmail, setBuyerEmail] = useState('');
     const [ticketPrice, setTicketPrice] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -98,7 +98,10 @@ const SellTicketModal = ({ isOpen, onClose, event, update }) => {
                             </div>
                         </div>
 
-                       
+                        <div className="mb-6">
+                            <label className="block mb-2 font-semibold text-left">Original Ticket Price:</label>
+                            <p className="bg-gray-100 p-4 rounded-lg text-center font-semibold text-gray-700">{event.ticketOldPrice || 'N/A'} SAR</p>
+                        </div>
                         <div className="mb-6">
 
                             <label className="block mb-2 font-semibold text-left">New Ticket Price:</label>
@@ -179,5 +182,3 @@ const SellTicketModal = ({ isOpen, onClose, event, update }) => {
 };
 
 export default SellTicketModal;
-
-
