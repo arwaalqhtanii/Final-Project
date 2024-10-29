@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';  
 import { useNavigate,Link } from 'react-router-dom';
 import axios from 'axios'; 
-
+import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif';
 function SignupW() {
   const [idNumber, setIdNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -73,20 +73,22 @@ function SignupW() {
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
-    <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-      <svg className="absolute top-0 left-0 w-48 h-48 sm:w-64 sm:h-64 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 300 300">
+    <div className="relative flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
+      <img src={riyadhseasonboulevard} alt="Background" className="absolute w-full h-full object-cover opacity-95" />
+      <div className="absolute w-full h-full bg-black opacity-50"></div>
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+      <svg className="absolute top-0 left-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 300 300">
         <line x1="0" y1="0" x2="300" y2="300" stroke="#78006e" strokeWidth="10"/>
         <line x1="75" y1="0" x2="300" y2="225" stroke="#be008d" strokeWidth="6"/>
       </svg>
-      <svg className="absolute bottom-0 right-0 w-48 h-48 sm:w-64 sm:h-64 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 300 300">
+      <svg className="absolute bottom-0 right-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 300 300">
         <line x1="0" y1="0" x2="300" y2="300" stroke="#be008d" strokeWidth="6"/>
         <line x1="150" y1="0" x2="300" y2="150" stroke="#78006e" strokeWidth="4"/>
       </svg>
     </div>
   
-    <div className="relative bg-white shadow-lg rounded-xl p-6 sm:p-10 max-w-md sm:max-w-xl w-full z-10 min-h-[550px]">
-      <h2 className="text-2xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 text-[#78006e]">Create Account</h2>
+    <div className="relative bg-white shadow-lg rounded-xl p-4 sm:p-6 max-w-md sm:max-w-xl w-full z-10 min-h-[550px]">
+      <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-[#78006e]">Create Account</h2>
   
       <div className="mb-4 sm:mb-6">
         <label className="block text-left mb-2 text-gray-600">Enter ID Number:</label>

@@ -43,6 +43,11 @@ const handleSubmit = async () => {
         return;
     }
 
+    if (!date || !selectedTicket) {
+        setError('Please fill in all required fields: select a ticket type and event date.');
+        return;
+    }
+
     const cardElement = elements.getElement(CardElement);
 
     if (!cardElement) {
@@ -65,7 +70,7 @@ const handleSubmit = async () => {
     }
 
     try {
-        // Create payment intent
+         
         const paymentResponse = await axios.post('http://localhost:8050/tickets/create-payment-intent', {
             paymentMethodId: paymentMethod.id,
             amount: total,
@@ -77,14 +82,14 @@ const handleSubmit = async () => {
             throw new Error(paymentResponse.data.error || 'Payment failed');
         }
 
-        // Assuming you have a user authentication token stored
+       
         const userToken = localStorage.getItem('token'); 
 
-        // Format the visit date
+       
         const formatDate = (date) => {
             if (!date) return '';
             const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const month = String(date.getMonth() + 1).padStart(2, '0'); 
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
         };
@@ -92,14 +97,14 @@ const handleSubmit = async () => {
         const finalTicketData = {
             ticketType: selectedTicket,
             quantity: numberOfTickets,
-            visitDate: formatDate(date), // Use formatted date
+            visitDate: formatDate(date),  
         };
 
 
         console.log("Final Ticket Data:", finalTicketData);
 
         console.log('event id'+event._id);
-        // Create ticket for the user
+       
         const ticketResponse = await axios.post(`http://localhost:8050/tickets/addTicket/${event._id}/purchase`, finalTicketData, {
             headers: {
                 Authorization: `Bearer ${userToken}`,
@@ -108,7 +113,7 @@ const handleSubmit = async () => {
     
         console.log('Ticket Response:', ticketResponse.data);
     
-        // Check if the response has the expected structure
+       
         if (ticketResponse.data && ticketResponse.data.message) {
             console.log("Tickets purchased successfully");
             setShowSuccessMessage(true);
@@ -117,7 +122,7 @@ const handleSubmit = async () => {
         }
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
-            setError(errorMessage); // Set error message from the response or fallback
+            setError(errorMessage); 
             console.error('Error during ticket creation:', errorMessage);
     }
 };
@@ -126,7 +131,7 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
     const handleConfirm = () => {
         setShowConfirmation(false);
-        handleSubmit(); // Call handleSubmit directly
+        handleSubmit();  
     };
 
     const incrementTickets = () => {
@@ -148,12 +153,12 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
             <div className="fixed inset-0 bg-black opacity-75" onClick={onClose}></div>
             <div className="relative bg-white rounded-lg p-8 z-10 shadow-lg max-w-lg mx-auto w-[95%] h-auto">
                 <button className="absolute top-3 right-3 text-gray-600 hover:text-gray-800" onClick={onClose}>
-                    <FaTimes className="text-2xl" />
+                    <FaTimes className="text-xl" />
                 </button>
 
-                <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">{event.name}</h2>
-                <p className="text-gray-600 mb-6 text-center">Date: {event.startDate} - {event.endDate}</p>
-                {error && <h1 className="text-red-600">{error}</h1>} {/* Display error message */}
+                <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">{event.name}</h2>
+                <p className="text-gray-600 mb-6 text-center text-sm">Date: {event.startDate} - {event.endDate}</p>
+                {error && <h1 className="text-red-600">{error}</h1>}  
                 <form onSubmit={(e) => { e.preventDefault(); setShowConfirmation(true); }}>
                     <div className="mb-6 md:flex md:items-start">
                         <div className="w-full mb-4 md:mb-0">
@@ -170,11 +175,11 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
 
                         <div className="flex items-center border border-gray-300 rounded-lg p-[0.71rem] mt-4 md:mt-7 md:ml-2 w-60">
                             <span className="mr-2 text-gray-600">Tickets:</span>
-                            <button type="button" onClick={decrementTickets} className="text-[#78006e] hover:text-[#be008d]">
+                            <button type="button" onClick={decrementTickets} className="text-[#78006e] hover:text-[#be008d] text-sm">
                                 <FaMinus />
                             </button>
                             <span className="mx-2">{numberOfTickets}</span>
-                            <button type="button" onClick={incrementTickets} className="text-[#78006e] hover:text-[#be008d]">
+                            <button type="button" onClick={incrementTickets} className="text-[#78006e] hover:text-[#be008d] text-sm">
                                 <FaPlus />
                             </button>
                         </div>
@@ -191,6 +196,7 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
           checked={selectedTicket === ticket}
           onChange={(e) => setSelectedTicket(e.target.value)}
           className="radio radio-primary mr-2"
+          style={{ accentColor: '#a42aac' }}
         />
         <FaTicketAlt
           className={`mr-2 ${ticket === 'gold' ? 'text-yellow-500' : ticket === 'silver' ? 'text-gray-400' : 'text-black'} text-2xl`}
@@ -241,19 +247,19 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
                     </div>
                 </form>
 
-                {/* Confirmation Modal */}
+                
                 {showConfirmation && (
                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                    <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%]">
                      <h2 className="text-2xl font-bold mb-4 text-center">Confirm Your Booking</h2>
                      <p className="mb-2 text-lg">
-                       Ticket Type: <strong> {selectedTicket}</strong>
+                     <strong>Ticket Type:</strong> {selectedTicket}
                      </p>
                      <p className="mb-2 text-lg">
-                       Number of Tickets: <strong>{numberOfTickets}</strong>
+                     <strong>Number of Tickets:</strong>{numberOfTickets}
                      </p>
                      <p className="mb-2 text-lg">
-                       Total Amount: <strong>{totalcalc} SAR</strong>
+                     <strong>Total Amount:</strong> {totalcalc} SAR
                      </p>
                      <br />
                      <p className="mb-4 text-left font-bold">Do you want to proceed with the payment?</p>
@@ -276,7 +282,7 @@ const totalcalc= ticketPrices[selectedTicket] * numberOfTickets;
                  
                 )}
 
-                {/* Success Message */}
+                
                 {showSuccessMessage && (
                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                    <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%]">
