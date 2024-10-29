@@ -1,6 +1,6 @@
 import express from 'express';
 import { notifyUserAboutTicket, getUserNotifications,ignoreNotification,approveNotification ,fetchNotifications} from '../controllers/notificationController.js';
-import { authenticateToken } from '../middleware/authMiddleware.js'; // Assuming you have an authentication middleware
+import { authenticateToken } from '../middleware/authMiddleware.js'; 
 
 const router = express.Router();
 

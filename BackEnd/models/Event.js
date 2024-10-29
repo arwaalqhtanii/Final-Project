@@ -5,16 +5,16 @@ const EventSchema = new mongoose.Schema({
     image: { type: String, required: true },
     location: { type: String, required: true },
     googleMapLink: String, 
-    Latitude: { type: Number }, // Ensure Latitude is defined
-    Longitude: { type: Number }, // Add Longitude if needed
+    Latitude: { type: Number }, 
+    Longitude: { type: Number }, 
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    Time: { type: String, required: true }, // Time in HH:mm format
+    Time: { type: String, required: true }, 
     details: { type: String, required: true },
-    totalTickets: { type: Number, required: true }, // Total tickets available
-    totalTicketsGold: { type: Number, required: true }, // Total gold tickets
-    totalTicketsSilver: { type: Number, required: true }, // Total silver tickets
-    totalTicketsStandard: { type: Number, required: true }, // Total standard tickets
+    totalTickets: { type: Number, required: true }, 
+    totalTicketsGold: { type: Number, required: true }, 
+    totalTicketsSilver: { type: Number, required: true }, 
+    totalTicketsStandard: { type: Number, required: true }, 
     totalTicketsSold: {
         gold: { type: Number, default: 0 },
         silver: { type: Number, default: 0 },

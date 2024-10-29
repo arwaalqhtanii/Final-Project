@@ -1,6 +1,6 @@
 import express from 'express';
 import { registerUser ,getAllUsers,loginUser, deleteuserbyId,getUserInfo,updateUserInfo} from '../controllers/userController.js';
-import { authenticateToken } from '../middleware/authMiddleware.js'; // Check the path and export name
+import { authenticateToken } from '../middleware/authMiddleware.js'; 
 
 const router = express.Router();
 
@@ -22,5 +22,4 @@ router.get('/userinfo', authenticateToken, getUserInfo);
 //update user info
 router.put('/update', authenticateToken, updateUserInfo);
 
-// Export the router
 export default router;

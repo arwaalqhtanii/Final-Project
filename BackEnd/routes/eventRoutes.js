@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEvent,getAllEvents,deleteEvent,updateEvent } from '../controllers/eventController.js'; // Adjust the import path
+import { createEvent,getAllEvents,deleteEvent,updateEvent } from '../controllers/eventController.js'; 
 
 const router = express.Router();
 
@@ -10,13 +10,11 @@ router.post('/events', createEvent);
 router.get('/allevents', getAllEvents);
 
 //delete event 
-router.delete('/deleteevent/:id', deleteEvent); // Route to delete an event by ID
+router.delete('/deleteevent/:id', deleteEvent); 
 
 //updateEvent 
 router.put('/update/:eventId', updateEvent);
 
-//getCoordinatesFromLink 
-// router.get('/getCoordinatesFromLink',getCoordinatesFromLink);
 
 
 export default router;
