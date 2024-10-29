@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import connectDB from './database/Database.js'; 
+import connectDB from './database/database.js'; 
 import userRoutes from './routes/userRoutes.js';
 import eventRoute from './routes/eventRoutes.js'
 import ticketRoutes from './routes/ticketRoutes.js';
@@ -23,5 +23,5 @@ app.use('/tickets', ticketRoutes);
 app.use('/notifications', notificationRouter);
 
 
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT||3000 ;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
