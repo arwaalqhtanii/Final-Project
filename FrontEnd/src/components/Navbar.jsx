@@ -46,7 +46,6 @@ const Navbar = () => {
         setIsLoggedIn(false);
         navigate('/LoginW');
     };
-    // Fetch notifications
     const fetchNotifications = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -56,7 +55,6 @@ const Navbar = () => {
                 },
             });
             console.log(response);
-            // const ticket = response.data.ticket;
             console.log('oooooooooooooooooooooo');
 
             setNotifications(response.data.notifications);
