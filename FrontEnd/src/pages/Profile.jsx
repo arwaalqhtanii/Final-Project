@@ -11,8 +11,9 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [userData, setUserData] = useState([]);
-  const [isEditable, setIsEditable] = useState(false);
-  const [password, setPassword] = useState(''); // إضافة حالة لحفظ كلمة المرور الجديدة
+  const [isEmailEditable, setIsEmailEditable] = useState(false);
+  const [isUsernameEditable, setIsUsernameEditable] = useState(false);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -33,10 +34,6 @@ const Profile = () => {
     fetchUserInfo();
   }, []);
 
-  const handleEdit = () => {
-    setIsEditable(!isEditable);
-  };
-
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -52,7 +49,8 @@ const Profile = () => {
       );
 
       console.log('User info updated:', response.data);
-      setIsEditable(false);
+      setIsUsernameEditable(false);
+      setIsEmailEditable(false);
     } catch (error) {
       console.error('Error updating user info:', error);
     }
@@ -65,7 +63,7 @@ const Profile = () => {
       });
 
       console.log('Password reset request sent:', response.data);
-      setPassword(''); // تفريغ حقل كلمة المرور بعد الإرسال
+      setPassword('');
       alert('Password reset link has been sent to your email.');
     } catch (error) {
       console.error('Error sending password reset request:', error);
@@ -83,56 +81,71 @@ const Profile = () => {
       <div className='w-[100%] h-[100vh] relative'>
         <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard} alt="Background" />
         <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
-        <div className='max-md:w-[100%] absolute top-[50%] left-[0%] translate-y-[-50%] flex flex-col gap-y-[3rem] items-center'>
-          <div className="profile-card flex flex-col items-start gap-y-[1.5rem] bg-white shadow-lg h-[100vh] p-8 w-[40vw] text-center relative">
+        <div className='max-md:w-[100%] absolute bottom-[0%] max-md:bottom-[5%] left-[0%] translate-y-[0%] flex flex-col gap-y-[3rem] items-center'>
+          <div className="profile-card flex flex-col items-start gap-y-[1.5rem] bg-white shadow-lg h-[90vh] p-8 w-[40vw] max-md:w-[80%] max-md:h-[fit-content] max-md:rounded-md text-center relative">
             <h1 className="text-2xl font-bold text-[#78006e] mb-4">Welcome, {username}</h1>
-
-            <input
-              type='text'
-              className='h-[40px] border-[1px] border-[#78006e] focus:outline-none rounded-[5px] px-[10px]'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder='First name'
-              disabled={!isEditable}
-            />
-            <div className='flex items-center'>
-              <input
-                type='email'
-                className='h-[40px] w-[80%] border-[1px] px-[10px] focus:outline-none rounded-l-[5px] border-[#78006e]'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={!isEditable}
-              />
-              <button
-                className='h-[40px] text-white flex justify-center items-center bg-[#78006e] w-[20%] border-[1px] border-[#78006e] rounded-r-[5px]'
-                onClick={isEditable ? handleSave : handleEdit}
-              >
-                {isEditable ? 'Save' : <FaRegEdit className='text-[1.2rem] font-bold' />}
-              </button>
+            <div className='flex flex-col items-start w-[100%]'>
+              <p className='text-gray-500 font-semibold'>Name :</p>
+              <div className='flex items-center'>
+                <input
+                  type='text'
+                  className='h-[40px] w-[80%] border-[1px] border-[#78006e] focus:outline-none rounded-l-[5px] px-[10px]'
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder='First name'
+                  disabled={!isUsernameEditable}
+                />
+                <button
+                  className='h-[40px] text-white flex justify-center items-center bg-[#78006e] w-[20%] border-[1px] border-[#78006e] rounded-r-[5px]'
+                  onClick={isUsernameEditable ? handleSave : () => setIsUsernameEditable(true)}
+                >
+                  {isUsernameEditable ? 'Save' : <FaRegEdit className='text-[1.2rem] font-bold' />}
+                </button>
+              </div>
             </div>
 
-            {/* حقل إدخال جديد لتعديل كلمة المرور */}
-            <div className='flex items-center gap-y-[1.5rem] flex-col w-full'>
-              <input
-                type='password'
-                className='h-[40px] w-[100%] border-[1px] px-[10px] focus:outline-none rounded-[5px] border-[#78006e]'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder='New Password'
-              />
+            <div className='flex flex-col items-start'>
+              <p className='text-gray-500 font-semibold'>Email :</p>
+              <div className='flex items-center'>
+
+                <input
+                  type='email'
+                  className='h-[40px] w-[80%] border-[1px] px-[10px] focus:outline-none rounded-l-[5px] border-[#78006e]'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={!isEmailEditable}
+                />
+                <button
+                  className='h-[40px] text-white flex justify-center items-center bg-[#78006e] w-[20%] border-[1px] border-[#78006e] rounded-r-[5px]'
+                  onClick={isEmailEditable ? handleSave : () => setIsEmailEditable(true)}
+                >
+                  {isEmailEditable ? 'Save' : <FaRegEdit className='text-[1.2rem] font-bold' />}
+                </button>
+              </div>
+            </div>
+
+
+            <div className='flex items-start gap-y-[1.5rem] flex-col w-[46%] max-md:w-[100%] mt-4'>
+
+              <div className='flex flex-col items-start w-[100%]'>
+                <p className='text-gray-500'>Reset your password :</p>
+                <input
+                  type='email'
+                  className='h-[40px] w-[100%] border-[1px] px-[10px] focus:outline-none rounded-[5px] border-[#78006e]'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder='Email to receive the password'
+                />
+              </div>
+
               <button
                 className='h-[40px] w-[100%] text-white flex justify-center items-center bg-[#78006e] border-[1px] border-[#78006e] rounded-[5px]'
                 onClick={handlePasswordChange}
               >
-                Update Password
+                Send New Password
               </button>
             </div>
 
-            <div className='flex w-[100%] justify-center gap-x-[1.2rem]'>
-              <button className='px-[16px] py-[5px] border-[1px] rounded-[5px] bg-[#78006e] text-white' onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
           </div>
         </div>
       </div>
