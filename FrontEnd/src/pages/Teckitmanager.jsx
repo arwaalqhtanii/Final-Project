@@ -5,6 +5,7 @@ import { AiOutlineFileSearch } from "react-icons/ai";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import SellTicketModal from '../components/SellTicketModal';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Teckitmanager() {
@@ -14,10 +15,17 @@ function Teckitmanager() {
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
     const [notifications, setNotifications] = useState([]); // State for notifications
-    const[message,setMessage]=useState('');
+    const [message, setMessage] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [userLocation, setUserLocation] = useState(null);
+    const navigate = useNavigate();
 
-  
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/'); // Redirect to home page if not logged in
+        }
+    }, [token, navigate]);
 
     const getUserLocation = () => {
         if (navigator.geolocation) {
@@ -37,7 +45,7 @@ function Teckitmanager() {
         }
     };
 
-    
+
 
     const handleSell = (ticketCode) => {
 
@@ -74,7 +82,7 @@ function Teckitmanager() {
         }
     };
 
-   
+
     useEffect(() => {
         getUserLocation();
         fetchTickets(); // Initial fetch
@@ -87,42 +95,54 @@ function Teckitmanager() {
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c; // Distance in km
     };
 
     const DISTANCE_THRESHOLD = 5; // Distance threshold in km
 
- 
+
 
     const fetchTicketsByStatus = async (status) => {
         try {
+
+            if (status === null) {
+                fetchTickets();
+                return;
+            }
             const response = await axios.get(`http://localhost:8050/tickets/ticketsUserstatus/${status}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-    
+
             if (response.data.tickets && response.data.tickets.length > 0) {
                 setTickets(response.data.tickets);
                 setMessage(''); // Clear message if tickets are found
             } else {
                 setTickets([]); // Clear tickets if none found
-                setMessage( "No tickets found for the selected section."); // Display server message
+                setMessage("No tickets found for the selected section."); // Display server message
             }
         } catch (error) {
             console.error('Error fetching tickets:', error);
             setMessage("An error occurred while fetching tickets. Please try again later.");
         }
     };
-    
+
 
     const handleFilter = (status) => {
         fetchTicketsByStatus(status);
     };
 
+    const handleSearch = () => {
+        const filteredTickets = tickets.filter(ticket =>
+            ticket.eventId.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setTickets(filteredTickets);
+        setMessage(filteredTickets.length ? '' : 'No matching tickets found.');
+    };
 
 
     return (
@@ -132,8 +152,8 @@ function Teckitmanager() {
                     isOpen={sellPop}
                     onClose={handleCloseSellPopup}
                     event={{ ticketCode: selectedTicket }}
-                    update={{fetchTickets}}
-                   
+                    update={{ fetchTickets }}
+
                 />
             )}
             <Navbar />
@@ -142,49 +162,59 @@ function Teckitmanager() {
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
                 <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%]'>Manage My Tickets</div>
-                <div className='w-[50%] max-md:w-[80%] h-[30%] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>
-                    <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
-                        <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(0)}>Available</button>
-                        <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(1)}>Not available</button>
-                    </div>
+                <div className='w-[55vw] max-md:w-[80%] h-[fit-content] py-[20px] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>                    <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
+                    <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(null)}>All</button>
+                    <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(0)}>Available</button>
+                    <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(1)}>Not available</button>
+                </div>
                     <div className='w-[60%] max-md:w-[100%] max-md:justify-center flex justify-end max-md:pr-0 pr-4'>
-                        <input className='w-[80%] h-[40px] rounded-l-[10px] max-md:h-[50px] focus:outline-none px-[10px] border-[1px] border-[#78006E]' type='search'></input>
-                        <button className='w-[3vw] max-md:w-[10vw] max-md:h-[50px] flex justify-center items-center bg-[#78006E] h-[40px] rounded-r-lg relative' ><AiOutlineFileSearch className='text-white text-[1.5rem] absolute'></AiOutlineFileSearch></button>
-                    </div>
+                        <input
+                            className='w-[80%] h-[40px] rounded-l-[10px] max-md:h-[50px] focus:outline-none px-[10px] border-[1px] border-[#78006E]'
+                            type='search'
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder='Search by ticket name'
+                        />
+                        <button
+                            className='w-[3vw] max-md:w-[10vw] max-md:h-[50px] flex justify-center items-center bg-[#78006E] h-[40px] rounded-r-lg relative'
+                            onClick={handleSearch}
+                        >
+                            <AiOutlineFileSearch className='text-white text-[1.5rem] absolute' />
+                        </button>                    </div>
 
                 </div>
             </div>
 
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
-            {tickets.length > 0 ? (
-    tickets.map((ticket) => {
-        // const showBarcode = ticket.eventId && ticket.eventId.googlemaplink === userLocation;
-        const eventLatitude = ticket.eventId?.Latitude;
-        const eventLongitude = ticket.eventId?.Longitude;
-        const showBarcode = userLocation && eventLatitude && eventLongitude &&
-            getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
+                {tickets.length > 0 ? (
+                    tickets.map((ticket) => {
+                        // const showBarcode = ticket.eventId && ticket.eventId.googlemaplink === userLocation;
+                        const eventLatitude = ticket.eventId?.Latitude;
+                        const eventLongitude = ticket.eventId?.Longitude;
+                        const showBarcode = userLocation && eventLatitude && eventLongitude &&
+                            getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
 
-        return ( // Use return here to return the JSX
-            <MyTicket
-                key={ticket.uniqueCode}
-                title={ticket.eventId?.name} // Use optional chaining for safety
-                location={ticket.eventId?.location}
-                date={ticket.visitDate}
-                time={ticket.eventId?.Time}
-                type={ticket.ticketType}
-                code={ticket.uniqueCode}
-                status={ticket.updateStatus}
-                process='Sell'
-                popSellForm={() => handleSell(ticket.uniqueCode)}
-                pending={ticket.notifications?.[0]?.status || null} // Use optional chaining
-                showBarcode={showBarcode} // Ensure this is passed
-          
-            />
-        );
-    })
-) : (
-    <p className='text-white'>{message || "No tickets available."}</p> // Use the message state or a default message
-)}
+                        return ( // Use return here to return the JSX
+                            <MyTicket
+                                key={ticket.uniqueCode}
+                                title={ticket.eventId?.name} // Use optional chaining for safety
+                                location={ticket.eventId?.location}
+                                date={ticket.visitDate}
+                                time={ticket.eventId?.Time}
+                                type={ticket.ticketType}
+                                code={ticket.uniqueCode}
+                                status={ticket.updateStatus}
+                                process='Sell'
+                                popSellForm={() => handleSell(ticket.uniqueCode)}
+                                pending={ticket.notifications?.[0]?.status || null} // Use optional chaining
+                                showBarcode={showBarcode} // Ensure this is passed
+
+                            />
+                        );
+                    })
+                ) : (
+                    <p className='text-white'>{message || "No tickets available."}</p> // Use the message state or a default message
+                )}
 
 
 
