@@ -98,14 +98,14 @@ function MyTicket(props) {
                     <div>
                         {props.forbuy ? (
                             <div className='flex gap-x-[1.5rem]'>
-                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-slate-500 text-center ' onClick={handleIgnore}>Ignore</button>
-                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-[#78006E] text-center ' onClick={props.purchaseForm}>Accept</button>
+                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-slate-500 hover:bg-gray-400 text-center ' onClick={handleIgnore}>Ignore</button>
+                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-[#78006e] hover:bg-[#be008d] text-center ' onClick={props.purchaseForm}>Accept</button>
                             </div>
                         ) : (
                             <div className='flex justify-end gap-x-[1.5rem]'>
                                 {props.status === 0 ? (
                                     <button
-                                        className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center  ${props.pending ? 'bg-gray-400' : 'bg-[#78006E]'
+                                        className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center  ${props.pending ? 'bg-gray-400 ' : 'bg-[#78006e] hover:bg-[#be008d]'
                                             }`}
                                         onClick={props.pending ? null : props.popSellForm}
                                         disabled={props.pending}
@@ -126,16 +126,16 @@ function MyTicket(props) {
                     : null}
             </div>
 
-            <div className={`w-[35%] max-md:w-[100%]  flex flex-col items-center justify-center min-h-[40vh] h-[fit-contnet] ${windowWidth > 768 ? 'border-l-[3px]' : 'border-t-[3px]'} border-dashed border-black p-[10px] max-md:px-[12.5px] pl-[10px] relative`}>
-                <div className='w-[100%] h-[100%] flex flex-col justify-evenly items-center relative'>
+            <div className={`w-[35%] max-md:w-[100%]  flex flex-col items-center justify-center min-h-[40vh] max-md:min-h-[35%] h-[fit-contnet] ${windowWidth > 768 ? 'border-l-[3px]' : 'border-t-[3px]'} border-dashed border-black p-[10px] max-md:px-[12.5px] pl-[10px] relative`}>
+                <div className='w-[100%] h-[100%] flex flex-col justify-evenly max-md:gap-y-[1rem] items-center relative'>
                     <div className='relative flex items-center justify-center'>
-                        {props.showBarcode && (
+                        
                             <QRCodeCanvas
                                 value={props.code}
-                                size={128}
-                                className={`${props.status === 1 ? 'filter blur-[5px]' : ''}`}
-                            />
-                        )}
+                                size={150}
+                                className={`${props.status === 1 && props.showBarcode ? '' : 'filter blur-[5px]'}`}
+                                />
+                        
                     </div>
 
 
@@ -143,14 +143,14 @@ function MyTicket(props) {
                         <div>
                             {props.forbuy ? (
                                 <div className='flex gap-x-[1.5rem]'>
-                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-slate-500 text-center ' onClick={handleIgnore}>Ignore</button>
-                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center ' onClick={props.purchaseForm}>Accept</button>
+                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-slate-500 hover:bg-gray-400 text-center ' onClick={handleIgnore}>Ignore</button>
+                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-[#78006e] hover:bg-[#be008d] text-center ' onClick={props.purchaseForm}>Accept</button>
                                 </div>
                             ) : (
                                 <div className='flex justify-end gap-x-[1.5rem]'>
                                     {props.status === 0 ? (
                                         <button
-                                            className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center  ${props.pending ? 'bg-gray-400' : 'bg-[#78006E]'
+                                            className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center  ${props.pending ? 'bg-gray-400' : 'bg-[#78006e] hover:bg-[#be008d]'
                                                 }`}
                                             onClick={props.pending ? null : props.popSellForm}
                                             disabled={props.pending}

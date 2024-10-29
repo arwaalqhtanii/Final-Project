@@ -208,7 +208,7 @@ function Teckitmanager() {
                         </button>
                     </div> */}
 
-                    <div className="container w-[60%] px-5 mx-auto  flex gap-9 flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 ">
+                    <div className="container w-[60%] max-md:w-[100%] px-5 mx-auto  flex gap-9 flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 ">
                         <div className="flex  items-center w-[100%]   bg-gray-100 p-4 rounded-full shadow-md ">
                             <button className="text-purple-800 ml-4" onClick={handleSearch}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -217,7 +217,7 @@ function Teckitmanager() {
                             </button>
                             <input
                                 type="text"
-                                placeholder="Search for Riyadh Season events"
+                                placeholder="Search Ticket  by name"
                                 className="w-[100%] bg-transparent focus:outline-none text-gray-700 px-4 text-left "
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
