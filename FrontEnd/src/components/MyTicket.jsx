@@ -369,7 +369,7 @@ function MyTicket(props) {
 
     return (
         <div className={` ${windowWidth > 768 ? 'ticket-big' : 'ticket-small'} w-[55vw] max-md:w-[80%] min-h-[40vh] h-[fit-contnet]  max-md:h-[fit-content] max-md:py-[15px] flex max-md:flex-col items-center justify-start rounded-[10px] relative ${props.status === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white'}`}>
-            <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] justify-evenly  p-[10px]  pl-[35px] pr-[35px]'>
+            <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] gap-y-[0.7rem]  p-[10px]  pl-[35px] pr-[35px]'>
                 <div className='flex'>
                     <div className={` text-[2rem] font-bold ${props.status === 1 ? 'text-gray-500' : 'text-[#78006E]'}`}>{props.title}</div>
                 </div>
@@ -379,7 +379,14 @@ function MyTicket(props) {
                 </div>
                 <div className='flex flex-row-reverse gap-x-[2rem]  max-md:w-[100%] max-md:gap-x-[1rem] max-md:justify-center'>
                     <div className='flex flex-col items-center gap-y-[0.4rem] '>
-                        <FaTicketAlt className='text-[1.5rem] font-bold'></FaTicketAlt>
+                        <FaTicketAlt 
+                            style={{
+                                color: 
+                                props.type === 'standard' ? 'black' : 
+                                props.type === 'silver' ? 'gray' : 
+                                props.type === 'gold' ? 'gold' : 'black' // Default color if none match
+                            }}
+                        className='text-[1.5rem]  font-bold'></FaTicketAlt>
                         <div>{props.type}</div>
                     </div>
                     <div className='flex flex-col items-center gap-y-[0.4rem] '>
@@ -428,9 +435,9 @@ function MyTicket(props) {
 
             </div>
 
-            <div className={`w-[35%] max-md:w-[100%] flex flex-col items-center h-[100%] ${windowWidth > 768 ? 'border-l-[3px]' : 'border-t-[3px]'} border-dashed  border-black p-[10px] max-md:px-[12.5px] pl-[10px] relative`}>
+            <div className={`w-[35%] max-md:w-[100%]  flex flex-col items-center justify-center min-h-[40vh] h-[fit-contnet] ${windowWidth > 768 ? 'border-l-[3px]' : 'border-t-[3px]'} border-dashed  border-black p-[10px] max-md:px-[12.5px] pl-[10px] relative`}>
                 <div className='w-[100%] h-[100%] flex flex-col justify-evenly items-center relative'>
-                    <div className='relative flex justify-center'>
+                    <div className='relative flex items-center justify-center'>
                         {props.showBarcode && <img
                             className={`w-[75%] ${props.status === 1 ? 'filter blur-[5px]' : ''}`}
                             src='https://www.marefa.org/w/images/8/87/QRCode.png'
