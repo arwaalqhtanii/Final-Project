@@ -19,8 +19,8 @@ const Footer = () => {
 
 
         <div className="space-y-4">
-          <h1 className="text-[#78006e] text-3xl font-bold">WhiteTik</h1>
-          <p className="text-[#090202]">
+        <img className='w-[12vw]' src='https://iili.io/2CaS94e.md.png' ></img>
+        <p className="text-[#090202]">
             A safe platform for ticket sales aiming to reduce fraud and scams in the black market.
           </p>
         </div>

@@ -104,7 +104,7 @@ const Navbar = () => {
         <div>
             <nav className={`fixed top-0 left-0 w-full transition-all duration-300 ${isScrolled ? 'bg-white text-[#78006e]' : 'bg-transparent text-white'} z-50`}>
                 <div className="container mx-auto flex justify-between items-center p-4">
-                    <h1 className={`text-2xl font-bold ${isScrolled ? 'text-[#78006e]' : 'text-white'}`}>WhiteTik</h1>
+                    <img className='w-[15vw]' src={isScrolled ?'https://iili.io/2CaS94e.md.png':'https://iili.io/2Ca8pC7.md.png'} ></img>
 
 
                     <div className="md:hidden flex items-center space-x-4">
