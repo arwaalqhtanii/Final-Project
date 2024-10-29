@@ -144,6 +144,12 @@ function Teckitmanager() {
         setMessage(filteredTickets.length ? '' : 'No matching tickets found.');
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
 
     return (
         <div>
@@ -167,7 +173,7 @@ function Teckitmanager() {
                     <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(0)}>Available</button>
                     <button className=' h-[40px] rounded-[10px] bg-[] hover:text-[#78006E]' onClick={() => handleFilter(1)}>Not available</button>
                 </div>
-                    <div className='w-[60%] max-md:w-[100%] max-md:justify-center flex justify-end max-md:pr-0 pr-4'>
+                    {/* <div className='w-[60%] max-md:w-[100%] max-md:justify-center flex justify-end max-md:pr-0 pr-4'>
                         <input
                             className='w-[80%] h-[40px] rounded-l-[10px] max-md:h-[50px] focus:outline-none px-[10px] border-[1px] border-[#78006E]'
                             type='search'
@@ -180,7 +186,27 @@ function Teckitmanager() {
                             onClick={handleSearch}
                         >
                             <AiOutlineFileSearch className='text-white text-[1.5rem] absolute' />
-                        </button>                    </div>
+                        </button>
+                    </div> */}
+
+                    <div className="container w-[60%] px-5 mx-auto  flex gap-9 flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 ">
+                        <div className="flex  items-center w-[100%]   bg-gray-100 p-4 rounded-full shadow-md ">
+                            <button className="text-purple-800 ml-4" onClick={handleSearch}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                            <input
+                                type="text"
+                                placeholder="Search for Riyadh Season events"
+                                className="w-[100%] bg-transparent focus:outline-none text-gray-700 px-4 text-left "
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </div>
+                    </div>
+
 
                 </div>
             </div>

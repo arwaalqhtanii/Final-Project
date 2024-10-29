@@ -374,7 +374,7 @@ function MyTicket(props) {
                     <div className={` text-[2rem] font-bold ${props.status === 1 ? 'text-gray-500' : 'text-[#78006E]'}`}>{props.title}</div>
                 </div>
                 <div className='flex items-center gap-x-[1rem]'>
-                    <div className='font-bold text-[1.5rem]'>{props.location}</div>
+                    <div className=' text-gray-500 '>{props.location}</div>
                     <MdLocationPin className='text-[1.5rem]'></MdLocationPin>
                 </div>
                 <div className='flex flex-row-reverse gap-x-[2rem]  max-md:w-[100%] max-md:gap-x-[1rem] max-md:justify-center'>
@@ -400,19 +400,19 @@ function MyTicket(props) {
                 </div>
                 {windowWidth > 768 ? <img className='w-[60%] max-md:w-[100%] h-[10px]' src={Vector}></img> : null}
 
-                {props.newPrice ? <div className='h-[40px] font-bold text-[1.2rem]'>Price : {props.newPrice} SR</div> : <div className='h-[40px]'></div>}
+                {props.newPrice ? <div className='h-[40px] font-bold text-[1.2rem]'>Price : {props.newPrice} SR</div> : <div className='h-[]'></div>}
                 {windowWidth > 768 ?
                     <div>
                         {props.forbuy ? (
                             <div className='flex gap-x-[1.5rem]'>
-                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-slate-500 text-center font-bold' onClick={handleIgnore}>Ignore</button>
-                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-[#78006E] text-center font-bold' onClick={props.purchaseForm}>Accept</button>
+                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-slate-500 text-center ' onClick={handleIgnore}>Ignore</button>
+                                <button className='px-[23px] py-[5px] text-white text-[1.2rem] rounded-[10px] bg-[#78006E] text-center ' onClick={props.purchaseForm}>Accept</button>
                             </div>
                         ) : (
                             <div className='flex justify-end gap-x-[1.5rem]'>
                                 {props.status === 0 ? (
                                     <button
-                                        className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending ? 'bg-gray-400' : 'bg-[#78006E]'
+                                        className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center  ${props.pending ? 'bg-gray-400' : 'bg-[#78006E]'
                                             }`}
                                         onClick={props.pending ? null : props.popSellForm}
                                         disabled={props.pending}
@@ -452,14 +452,14 @@ function MyTicket(props) {
                         <div>
                             {props.forbuy ? (
                                 <div className='flex gap-x-[1.5rem]'>
-                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-slate-500 text-center font-bold' onClick={handleIgnore}>Ignore</button>
-                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center font-bold' onClick={props.purchaseForm}>Accept</button>
+                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-slate-500 text-center ' onClick={handleIgnore}>Ignore</button>
+                                    <button className='px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] bg-[#78006E] text-center ' onClick={props.purchaseForm}>Accept</button>
                                 </div>
                             ) : (
                                 <div className='flex justify-end gap-x-[1.5rem]'>
                                     {props.status === 0 ? (
                                         <button
-                                            className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center font-bold ${props.pending ? 'bg-gray-400' : 'bg-[#78006E]'
+                                            className={`px-[23px] text-[1.2rem] py-[5px] text-white rounded-[10px] text-center  ${props.pending ? 'bg-gray-400' : 'bg-[#78006E]'
                                                 }`}
                                             onClick={props.pending ? null : props.popSellForm}
                                             disabled={props.pending}

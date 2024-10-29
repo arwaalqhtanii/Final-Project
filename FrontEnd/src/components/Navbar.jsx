@@ -4,6 +4,7 @@ import { FiMenu, FiX, FiLogOut, FiBell } from 'react-icons/fi';
 import { FaCircleUser } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { IoSettingsOutline } from "react-icons/io5";
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -128,7 +129,7 @@ const Navbar = () => {
                                                 notifications.map((notification, index) => (
                                                     <li key={index} className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer flex items-center gap-x-[0.5rem] ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
                                                         }`} onClick={() => handleNavigate(notification.uniqueCode, notification.newPrice)}>
-                                                        ticket request. {notification.eventName}
+                                                        <span className='font-semibold'>ticket request. </span>{notification.eventName}
                                                         <span>
                                                             <div
                                                                 className={`w-[15px] h-[15px] flex items-center justify-center rounded-full ${notification.status === 'approved' ? 'bg-green-500' :
@@ -179,9 +180,7 @@ const Navbar = () => {
                                 <Link to="/LoginW" className={`text-lg font-semibold transition-colors duration-300 hover:text-[#78006e] ${isScrolled ? 'text-[#78006e] hover:text-[#101010]' : 'text-white'}`}>
                                     Log in
                                 </Link>
-                                <Link to="/SignupW" className={`text-lg font-semibold transition-colors duration-300 hover:text-[#78006e] ${isScrolled ? 'text-[#78006e] hover:text-[#101010]' : 'text-white'}`}>
-                                    Sign up
-                                </Link>
+
 
                             </>
 
@@ -205,7 +204,7 @@ const Navbar = () => {
                                                 notifications.map((notification, index) => (
                                                     <li key={index} className={`px-4 py-2 hover:bg-[#f3f3f3] cursor-pointer flex items-center gap-x-[0.5rem] ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'
                                                         }`} onClick={() => handleNavigate(notification.uniqueCode, notification.newPrice)}>
-                                                        ticket request. {notification.eventName}
+                                                        <span className='font-semibold'>ticket request. </span>{notification.eventName}
                                                         <span>
                                                             <div
                                                                 className={`w-[15px] h-[15px] flex items-center justify-center rounded-full ${notification.status === 'approved' ? 'bg-green-500' :
@@ -244,15 +243,18 @@ const Navbar = () => {
                                 {isProfileMenuOpen && (
                                     <div className="absolute top-14 right-0 w-64 bg-white shadow-lg rounded-lg py-2 z-10">
                                         <ul className="text-[#101010]">
-                                            <li className="text-lg font-bold px-4 py-2 text-[#78006e] border-b">
-                                                <Link to={'/profile'}>
-                                                    Profile
-                                                </Link>
+                                            <li className="flex items-center gap-x-[0.2rem]">
+
+                                                <button onClick={()=>{navigate('/profile')}} className="transition-colors duration-300 font-bold px-4 py-2">
+                                                    <IoSettingsOutline className={`text-3xl   text-[#78006e] hover:text-[#171617]`} />
+                                                </button>
+                                                <span onClick={()=>{navigate('/profile')}} className='font-semibold'>Settings</span>
                                             </li>
-                                            <li>
+                                            <li className='flex items-center gap-x-[0.2rem]'>
                                                 <button onClick={handleLogout} className="transition-colors duration-300 font-bold px-4 py-2">
                                                     <FiLogOut className={`text-3xl   text-[#78006e] hover:text-[#171617]`} />
                                                 </button>
+                                                <span onClick={handleLogout} className='font-semibold'>Log out</span>
                                             </li>
 
                                         </ul>
@@ -274,13 +276,13 @@ const Navbar = () => {
                                 <Link to="/profile" className="text-lg font-semibold text-[#78006e] py-2 hover:text-[#171617]">Profile</Link>
                                 <button onClick={handleLogout} className="transition-colors duration-300">
                                     <FiLogOut className={`text-3xl text-[#78006e] hover:text-[#171617]`} />
+
                                 </button>
                             </>
 
                             :
                             <>
                                 <Link to="/LoginW" className="text-lg font-semibold text-[#78006e] py-2 hover:text-[#171617]">Log in</Link>
-                                <Link to="/SignupW" className="text-lg font-semibold text-[#78006e] py-2 hover:text-[#171617]">Sign up</Link>
 
                             </>
                         }
