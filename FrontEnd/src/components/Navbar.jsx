@@ -260,9 +260,7 @@ const Navbar = () => {
                                 )}
                             </div>
                         )}
-                        {/* <button onClick={handleLogout} className="transition-colors duration-300">
-                            <FiLogOut className={`text-3xl ${isScrolled ? 'text-[#78006e] hover:text-[#171617]' : 'text-white'}`} />
-                        </button>*/}
+                      
                     </div>
 
 

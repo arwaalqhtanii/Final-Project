@@ -11,8 +11,7 @@ const SellTicketModal = ({ isOpen, onClose, event, update }) => {
     const [errorMessage, setErrorMessage] = useState('');
 
 
-    // console.log(event.ticketCode);
-
+ 
 
     const handleSellSubmit = (e) => {
         e.preventDefault();
@@ -32,7 +31,7 @@ const SellTicketModal = ({ isOpen, onClose, event, update }) => {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Include the token in the request
+                        Authorization: `Bearer ${token}`, 
                     },
                 }
             );
@@ -44,7 +43,6 @@ const SellTicketModal = ({ isOpen, onClose, event, update }) => {
         } catch (error) {
             const message = error.response.data.message || 'An error occurred while selling the ticket.';
             setErrorMessage('Error selling ticket: ' + message);
-            //alert here shoould added
             console.log(message);
             console.error('Error:', error);
         }
@@ -119,13 +117,7 @@ const SellTicketModal = ({ isOpen, onClose, event, update }) => {
 
 
                         <div className="flex justify-center mt-4">
-                            {/* <button 
-                                type="submit" 
-                                className={`py-2 px-6 rounded-lg ${isSubmitting ? 'bg-gray-400' : 'bg-[#be008d] hover:bg-[#78006e]'} w-44 text-white font-semibold text-lg`}
-                                disabled={isSubmitting} // Disable button when submitting
-                            > */}
-                            {/* {isSubmitting ? 'Sending...' : 'Sell Ticket'} Change button text when submitting */}
-                            {/* </button> */}
+                         
                             <button
                                 type="submit"
                                 className="py-2 px-6 rounded-lg bg-[#be008d] hover:bg-[#78006e] w-44 text-white font-semibold text-lg"

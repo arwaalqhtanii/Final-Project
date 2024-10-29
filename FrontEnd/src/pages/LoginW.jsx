@@ -38,7 +38,6 @@ function LoginW() {
                 body: JSON.stringify({ email, password }),
             });
 
-            // Handle response based on status
             if (!response.ok) {
               const errorData = await response.json(); 
               if (response.status === 403) { 
