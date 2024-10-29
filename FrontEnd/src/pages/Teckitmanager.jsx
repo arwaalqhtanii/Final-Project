@@ -12,6 +12,7 @@ function Teckitmanager() {
 
     const [sellPop, setSellPop] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState()
+    const [selectedTicketOldPrice,setSelectedTicketOldPrice] = useState()
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
     const [notifications, setNotifications] = useState([]); // State for notifications
@@ -47,9 +48,10 @@ function Teckitmanager() {
 
 
 
-    const handleSell = (ticketCode) => {
+    const handleSell = (ticketCode,ticketOldPrice) => {
 
         setSelectedTicket(ticketCode);
+        setSelectedTicketOldPrice(ticketOldPrice)
         setSellPop(true);
         // document.body.style.overflow = 'hidden';
     };
@@ -151,7 +153,7 @@ function Teckitmanager() {
                 <SellTicketModal
                     isOpen={sellPop}
                     onClose={handleCloseSellPopup}
-                    event={{ ticketCode: selectedTicket }}
+                    event={{ ticketCode: selectedTicket,ticketOldPrice: selectedTicketOldPrice}}
                     update={{ fetchTickets }}
 
                 />
@@ -204,7 +206,7 @@ function Teckitmanager() {
                                 code={ticket.uniqueCode}
                                 status={ticket.updateStatus}
                                 process='Sell'
-                                popSellForm={() => handleSell(ticket.uniqueCode)}
+                                popSellForm={() => handleSell(ticket.uniqueCode,ticket.price)}
                                 pending={ticket.notifications?.[0]?.status || null} 
                                 showBarcode={showBarcode} 
 
@@ -226,7 +228,3 @@ function Teckitmanager() {
 }
 
 export default Teckitmanager
-
-
-
-
