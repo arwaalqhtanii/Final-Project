@@ -19,16 +19,14 @@ const formatDate = (date) => {
 };
 
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config(); 
 
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; // Use a strong key stored in your environment variables
-const IV_LENGTH = 16; // For AES, this is typically 16 bytes
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY; 
+const IV_LENGTH = 16; 
 
 
 export const decrypt = (text) => {
-    // console.log('decripted ID Number:', text);
-
     const parts = text.split(':');
     if (parts.length !== 2) {
         throw new Error('Invalid encrypted data format');
@@ -36,7 +34,6 @@ export const decrypt = (text) => {
 
     const [ivHex, encryptedText] = parts;
 
-    // Ensure IV is a valid hex string
     const iv = Buffer.from(ivHex, 'hex');
     const keyBuffer = Buffer.from(ENCRYPTION_KEY.trim(), 'hex');
 
@@ -52,43 +49,33 @@ export const decrypt = (text) => {
 // Purchase ticket
 export const purchaseTicket = async (req, res) => {
     const { ticketType, quantity, visitDate } = req.body;
-    // const { _id: userId } = req.user;
-    // const { idNumber: userId } = req.user; // Ensure this matches your user model
     const { eventId } = req.params;
-    // console.log('User data:', req.user); // Log the user data
-    const { _id: userId, IDNumber, email } = req.user; // Extract user details
+    const { _id: userId, IDNumber, email } = req.user; 
 
 
     try {
         
-        // Decrypt the IDNumber before using it
         const decryptedIDNumber = decrypt(IDNumber);
 
-         // Fetch the event to get startDate and endDate
          const event = await Event.findById(eventId);
          if (!event) {
              return res.status(404).json({ message: 'Event not found' });
          }
 
-       // Extract dates
     const startDateStr = event.startDate;
     const endDateStr = event.endDate;
-    const visitDateStr = visitDate; // Expecting dd/mm/yyyy format
+    const visitDateStr = visitDate; 
  console.log("visitDateStr"+visitDateStr);
  
-    // Validate visitDate
     if (typeof visitDateStr !== 'string' || !/^\d{2}\/\d{2}\/\d{4}$/.test(visitDateStr)) {
         return res.status(400).json({ message: 'Visit date must be provided in dd/mm/yyyy format.' });
     }
 
-    // Split visitDate using dd/mm/yyyy format
     const [visitDay, visitMonth, visitYear] = visitDateStr.split('/');
     const visitDateObj = new Date(`${visitYear}-${visitMonth}-${visitDay}`);
 
-    // Log the visit date for debugging
     console.log('visitDateObj:', visitDateObj);
 
-    // Create Date objects for startDate and endDate
     const startDate = new Date(startDateStr);
     const endDate = new Date(endDateStr);
 
@@ -102,7 +89,7 @@ export const purchaseTicket = async (req, res) => {
 
          // Check ticket availability
         const totalSold = event.totalTicketsSold[ticketType] || 0;
-        const totalAvailable = event[`totalTickets${ticketType.charAt(0).toUpperCase() + ticketType.slice(1)}`]; // Get total available tickets
+        const totalAvailable = event[`totalTickets${ticketType.charAt(0).toUpperCase() + ticketType.slice(1)}`]; 
 
         if (totalSold + quantity > totalAvailable) {
             return res.status(400).json({
@@ -111,49 +98,43 @@ export const purchaseTicket = async (req, res) => {
         }
  
         const price = calculatePrice(ticketType, quantity);
-        const tickets = []; // Array to hold ticket promises
+        const tickets = []; 
 
         for (let i = 0; i < quantity; i++) {
-            // Generate the unique code for each ticket
             const uniqueCode = await generateUniqueCode(userId, eventId);
 
-            // Create the ticket with the unique code
             const ticket = new Ticket({
                 eventId,
                 userId,
                 ticketType,
-                quantity: 1, // Each ticket will have a quantity of 1
-                price: price / quantity, // Calculate price per ticket
+                quantity: 1, 
+                price: price / quantity, 
                 totalPrice:price,
                 visitDate:visitDateObj,
                 uniqueCode,
-                updateStatus: 0 ,// Adding the update status flag
+                updateStatus: 0 ,
                 isPendingSale: false
             });
 
-            // Save the ticket and push the promise to the array
             tickets.push(ticket.save());
         }
 
-        // Wait for all tickets to be saved
         const savedTickets = await Promise.all(tickets);
 
-        // Update totalTicketsSold for the event
         await Event.updateOne(
             { _id: eventId },
-            { $inc: { [`totalTicketsSold.${ticketType}`]: quantity } } // Increment the count based on ticket type
+            { $inc: { [`totalTicketsSold.${ticketType}`]: quantity } } 
         );
-        // Construct the response with user info
+       
         res.status(201).json({
             message: 'Tickets purchased successfully',
             tickets: savedTickets,
             user: {
-                IDNumber:decryptedIDNumber, // Include IDNumber
+                IDNumber:decryptedIDNumber,
                 email,
-                userId,   // Optional userId
+                userId,   
             },
         });
-        // res.status(201).json({ message: 'Tickets purchased successfully', tickets: savedTickets });
     } catch (error) {
         console.error('Error purchasing tickets:', error);
         res.status(400).json({ message: 'Error purchasing tickets', error });

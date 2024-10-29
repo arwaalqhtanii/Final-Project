@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from 'react-icons/fa';
 import BookingModal from './BookingModal';
-import { useNavigate } from 'react-router-dom';
 
 const EventCard = ({ event }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
+
     if (!event || !event.image) {
         return <p className="text-red-500 text-center">No data available for this event</p>;
     }
 
     const handleBookNow = () => {
-        const token = localStorage.getItem('token'); 
-        if (!token) {
-            navigate('/loginw'); 
-            return;
-        }
         setIsModalOpen(true);
     };
 
