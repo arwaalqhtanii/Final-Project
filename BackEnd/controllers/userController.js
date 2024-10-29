@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken'; 
+import nodemailer from 'nodemailer';
+
 
 
 dotenv.config(); 
@@ -265,3 +267,5 @@ export const updateUserInfo = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+

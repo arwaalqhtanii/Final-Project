@@ -22,4 +22,5 @@ router.get('/userinfo', authenticateToken, getUserInfo);
 //update user info
 router.put('/update', authenticateToken, updateUserInfo);
 
+
 export default router;
