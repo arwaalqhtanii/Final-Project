@@ -15,7 +15,7 @@ function Teckitmanager() {
     const [selectedTicketOldPrice,setSelectedTicketOldPrice] = useState()
     const [tickets, setTickets] = useState([]);
     const token = localStorage.getItem('token');
-    const [notifications, setNotifications] = useState([]); // State for notifications
+    const [notifications, setNotifications] = useState([]);
     const [message, setMessage] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [userLocation, setUserLocation] = useState(null);
@@ -25,7 +25,7 @@ function Teckitmanager() {
 
     useEffect(() => {
         if (!token) {
-            navigate('/'); // Redirect to home page if not logged in
+            navigate('/');
         }
     }, [token, navigate]);
 
@@ -38,7 +38,7 @@ function Teckitmanager() {
                 };
                 setUserLocation(userLocation)
                 console.log(userLocation);
-                // Use the location as needed
+
             }, (error) => {
                 console.error("Error obtaining location: ", error);
             });
@@ -54,12 +54,12 @@ function Teckitmanager() {
         setSelectedTicket(ticketCode);
         setSelectedTicketOldPrice(ticketOldPrice)
         setSellPop(true);
-        // document.body.style.overflow = 'hidden';
+        
     };
 
     const handleCloseSellPopup = () => {
         setSellPop(false);
-        // document.body.style.overflow = 'auto';
+       
     };
 
 
@@ -73,12 +73,12 @@ function Teckitmanager() {
                 }
             });
 
-            // Sort tickets by purchaseDate in descending order (most recent first)
+            
             const sortedTickets = response.data.tickets.sort((a, b) => new Date(b.purchaseDate) - new Date(a.purchaseDate));
             console.log(sortedTickets);
 
-            setTickets(sortedTickets); // Set the sorted tickets
-            // setNotifications(response.data.tickets.flatMap(ticket => ticket.notifications || []));
+            setTickets(sortedTickets); 
+           
 
         } catch (error) {
             console.error('Error fetching tickets:', error);
@@ -88,23 +88,23 @@ function Teckitmanager() {
 
     useEffect(() => {
         getUserLocation();
-        fetchTickets(); // Initial fetch
+        fetchTickets();
     }, []);
 
     console.log("User Location:", userLocation);
 
     const getDistance = (lat1, lon1, lat2, lon2) => {
-        const R = 6371; // Radius of the Earth in km
+        const R = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
             Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c; // Distance in km
+        return R * c;
     };
 
-    const DISTANCE_THRESHOLD = 5; // Distance threshold in km
+    const DISTANCE_THRESHOLD = 5;
 
 
 
@@ -123,10 +123,10 @@ function Teckitmanager() {
 
             if (response.data.tickets && response.data.tickets.length > 0) {
                 setTickets(response.data.tickets);
-                setMessage(''); // Clear message if tickets are found
+                setMessage('');
             } else {
-                setTickets([]); // Clear tickets if none found
-                setMessage("No tickets found for the selected section."); // Display server message
+                setTickets([]);
+                setMessage("No tickets found for the selected section.");
             }
         } catch (error) {
             console.error('Error fetching tickets:', error);
@@ -172,7 +172,8 @@ function Teckitmanager() {
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
                 <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%]'>Manage My Tickets</div>
-                <div className='w-[55vw] max-md:w-[80%] h-[fit-content] py-[20px] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>                    <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
+                <div className='w-[55vw] max-md:w-[80%] h-[fit-content] py-[20px] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>                    
+                    <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
                     <button
                         className={`h-[40px] rounded-[10px] ${activeButton === null ? ' text-[#78006E] font-bold' : 'text-black font-semibold'} hover:text-[#78006E]`}
                         onClick={() => handleFilter(null)}
@@ -192,22 +193,7 @@ function Teckitmanager() {
                         Not available
                     </button>
                 </div>
-                    {/* <div className='w-[60%] max-md:w-[100%] max-md:justify-center flex justify-end max-md:pr-0 pr-4'>
-                        <input
-                            className='w-[80%] h-[40px] rounded-l-[10px] max-md:h-[50px] focus:outline-none px-[10px] border-[1px] border-[#78006E]'
-                            type='search'
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder='Search by ticket name'
-                        />
-                        <button
-                            className='w-[3vw] max-md:w-[10vw] max-md:h-[50px] flex justify-center items-center bg-[#78006E] h-[40px] rounded-r-lg relative'
-                            onClick={handleSearch}
-                        >
-                            <AiOutlineFileSearch className='text-white text-[1.5rem] absolute' />
-                        </button>
-                    </div> */}
-
+                    
                     <div className="container w-[60%] max-md:w-[100%] px-5 mx-auto  flex gap-9 flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 ">
                         <div className="flex  items-center w-[100%]   bg-gray-100 p-4 rounded-full shadow-md ">
                             <button className="text-purple-800 ml-4" onClick={handleSearch}>
@@ -259,11 +245,6 @@ function Teckitmanager() {
                 ) : (
                     <p className='text-white'>{message || "No tickets available."}</p> 
                 )}
-
-
-
-               
-
             </div>
             <Footer />
         </div>

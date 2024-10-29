@@ -1,4 +1,3 @@
-
 import riyadhseasonboulevard from '/riyadhseasonboulevard.jfif';
 import MyTicket from '../components/MyTicket';
 import Navbar from '../components/Navbar';

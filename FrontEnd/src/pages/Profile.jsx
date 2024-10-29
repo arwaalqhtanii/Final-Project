@@ -14,7 +14,7 @@ const Profile = () => {
   const [isEmailEditable, setIsEmailEditable] = useState(false);
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); // حالة رسالة الخطأ
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -61,16 +61,16 @@ const Profile = () => {
   };
 
   const handleSavePassword = async () => {
-    // تحقق من طول كلمة المرور
+
     if (!password || password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long'); // تعيين الرسالة
+      setErrorMessage('Password must be at least 6 characters long');
       return;
     }
 
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:8050/user/update', // تأكد من استخدام endpoint الصحيح
+        'http://localhost:8050/user/update',
         { password },
         {
           headers: {
@@ -82,7 +82,7 @@ const Profile = () => {
 
       console.log('Password updated:', response.data);
       setPassword('');
-      setErrorMessage(''); // إعادة تعيين رسالة الخطأ عند النجاح
+      setErrorMessage('');
       alert('Password updated successfully.');
     } catch (error) {
       console.error('Error updating password:', error);

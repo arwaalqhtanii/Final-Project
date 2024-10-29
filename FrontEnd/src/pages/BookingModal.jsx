@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { FaTimes, FaTicketAlt, FaPlus, FaMinus } from 'react-icons/fa';

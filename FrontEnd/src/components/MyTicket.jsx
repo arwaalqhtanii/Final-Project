@@ -11,7 +11,7 @@ import Vector from '/Vector.png';
 function MyTicket(props) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [showIgnoreConfirmation, setShowIgnoreConfirmation] = useState(false);
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false); // State for success message
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -43,11 +43,11 @@ function MyTicket(props) {
                     },
                 }
             );
-            setShowSuccessMessage(true); // Show success message
+            setShowSuccessMessage(true);
         } catch (error) {
             const message = error.response?.data?.message || 'An error occurred while ignoring the ticket.';
             console.error('Error:', message);
-            alert(message); // Simple alert for error
+            alert(message);
         }
     };
 
@@ -77,7 +77,7 @@ function MyTicket(props) {
                                 color: 
                                 props.type === 'standard' ? 'black' : 
                                 props.type === 'silver' ? 'gray' : 
-                                props.type === 'gold' ? 'gold' : 'black' // Default color if none match
+                                props.type === 'gold' ? 'gold' : 'black'
                             }}
                         className='text-[1.5rem]  font-bold'></FaTicketAlt>
                         <div>{props.type}</div>
@@ -172,7 +172,7 @@ function MyTicket(props) {
                 </div>
             </div>
 
-            {/* Ignore Confirmation Modal */}
+
             {showIgnoreConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="fixed inset-0 bg-black opacity-75"></div>
@@ -198,7 +198,7 @@ function MyTicket(props) {
                 </div>
             )}
 
-            {/* Success Message Modal */}
+          
             {showSuccessMessage && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="fixed inset-0 bg-black opacity-75"></div>

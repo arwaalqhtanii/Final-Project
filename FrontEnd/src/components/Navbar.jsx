@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { FiMenu, FiX, FiLogOut, FiBell } from 'react-icons/fi';
 import { FaCircleUser } from "react-icons/fa6";
@@ -231,7 +230,7 @@ const Navbar = () => {
                                 )}
                             </div>
                         )}
-                        {/* profile menu drop down */}
+            
                         {isLoggedIn && (
                             <div className="relative">
                                 <FaCircleUser

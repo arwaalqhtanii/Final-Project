@@ -10,7 +10,7 @@ import Notification from '../models/notificationSchema.js';
 
 
 
-// format date to dd/mm/yyyy
+
 const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); 
@@ -46,7 +46,7 @@ export const decrypt = (text) => {
 
 
 
-// Purchase ticket
+
 export const purchaseTicket = async (req, res) => {
     const { ticketType, quantity, visitDate } = req.body;
     const { eventId } = req.params;
@@ -176,7 +176,7 @@ export const calculatePrice = (ticketType, quantity) => {
 
 
 
-//--------------------------------------------
+
 
 
 //count for Ticket 
@@ -266,7 +266,7 @@ export const getTicketCountsByDate = async (req, res) => {
 };
 
 
-//-------------------------------//--------------------------
+
 
 
 //get user ticket
@@ -414,7 +414,7 @@ export const getTicketsByIdNumber = async (req, res) => {
 
 
 
-//------------//---------------------------------
+
 
 //update ticket idnumber 
 export const updateTicketIdNumber = async (req, res) => {
@@ -529,7 +529,7 @@ export const TicketfindbyCode = async (req, res) => {
 };
 
 
-//------------------------------------------------Payment----------------------//
+//--------------------Payment----------------------//
 
 // Initialize Stripe secret key
 const stripe = new Stripe('sk_test_51QCyiNFjwRhkW7KwE7OtYSL4Jyq97onSo0ur0n32cMijET3p7x5nV1OSwCPkJtNUTeWGnbsOHtCBEwERM07mzKx00025J8K7SK');

@@ -25,5 +25,5 @@ dist-ssr
 .DS_Store
 node_modules/
 
-# المحتويات الحالية في الفرع الرئيسي
+
 .DS_Store

@@ -12,8 +12,8 @@ export const createEvent = async (req, res) => {
             startDate,
             endDate,
             details,
-            totalTickets, // Set totalTickets here
-            totalTicketsSold: { gold: 0, silver: 0, standard: 0 } // Initialize sold tickets
+            totalTickets,
+            totalTicketsSold: { gold: 0, silver: 0, standard: 0 }
         });
 
         await event.save();
@@ -33,12 +33,12 @@ export const createEvent = async (req, res) => {
 //get all events
 export const getAllEvents = async (req, res) => {
     try {
-        const events = await Event.find(); // Fetch all events from the database
+        const events = await Event.find();
 
         // Function to format date to dd/mm/yyyy
         const formatResponseDate = (date) => {
             const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
         };
@@ -50,7 +50,7 @@ export const getAllEvents = async (req, res) => {
             endDate: formatResponseDate(event.endDate),
         }));
 
-        res.status(200).json(formattedEvents); // Send the formatted events as a JSON response
+        res.status(200).json(formattedEvents);
     } catch (error) {
         console.error('Error fetching events:', error);
         res.status(500).json({ message: 'Server error' });
@@ -60,19 +60,19 @@ export const getAllEvents = async (req, res) => {
 
 //delete by id event
 export const deleteEvent = async (req, res) => {
-    const { id } = req.params; // Get the ID from the request parameters
+    const { id } = req.params;
 
     try {
-        const event = await Event.findByIdAndDelete(id); // Find and delete the event
+        const event = await Event.findByIdAndDelete(id);
 
         if (!event) {
-            return res.status(404).json({ message: 'Event not found' }); // Event not found
+            return res.status(404).json({ message: 'Event not found' });
         }
 
-        res.status(200).json({ message: 'Event deleted successfully' }); // Successful deletion
+        res.status(200).json({ message: 'Event deleted successfully' });
     } catch (error) {
         console.error('Error deleting event:', error);
-        res.status(500).json({ message: 'Server error' }); // Server error
+        res.status(500).json({ message: 'Server error' });
     }
 };
 
@@ -109,8 +109,8 @@ export const updateEvent = async (req, res) => {
         if (details) event.details = details;
         if (googleMapLink) event.googleMapLink = googleMapLink;
         if (Time) event.Time = Time;
-        if (Latitude !== undefined) event.Latitude = Latitude; // Update Latitude
-        if (Longitude !== undefined) event.Longitude = Longitude; // Update Longitude if needed
+        if (Latitude !== undefined) event.Latitude = Latitude;
+        if (Longitude !== undefined) event.Longitude = Longitude;
 
         // Update total tickets for each type and calculate the overall total
         if (totalTicketsGold !== undefined) event.totalTicketsGold = totalTicketsGold;

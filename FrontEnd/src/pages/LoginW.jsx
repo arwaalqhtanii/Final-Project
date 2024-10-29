@@ -12,9 +12,9 @@ function LoginW() {
   const [errors, setErrors] = useState({});
   const[suspend,setsuspend]=useState('');
   const newErrors = {};
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
-  const [emailForReset, setEmailForReset] = useState(''); // State for password reset email
-  const [resetEmailError, setResetEmailError] = useState(''); // State for reset email validation error
+  const [showModal, setShowModal] = useState(false);
+  const [emailForReset, setEmailForReset] = useState('');
+  const [resetEmailError, setResetEmailError] = useState('');
   const [modalMessage, setModalMessage] = useState('');
 
   const handleSubmit = async (e) => {
@@ -70,15 +70,15 @@ function LoginW() {
 
 const handleResetPassword = async (e) => {
   e.preventDefault();
-  setResetEmailError(''); // Reset the error message
+  setResetEmailError('');
 
-  // Validation for email input
+
   if (emailForReset === '') {
       setResetEmailError('Please enter your email address.');
-      return; // Stop further execution if the email is empty
+      return;
   } else if (!/\S+@\S+\.\S+/.test(emailForReset)) {
       setResetEmailError('Please enter a valid email address.');
-      return; // Stop further execution if the email format is invalid
+      return;
   }
 
   try {
@@ -96,7 +96,7 @@ const handleResetPassword = async (e) => {
 
       alert('Password reset email sent successfully!');
       setShowModal(false);
-      setEmailForReset(''); // Clear input
+      setEmailForReset('');
   } catch (error) {
     setModalMessage(error.message);
   }
@@ -178,7 +178,7 @@ const handleResetPassword = async (e) => {
     <button onClick={() => setShowModal(true)} className="text-[#78006e] hover:underline">Forgot Password?</button>
       </p>
 
-    {/* Modal for password reset */}
+
 {showModal && (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="bg-white rounded-lg p-6 z-10 shadow-lg max-w-md mx-auto w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%]">
