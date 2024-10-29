@@ -112,7 +112,7 @@ const handleResetPassword = async (e) => {
     <div className="relative w-full h-screen flex justify-center items-center">
 
 <img src={riyadhseasonboulevard} alt="Background" className="absolute w-full h-full object-cover opacity-95" />
-<div className="absolute w-full h-full bg-black opacity-50"></div> 
+<div className="absolute w-full h-full bg-black opacity-70"></div> 
     <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
       <svg className="absolute top-0 left-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 300 300">
         <line x1="0" y1="0" x2="300" y2="300" stroke="#78006e" strokeWidth="10"/>
@@ -168,13 +168,13 @@ const handleResetPassword = async (e) => {
         Login
       </button>
   
-      <div className="text-center">
+      <div className="text-left">
         <p className="text-sm sm:text-lg">
           Don't have an account? 
           <Link to="/SignupW" className="text-[#78006e] hover:underline"> Create an account</Link>
         </p>
       </div>
-      <p className="text-sm sm:text-lg text-center">
+      <p className="text-sm sm:text-lg text-left">
     <button onClick={() => setShowModal(true)} className="text-[#78006e] hover:underline">Forgot Password?</button>
       </p>
 

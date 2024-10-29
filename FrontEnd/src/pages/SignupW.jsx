@@ -75,7 +75,7 @@ function SignupW() {
   return (
     <div className="relative flex justify-center items-center min-h-screen px-4 sm:px-6 lg:px-8">
       <img src={riyadhseasonboulevard} alt="Background" className="absolute w-full h-full object-cover opacity-95" />
-      <div className="absolute w-full h-full bg-black opacity-50"></div>
+      <div className="absolute w-full h-full bg-black opacity-70"></div>
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
       <svg className="absolute top-0 left-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 opacity-30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 300 300">
         <line x1="0" y1="0" x2="300" y2="300" stroke="#78006e" strokeWidth="10"/>
@@ -163,7 +163,7 @@ function SignupW() {
         Sign Up
       </button>
   
-      <div className="text-center mt-4">
+      <div className="text-left mt-4">
         <p className="text-sm sm:text-lg">
           Already have an account? 
           <Link to="/LoginW" className="text-[#78006e] hover:underline"> Log In</Link>
