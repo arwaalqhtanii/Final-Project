@@ -236,7 +236,10 @@ export const updateUserInfo = async (req, res) => {
         if (username) updates.Username = username; 
         if (email) updates.email = email; 
         if(password) updates.password= await bcrypt.hash(password, 10);
-
+        
+        if (!password || password.length < 6) {
+            return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+        }
 
         if (email) {
             const existingEmailUser = await User.findOne({ email });
