@@ -1,4 +1,4 @@
-import Event from '../models/Event.js'; // Adjust the import path
+import Event from '../models/Event.js'; 
 
 //post the event 
 export const createEvent = async (req, res) => {
@@ -127,23 +127,3 @@ export const updateEvent = async (req, res) => {
 };
 
 
-//get litutde and from googlemap link
-// const apiKey ="AIzaSyAXllPwqX9_-b98OOXKky9MfTcKEiryRag"
-// export const getCoordinatesFromLink = async (link) => {
-//     // Extract place ID from the link (this example assumes you have the place ID)
-//     const placeId = await getPlaceIdFromLink(link);
-
-//     if (placeId) {
-//         const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${apiKey}`);
-//         const data = await response.json();
-//         if (data.result) {
-//             const location = data.result.geometry.location;
-//             console.log(`Latitude: ${location.lat}, Longitude: ${location.lng}`);
-//             return { latitude: location.lat, longitude: location.lng };
-//         } else {
-//             console.error('Error fetching location details:', data);
-//         }
-//     } else {
-//         console.error('Place ID not found for link:', link);
-//     }
-// };

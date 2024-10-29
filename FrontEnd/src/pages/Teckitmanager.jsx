@@ -188,16 +188,15 @@ function Teckitmanager() {
             <div className='w-[100%] flex flex-col gap-y-[2rem] items-center justify-center py-[10vh] bg-black'>
                 {tickets.length > 0 ? (
                     tickets.map((ticket) => {
-                        // const showBarcode = ticket.eventId && ticket.eventId.googlemaplink === userLocation;
                         const eventLatitude = ticket.eventId?.Latitude;
                         const eventLongitude = ticket.eventId?.Longitude;
                         const showBarcode = userLocation && eventLatitude && eventLongitude &&
                             getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
 
-                        return ( // Use return here to return the JSX
+                        return (
                             <MyTicket
                                 key={ticket.uniqueCode}
-                                title={ticket.eventId?.name} // Use optional chaining for safety
+                                title={ticket.eventId?.name} 
                                 location={ticket.eventId?.location}
                                 date={ticket.visitDate}
                                 time={ticket.eventId?.Time}
@@ -206,40 +205,19 @@ function Teckitmanager() {
                                 status={ticket.updateStatus}
                                 process='Sell'
                                 popSellForm={() => handleSell(ticket.uniqueCode)}
-                                pending={ticket.notifications?.[0]?.status || null} // Use optional chaining
-                                showBarcode={showBarcode} // Ensure this is passed
+                                pending={ticket.notifications?.[0]?.status || null} 
+                                showBarcode={showBarcode} 
 
                             />
                         );
                     })
                 ) : (
-                    <p className='text-white'>{message || "No tickets available."}</p> // Use the message state or a default message
+                    <p className='text-white'>{message || "No tickets available."}</p> 
                 )}
 
 
 
-                {/* <MyTicket
-                    title='WWE RAW'
-                    location='RIYADH'
-                    date='17 - 04'
-                    time='7:30 PM'
-                    type='GOLD'
-                    code='265'
-                    Available={true}
-                    popSellForm={() => handleSell('265')}
-
-                ></MyTicket>
-                <MyTicket
-                    title='WWE RAW'
-                    location='RIYADH'
-                    date='17 - 04'
-                    time='7:30 PM'
-                    type='GOLD'
-                    code='265'
-                    Available={false}
-                    popSellForm={() => handleSell('265')}
-
-                ></MyTicket> */}
+               
 
             </div>
             <Footer />

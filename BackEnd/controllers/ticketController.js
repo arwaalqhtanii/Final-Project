@@ -1,21 +1,19 @@
 import Ticket from '../models/ticket.js';
 import Event from '../models/Event.js';
 import User from '../models/User.js';
-import { v4 as uuidv4 } from 'uuid';
-import mongoose from 'mongoose'; // Make sure to import mongoose
-import crypto from 'crypto'; // Import the crypto library
-import CryptoJS from 'crypto-js'; // If using crypto-js
+import mongoose from 'mongoose'; 
+import crypto from 'crypto'; 
+import CryptoJS from 'crypto-js'; 
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
-import Notification from '../models/notificationSchema.js'; // Import your Notification model
-import { log } from 'console';
+import Notification from '../models/notificationSchema.js'; 
 
 
 
-// Helper function to format date to dd/mm/yyyy
+// format date to dd/mm/yyyy
 const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
