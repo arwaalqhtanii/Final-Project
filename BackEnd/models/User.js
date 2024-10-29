@@ -1,4 +1,3 @@
-// In models/User.js
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -6,15 +5,15 @@ const UserSchema = new mongoose.Schema({
     Username:{type:String},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    token: { type: String }, // For session management
+    token: { type: String }, 
     isSuspended: { type: Boolean, default: false },
     suspensionEnd: { type: Date, default: null },
-    approvedNotificationCount: { type: Number, default: 0 }, // Set default to 0
-    approvalTimestamps: { type: [Date], default: [] }, // Set default to an empty array
+    approvedNotificationCount: { type: Number, default: 0 }, 
+    approvalTimestamps: { type: [Date], default: [] }, 
     approvedVisitDays: { type: [String], default: [] }, 
 
 });
 
 const User = mongoose.model('User', UserSchema);
 
-export default User; // Ensure you are using default export
+export default User; 

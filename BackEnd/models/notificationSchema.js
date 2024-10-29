@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Define the notification schema
 const notificationSchema = new mongoose.Schema({
     
     userId: { 
@@ -12,16 +11,16 @@ const notificationSchema = new mongoose.Schema({
         type: String, 
     },
     ticketInfo: {
-        eventName: { type: String, required: true }, // Ensure event name is required
-        uniqueCode: { type: String, required: true }, // Ensure unique code is required
-        originalPrice: { type: Number, required: true }, // Ensure original price is required
-        newPrice: { type: Number, required: true }, // Ensure new price is required\
+        eventName: { type: String, required: true }, 
+        uniqueCode: { type: String, required: true }, 
+        originalPrice: { type: Number, required: true }, 
+        newPrice: { type: Number, required: true }, 
         visitDate: { type: Date },
     },
     status: { 
         type: String, 
-        default: 'pending', // Default status
-        enum: ['pending', 'approved','canceled'] // Optional: restrict status values
+        default: 'pending', 
+        enum: ['pending', 'approved','canceled'] 
     },
        createdBy: {
       userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -29,7 +28,6 @@ const notificationSchema = new mongoose.Schema({
       name: String
     },
     updatedAt: {type: Date, default: Date.now },
-}, { timestamps: true }); // Automatically manage createdAt and updatedAt fields
+}, { timestamps: true }); 
 
-// Export the Notification model
 export default mongoose.model('Notification', notificationSchema);
