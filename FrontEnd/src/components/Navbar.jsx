@@ -246,13 +246,13 @@ const Navbar = () => {
                                                 <button onClick={()=>{navigate('/profile')}} className="transition-colors duration-300 font-bold px-4 py-2">
                                                     <IoSettingsOutline className={`text-3xl   text-[#78006e] hover:text-[#171617]`} />
                                                 </button>
-                                                <span onClick={()=>{navigate('/profile')}} className='font-semibold'>Settings</span>
+                                                <span onClick={()=>{navigate('/profile')}} className='font-semibold cursor-pointer'>Settings</span>
                                             </li>
                                             <li className='flex items-center gap-x-[0.2rem]'>
                                                 <button onClick={handleLogout} className="transition-colors duration-300 font-bold px-4 py-2">
                                                     <FiLogOut className={`text-3xl   text-[#78006e] hover:text-[#171617]`} />
                                                 </button>
-                                                <span onClick={handleLogout} className='font-semibold'>Log out</span>
+                                                <span onClick={handleLogout} className='font-semibold cursor-pointer'>Log out</span>
                                             </li>
 
                                         </ul>
