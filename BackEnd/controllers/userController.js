@@ -227,7 +227,7 @@ export const getUserInfo = async (req, res) => {
 
 //update user info
 export const updateUserInfo = async (req, res) => {
-    const { username, email } = req.body; 
+    const { username, email ,password } = req.body; 
 
     try {
         const userId = req.user._id; 
@@ -235,6 +235,8 @@ export const updateUserInfo = async (req, res) => {
         const updates = {};
         if (username) updates.Username = username; 
         if (email) updates.email = email; 
+        if(password) updates.password= await bcrypt.hash(password, 10);
+
 
         if (email) {
             const existingEmailUser = await User.findOne({ email });
@@ -260,6 +262,7 @@ export const updateUserInfo = async (req, res) => {
                 idNumber: updatedUser.idNumber,
                 Username: updatedUser.Username,
                 email: updatedUser.email,
+                password:updatedUser.password,
             },
         });
     } catch (error) {
@@ -268,4 +271,53 @@ export const updateUserInfo = async (req, res) => {
     }
 };
 
+//forgrt password
+export const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate a temporary code for reset passowerd
+    const tempPassword = crypto.randomBytes(4).toString('hex');
+    user.password = await bcrypt.hash(tempPassword, 10);
+    await user.save();
+
+    console.log('Email User:', process.env.EMAIL_USER);
+    console.log('Email Pass:', process.env.EMAIL_PASS);
+
+    
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS, 
+      },
+    });
+
+    // Send the email
+    transporter.sendMail(
+      {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Temporary Password',
+        text: `Your temporary password is: ${tempPassword}\nPlease log in and change your password immediately.`,
+      },
+      (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+          return res.status(500).json({ message: 'Error sending email' });
+        }
+        console.log('Email sent:', info.response);
+        return res.status(200).json({ message: 'Temporary password sent to your email' });
+      }
+    );
+  } catch (error) {
+    console.error('Error in forgetPassword function:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
