@@ -303,7 +303,7 @@ export const forgetPassword = async (req, res) => {
       {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'Temporary Password',
+        subject: 'WhiteTik Reset Password',
         text: `Your temporary password is: ${tempPassword}\nPlease log in and change your password immediately.`,
       },
       (error, info) => {
