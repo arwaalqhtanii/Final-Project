@@ -173,7 +173,7 @@ function Teckitmanager() {
             )}
             <Navbar />
 
-            <div className='w-[100%] h-[40vh] max-sm:h-[60vh] relative  shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
+            <div className='w-[100%] h-[50vh] max-sm:h-[60vh] relative  shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
                 <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%] '>Manage My Tickets</div>
@@ -226,16 +226,11 @@ function Teckitmanager() {
                     tickets.map((ticket) => {
                         const eventLatitude = ticket.eventId?.Latitude;
                         const eventLongitude = ticket.eventId?.Longitude;
-                        console.log(`Distance for ticket ${ticket.uniqueCode}:`, getDistance(
-                            userLocation.latitude,
-                            userLocation.longitude,
-                            eventLatitude,
-                            eventLongitude
-                        ));
-
-                        const showBarcode = userLocation && eventLatitude && eventLongitude &&
-                            getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
-            
+                        let showBarcode = ''; 
+    if (eventLatitude && eventLongitude) {
+        showBarcode = userLocation 
+            && getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
+    }
                         return (
                             <MyTicket
                                 key={ticket.uniqueCode}

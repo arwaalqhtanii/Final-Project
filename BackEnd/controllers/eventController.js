@@ -1,4 +1,6 @@
 import Event from '../models/Event.js'; 
+import mongoose from 'mongoose';
+
 
 //post the event 
 export const createEvent = async (req, res) => {
@@ -58,10 +60,16 @@ export const getAllEvents = async (req, res) => {
 };
 
 
+
+
+
 //delete by id event
 export const deleteEvent = async (req, res) => {
     const { id } = req.params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Invalid ID format' });
+    }
     try {
         const event = await Event.findByIdAndDelete(id);
 

@@ -16,15 +16,12 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const handleScroll = () => {
-        if (window.scrollY > 50) {
-            setIsScrolled(true);
-        } else {
-            setIsScrolled(false);
-        }
+        setIsScrolled(window.scrollY > 50);
     };
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+        if (isNotificationOpen) setIsNotificationOpen(false);
     };
 
     const toggleNotificationDropdown = () => {
@@ -56,7 +53,7 @@ const Navbar = () => {
             console.log(response);
             
 
-            setNotifications(response.data.notifications);
+            setNotifications(response.data.notifications || []);
             console.log(notifications);
 
            
