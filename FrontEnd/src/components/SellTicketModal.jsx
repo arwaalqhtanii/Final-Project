@@ -20,7 +20,7 @@ const SellTicketModal = ({ isOpen, onClose, event, update}) => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8050/notifications/notify/${event.ticketCode}`,
+                `https://whitetik-project.onrender.com/notifications/notify/${event.ticketCode}`,
                 {
                     targetUserEmail: buyerEmail,
                     newPrice: ticketPrice,
