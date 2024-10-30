@@ -64,11 +64,11 @@ function MyTicket(props) {
 
     return (
         <div className={` ${windowWidth > 768 ? 'ticket-big' : 'ticket-small'} w-[55vw] max-md:w-[80%] min-h-[40vh] h-[fit-contnet]  max-md:h-[fit-content] max-md:py-[15px] flex max-md:flex-col items-center justify-start rounded-[10px] relative ${props.status === 1 ? 'bg-gray-300 text-gray-500' : 'bg-white'}`}>
-            <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] gap-y-[0.7rem]  p-[10px]  pl-[35px] pr-[35px]'>
+            <div className='w-[65%] max-md:w-[100%] h-[100%] max-md:items-center flex flex-col items-start max-md:gap-y-[1.5rem] max-sm:gap-y-[1rem] gap-y-[0.7rem]  p-[10px]  pl-[35px] pr-[35px]'>
                 <div className='flex'>
                     <div className={` text-[2rem] font-bold ${props.status === 1 ? 'text-gray-500' : 'text-[#78006E]'}`}>{props.title}</div>
                 </div>
-                <div className='flex items-center gap-x-[1rem]'>
+                <div className='flex max-sm:justify-start max-sm:w-[100%] items-center gap-x-[1rem]'>
                     <div className=' text-gray-500 '>{props.location}</div>
                     <MdLocationPin className='text-[1.5rem]'></MdLocationPin>
                 </div>
@@ -82,15 +82,15 @@ function MyTicket(props) {
                                 props.type === 'gold' ? 'gold' : 'black'
                             }}
                         className='text-[1.5rem]  font-bold'></FaTicketAlt>
-                        <div>{props.type}</div>
+                        <div className=' max-sm:text-[0.8rem]'>{props.type}</div>
                     </div>
                     <div className='flex flex-col items-center gap-y-[0.4rem] '>
                         <MdAccessTime className='text-[1.5rem] font-bold'></MdAccessTime>
-                        <div>{props.time}</div>
+                        <div className=' max-sm:text-[0.8rem]'>{props.time}</div>
                     </div>
                     <div className='flex flex-col items-center gap-y-[0.4rem] '>
                         <CiCalendarDate className='text-[1.5rem] text-center font-bold'></CiCalendarDate>
-                        <div>{props.date}</div>
+                        <div className=' max-sm:text-[0.8rem]'>{props.date}</div>
                     </div>
                 </div>
                 {windowWidth > 768 ? <img className='w-[60%] max-md:w-[100%] h-[10px]' src={Vector}></img> : null}
