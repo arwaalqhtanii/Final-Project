@@ -233,9 +233,10 @@ function Teckitmanager() {
                             eventLongitude
                         ));
 
-                        const showBarcode = userLocation && eventLatitude && eventLongitude &&
-                            getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
-            
+                        const showBarcode = userLocation 
+                        && eventLatitude != null 
+                        && eventLongitude != null 
+                        && getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
                         return (
                             <MyTicket
                                 key={ticket.uniqueCode}
