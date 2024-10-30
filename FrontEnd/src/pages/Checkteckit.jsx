@@ -32,7 +32,7 @@ function Checkteckit() {
     useEffect(() => {
         const fetchTicket = async () => {
             try {
-                const response = await axios.get(`http://localhost:8050/tickets/tickets/unique-code/${code}`);
+                const response = await axios.get(`https://whitetik-project.onrender.com/tickets/tickets/unique-code/${code}`);
                console.log('test fetch ticket ');
                
                 console.log(response.data.ticket);

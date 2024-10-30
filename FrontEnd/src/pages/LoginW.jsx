@@ -36,7 +36,7 @@ function LoginW() {
         setErrors({});
 
         try {
-            const response = await fetch('http://localhost:8050/user/login', {
+            const response = await fetch('https://whitetik-project.onrender.com/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const handleResetPassword = async (e) => {
   }
 
   try {
-      const response = await fetch('http://localhost:8050/user/forgetPassword', {
+      const response = await fetch('https://whitetik-project.onrender.com/user/forgetPassword', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',

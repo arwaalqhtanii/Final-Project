@@ -43,7 +43,7 @@ function SignupW() {
       setErrors({});
       try {
       
-        const response = await axios.post('http://localhost:8050/user/register', {
+        const response = await axios.post('https://whitetik-project.onrender.com/user/register', {
           idNumber,
           email,
           password,

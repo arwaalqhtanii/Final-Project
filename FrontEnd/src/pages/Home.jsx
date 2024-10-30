@@ -19,7 +19,7 @@ const EventsPage = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await fetch('http://localhost:8050/event/allevents');
+                const response = await fetch('https://whitetik-project.onrender.com/event/allevents');
                 const data = await response.json();
                 console.log(data);
 

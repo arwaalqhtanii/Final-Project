@@ -23,14 +23,10 @@ const BookingModal = ({ isOpen, onClose, event }) => {
         standard: 50,
     };
    
-    console.log("selectedTicket"+selectedTicket);
-    console.log("ticketPrices"+ticketPrices[selectedTicket]);
-    
-    
+  
     
     const total = selectedTicket ? ticketPrices[selectedTicket] * numberOfTickets * 100 : 0;
 
-    console.log("total"+total);
      
     
 
@@ -70,7 +66,7 @@ const handleSubmit = async () => {
 
     try {
          
-        const paymentResponse = await axios.post('http://localhost:8050/tickets/create-payment-intent', {
+        const paymentResponse = await axios.post('https://whitetik-project.onrender.com/tickets/create-payment-intent', {
             paymentMethodId: paymentMethod.id,
             amount: total,
         });
@@ -104,7 +100,7 @@ const handleSubmit = async () => {
 
         console.log('event id'+event._id);
        
-        const ticketResponse = await axios.post(`http://localhost:8050/tickets/addTicket/${event._id}/purchase`, finalTicketData, {
+        const ticketResponse = await axios.post(`https://whitetik-project.onrender.com/tickets/addTicket/${event._id}/purchase`, finalTicketData, {
             headers: {
                 Authorization: `Bearer ${userToken}`,
             },

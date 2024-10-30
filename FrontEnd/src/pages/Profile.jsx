@@ -20,7 +20,7 @@ const Profile = () => {
     const fetchUserInfo = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8050/user/userinfo', {
+        const response = await axios.get('https://whitetik-project.onrender.com/user/userinfo', {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log('User info fetched:', response.data);
@@ -39,7 +39,7 @@ const Profile = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:8050/user/update',
+        'https://whitetik-project.onrender.com/user/update',
         { username, email },
         {
           headers: {
@@ -70,7 +70,7 @@ const Profile = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        'http://localhost:8050/user/update',
+        'https://whitetik-project.onrender.com/user/update',
         { password },
         {
           headers: {

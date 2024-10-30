@@ -67,7 +67,7 @@ function Teckitmanager() {
 
     const fetchTickets = async () => {
         try {
-            const response = await axios.get('http://localhost:8050/tickets/Usertickets', {
+            const response = await axios.get('https://whitetik-project.onrender.com/tickets/Usertickets', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -114,7 +114,7 @@ function Teckitmanager() {
                 fetchTickets();
                 return;
             }
-            const response = await axios.get(`http://localhost:8050/tickets/ticketsUserstatus/${status}`, {
+            const response = await axios.get(`https://whitetik-project.onrender.com/tickets/ticketsUserstatus/${status}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
