@@ -35,7 +35,7 @@ function MyTicket(props) {
 
         try {
             await axios.put(
-                `http://localhost:8050/notifications/notificationsignore/${props.notificationID}`,
+                `https://whitetik-project.onrender.com/notifications/notificationsignore/${props.notificationID}`,
                 {},
                 {
                     headers: {

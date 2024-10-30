@@ -60,7 +60,7 @@ const Purchase = ({ isOpen, onClose, newPrice ,notificationID,userId}) => {
         try {
             console.log("CLACL : " + newPrice * 100);
             
-            const response = await axios.post('http://localhost:8050/tickets/create-payment-intent', {
+            const response = await axios.post('https://whitetik-project.onrender.com/tickets/create-payment-intent', {
                 paymentMethodId: paymentMethodId,
                 amount: newPrice * 100, 
             });
@@ -72,7 +72,7 @@ const Purchase = ({ isOpen, onClose, newPrice ,notificationID,userId}) => {
            
             const token = localStorage.getItem('token'); 
     
-            await axios.put(`http://localhost:8050/notifications/approve/${notificationID}`, {}, {
+            await axios.put(`https://whitetik-project.onrender.com/notifications/approve/${notificationID}`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

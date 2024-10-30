@@ -48,7 +48,7 @@ const Navbar = () => {
     const fetchNotifications = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8050/notifications/notificationsshow', {
+            const response = await axios.get('https://whitetik-project.onrender.com/notifications/notificationsshow', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
