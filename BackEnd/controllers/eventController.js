@@ -4,17 +4,40 @@ import mongoose from 'mongoose';
 
 //post the event 
 export const createEvent = async (req, res) => {
-    const { name, image, location, startDate, endDate, details, totalTickets } = req.body;
+    console.log(req.body);
+    const { 
+        name, 
+        image, 
+        location, 
+        googleMapLink,
+        Latitude,
+        Longitude,
+        startDate, 
+        endDate, 
+        Time, 
+        details, 
+        totalTickets, 
+        totalTicketsGold, 
+        totalTicketsSilver, 
+        totalTicketsStandard 
+    } = req.body;
 
     try {
         const event = new Event({
             name,
             image,
             location,
+            googleMapLink,
+            Latitude,
+            Longitude,
             startDate,
             endDate,
+            Time, 
             details,
             totalTickets,
+            totalTicketsGold, 
+            totalTicketsSilver, 
+            totalTicketsStandard, 
             totalTicketsSold: { gold: 0, silver: 0, standard: 0 }
         });
 
@@ -29,6 +52,7 @@ export const createEvent = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 
 

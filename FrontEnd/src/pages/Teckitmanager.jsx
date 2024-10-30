@@ -226,11 +226,9 @@ function Teckitmanager() {
                     tickets.map((ticket) => {
                         const eventLatitude = ticket.eventId?.Latitude;
                         const eventLongitude = ticket.eventId?.Longitude;
-                        let showBarcode = ''; 
-    if (eventLatitude && eventLongitude) {
-        showBarcode = userLocation 
-            && getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
-    }
+                        const showBarcode = userLocation && eventLatitude && eventLongitude &&
+                            getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
+            
                         return (
                             <MyTicket
                                 key={ticket.uniqueCode}
