@@ -52,7 +52,7 @@ Explore the project live at **[whitetik-project-frontend.onrender.com](https://w
 | Youssef Hejazi    | [LinkedIn](https://www.linkedin.com/in/yousef-hejazi-218a69167?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app) |
 
 - **Live Demo**: [whitetik-project-frontend.onrender.com](https://whitetik-project-frontend.onrender.com/)
-- **GitHub Repository**: [Quicktik on GitHub](https://github.com/username/quicktik)
+- **GitHub Repository**: [Quicktik on GitHub](https://github.com/arwaalqhtanii/Final-Project.git)
 
 
 
