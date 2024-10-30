@@ -57,12 +57,10 @@ function Checkteckit() {
 
     function popPurchaseform() {
         setPurchasePop(true);
-        document.body.style.overflow = 'hidden'; 
     }
 
     const handleCloseBuyPopup = () => {
         setPurchasePop(false);
-        document.body.style.overflow = 'auto'; 
     };
 
     return (

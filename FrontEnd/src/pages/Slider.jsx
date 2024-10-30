@@ -73,7 +73,7 @@ const Slider = ({ searchBarRef }) => {
                     typeSpeed={50}
                     startDelay={500}
                 />
-                <div className="mt-8">
+                <div className="mt-16">
                     <button
                         className="px-6 py-3 md:px-8 md:py-4 flex items-center gap-2 bg-gradient-to-r from-[#9b27b0] to-[#ff4081] text-white font-semibold rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out"
                         onClick={handleCheckTicketClick}

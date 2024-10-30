@@ -91,7 +91,6 @@ function Teckitmanager() {
         fetchTickets();
     }, []);
 
-    console.log("User Location:", userLocation);
 
     const getDistance = (lat1, lon1, lat2, lon2) => {
         const R = 6371;
