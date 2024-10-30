@@ -25,7 +25,7 @@ const Navbar = () => {
     };
 
     const toggleNotificationDropdown = () => {
-        setIsProfileMenuOpen(false);
+        setIsMenuOpen(false);
         setIsNotificationOpen(!isNotificationOpen);
     };
 
