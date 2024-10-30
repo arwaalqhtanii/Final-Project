@@ -37,6 +37,7 @@ function Teckitmanager() {
                     longitude: position.coords.longitude,
                 };
                 setUserLocation(userLocation)
+                console.log("location user ");
                 console.log(userLocation);
 
             }, (error) => {
@@ -46,6 +47,7 @@ function Teckitmanager() {
             console.log("Geolocation is not supported by this browser.");
         }
     };
+
 
 
 
@@ -222,7 +224,7 @@ function Teckitmanager() {
                         const eventLongitude = ticket.eventId?.Longitude;
                         const showBarcode = userLocation && eventLatitude && eventLongitude &&
                             getDistance(userLocation.latitude, userLocation.longitude, eventLatitude, eventLongitude) <= DISTANCE_THRESHOLD;
-
+            
                         return (
                             <MyTicket
                                 key={ticket.uniqueCode}

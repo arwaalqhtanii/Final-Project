@@ -54,12 +54,12 @@ const Navbar = () => {
                 },
             });
             console.log(response);
-            console.log('oooooooooooooooooooooo');
+            
 
             setNotifications(response.data.notifications);
             console.log(notifications);
 
-            console.log('noti');
+           
 
 
         } catch (error) {
