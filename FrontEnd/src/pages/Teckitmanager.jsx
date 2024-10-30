@@ -161,7 +161,7 @@ function Teckitmanager() {
 
 
     return (
-        <div>
+        <div >
             {sellPop && (
                 <SellTicketModal
                     isOpen={sellPop}
@@ -173,10 +173,10 @@ function Teckitmanager() {
             )}
             <Navbar />
 
-            <div className='w-[100%] h-[40vh] relative  shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
+            <div className='w-[100%] h-[40vh] max-sm:h-[60vh] relative  shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
                 <img className='w-[100%] h-[100%]' src={riyadhseasonboulevard}></img>
                 <div className='w-[100%] h-[100%] bg-black opacity-80 absolute top-0'></div>
-                <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%]'>Manage My Tickets</div>
+                <div className='text-white font-bold text-[3rem] text-center w-[100%] absolute top-[20%] '>Manage My Tickets</div>
                 <div className='w-[55vw] max-md:w-[80%] h-[fit-content] py-[20px] flex max-md:flex-col-reverse max-md:justify-center gap-y-[10px] justify-between items-center bg-white rounded-[10px] absolute bottom-0 left-[50%] translate-x-[-50%]'>                    
                     <div className='w-[40%] max-md:w-[100%] pl-4 max-md:pl-0 max-md:justify-evenly flex gap-x-[1.5rem] font-bold'>
                     <button
@@ -200,7 +200,7 @@ function Teckitmanager() {
                 </div>
                     
                     <div className="container w-[60%] max-md:w-[100%] px-5 mx-auto  flex gap-9 flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 ">
-                        <div className="flex  items-center w-[100%]   bg-gray-100 p-4 rounded-full shadow-md ">
+                        <div className="flex  items-center w-[100%]   bg-gray-100 p-4 rounded-full shadow-sm ">
                             <button className="text-purple-800 ml-4" onClick={handleSearch}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -208,7 +208,7 @@ function Teckitmanager() {
                             </button>
                             <input
                                 type="text"
-                                placeholder="Search Ticket  by name"
+                                placeholder="Search Ticket"
                                 className="w-[100%] bg-transparent focus:outline-none text-gray-700 px-4 text-left "
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
