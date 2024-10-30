@@ -135,7 +135,8 @@ function MyTicket(props) {
                             <QRCodeCanvas
                                 value={props.code}
                                 size={150}
-                                className={`${props.status === 1 && props.showBarcode ? '' : 'filter blur-[5px]'}`}
+                                className={`${props.showBarcode ? '' : (props.status === 1 ?  'filter blur-[5px]':'')}`}
+
                                 />
                         
                     </div>
