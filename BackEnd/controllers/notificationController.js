@@ -227,15 +227,11 @@ if (recentApprovals.length > 0) {
             sender.isSuspended = false;
             sender.suspensionEnd = null;
             await sender.save();
-            console.log(`User ${senderId} unsuspended.`);
         }, 120000);
 
-            console.log(`User ${senderId} suspended due to multiple approvals.`);
         }
     }
-        console.log("approvedNotificationCount: " + sender.approvedNotificationCount);
-        console.log("sender.approvedVisitDays: " + sender.approvedVisitDays);
-
+       
         res.status(200).json({
             message: 'Notification approved and new ticket created',
             notification,

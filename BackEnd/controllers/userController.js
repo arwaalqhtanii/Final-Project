@@ -140,8 +140,7 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        console.log("User suspension status:", user.isSuspended);
-        console.log("user.suspensionEnd "+user.suspensionEnd );
+    
         const now = Date.now();
         if (user.isSuspended) {
             if (user.suspensionEnd && user.suspensionEnd > now) {
@@ -173,7 +172,6 @@ export const approveNotification = async (req, res) => {
     if (recentApprovals.length >= 2) {
         sender.isSuspended = true;
         sender.suspensionEnd = Date.now() + 60000; 
-        console.log('User suspended:', senderId); 
     }
 
     await sender.save();
@@ -289,10 +287,7 @@ export const forgetPassword = async (req, res) => {
     user.password = await bcrypt.hash(tempPassword, 10);
     await user.save();
 
-    console.log('Email User:', process.env.EMAIL_USER);
-    console.log('Email Pass:', process.env.EMAIL_PASS);
-
-    
+  
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {

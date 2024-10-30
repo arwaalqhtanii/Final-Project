@@ -65,7 +65,6 @@ export const purchaseTicket = async (req, res) => {
     const startDateStr = event.startDate;
     const endDateStr = event.endDate;
     const visitDateStr = visitDate; 
- console.log("visitDateStr"+visitDateStr);
  
     if (typeof visitDateStr !== 'string' || !/^\d{2}\/\d{2}\/\d{4}$/.test(visitDateStr)) {
         return res.status(400).json({ message: 'Visit date must be provided in dd/mm/yyyy format.' });
@@ -74,7 +73,6 @@ export const purchaseTicket = async (req, res) => {
     const [visitDay, visitMonth, visitYear] = visitDateStr.split('/');
     const visitDateObj = new Date(`${visitYear}-${visitMonth}-${visitDay}`);
 
-    console.log('visitDateObj:', visitDateObj);
 
     const startDate = new Date(startDateStr);
     const endDate = new Date(endDateStr);
