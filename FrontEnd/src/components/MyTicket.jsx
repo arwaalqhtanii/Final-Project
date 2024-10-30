@@ -14,6 +14,8 @@ function MyTicket(props) {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const navigate = useNavigate();
 
+    console.log("showBarcode"+ showBarcode);
+    
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
