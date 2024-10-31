@@ -82,20 +82,6 @@ const Navbar = () => {
         });
     };
 
-    // useEffect(() => {
-    //     const handleClickOutside = (event) => {
-    //         if (notificationRef.current && !notificationRef.current.contains(event.target)) {
-    //             setIsNotificationOpen(false);
-    //         }
-    //     };
-
-    //     document.addEventListener('mousedown', handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    // }, []);
-
-
     return (
         <div>
             <nav className={`fixed top-0 left-0 w-full transition-all duration-300 ${isScrolled ? 'bg-white text-[#78006e]' : 'bg-transparent text-white'} z-50`}>
