@@ -216,7 +216,7 @@ const oneMinuteAgo = Date.now() - 60 * 1000;
 const recentApprovals = sender.approvalTimestamps.filter(timestamp => timestamp >= oneMinuteAgo);
 
 // Check if count is > 1
-if (recentApprovals.length > 1) {
+if (recentApprovals.length > 0) {
     if (!sender.isSuspended) {
         sender.isSuspended = true;
         sender.suspensionEnd = Date.now() + 120000;

@@ -80,7 +80,7 @@ function Checkteckit() {
                 {loading && <div className="text-white">Loading...</div>}
                     {error && <div className="text-red-500">{error}</div>}
                     {ticketForCheck ? (
-                        <div className='w-[100%] flex justify-center'>
+                        <div className='w-[100%] flex justify-center mb-12'>
                         
                             <MyTicket
                                 title={ticketForCheck.eventId?.name || 'Event not found'} 
